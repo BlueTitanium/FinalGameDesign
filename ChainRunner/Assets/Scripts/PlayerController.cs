@@ -27,6 +27,10 @@ public class PlayerController : MonoBehaviour
     private float horizontal;
     [SerializeField]
     private float speed = 8f;
+    [SerializeField] [Range(0f, 1f)]
+    private float dampingStop, dampingTurn, dampingNormal;
+
+    [Header("Jumping")]
     [SerializeField]
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
@@ -51,6 +55,8 @@ public class PlayerController : MonoBehaviour
     [Header("Dashing")]
     [SerializeField]
     private float dashSpeed = 5f;
+    [SerializeField]
+    private float additionalVelocity = 5f;
     [SerializeField]
     private float dashTime = .2f;
     [SerializeField]
@@ -87,6 +93,13 @@ public class PlayerController : MonoBehaviour
     private bool canClimbOver = false;
     */
 
+    [Header("Weapon")]
+    [Header("Grappling")]
+    [SerializeField] private float grappleSpeed = 30f;
+    public bool grappling = false;
+    private Vector2 grappleEndPoint;
+    [SerializeField] private ChainHook hook;
+
     [Header("Assign Value")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -107,6 +120,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void GrappleToLocation(Vector2 dir, Vector2 point)
+    {
+        grappling = true;
+        grappleEndPoint = point;
+    }
 
 
     private void Start()
@@ -116,32 +134,68 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        /*
+        //if we decide on ledge climbing? idk it kinda looks wack with no animations not worth pursuing till then
+        checkForLedge();
+        if (canClimbOver)
+        {
+            if((horizontal > 0 && isFacingRight) || (horizontal < 0 && !isFacingRight))
+            {
+                ledgeClimbOver();
+            }
+            else if((horizontal < 0 && isFacingRight) || (horizontal > 0 && !isFacingRight) || Input.GetButtonDown("Jump"))
+            {
+                canClimb = false;
+                canClimbOver = false;
+                Invoke("ResetCanGrabLedge", .1f);
+            }
+        }
+        */
+        if (grappling)
+        {
+            if (!hook.hookSent)
+            {
+                grappling = false;
+            }
+            rb.velocity = -(transform.position-hook.hookPoint.position).normalized * grappleSpeed;
+            if(Vector2.Distance(transform.position, grappleEndPoint) < 2f)
+            {
+                hook.TryRetractHook();
+                grappling = false;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         IsGrounded(); IsWalled();
-
-        if(dashTimeLeft<=0)
+        float horizontalV = rb.velocity.x;
+        if (dashTimeLeft <= 0)
+        {
             horizontal = Input.GetAxisRaw("Horizontal");
-
-
-        //if we decide on ledge climbing? idk it kinda looks wack with no animations not worth pursuing till then
-        //checkForLedge();
-        //if (canClimbOver)
-        //{
-        //    if((horizontal > 0 && isFacingRight) || (horizontal < 0 && !isFacingRight))
-        //    {
-        //        ledgeClimbOver();
-        //    }
-        //    else if((horizontal < 0 && isFacingRight) || (horizontal > 0 && !isFacingRight) || Input.GetButtonDown("Jump"))
-        //    {
-        //        canClimb = false;
-        //        canClimbOver = false;
-        //        Invoke("ResetCanGrabLedge", .1f);
-        //    }
-        //}
+            
+            horizontalV += horizontal * speed * Time.deltaTime;
+            if (Mathf.Abs(horizontal) < .1f)
+            {
+                horizontalV *= grounded ? 0 : Mathf.Pow((1f - dampingStop), Time.deltaTime * 10f);
+            }
+            else if (Mathf.Sign(horizontal) != Mathf.Sign(horizontalV))
+            {
+                horizontalV *= Mathf.Pow(1f - dampingTurn, Time.deltaTime * 10f);
+            }
+            else
+            {
+                horizontalV *= Mathf.Pow(1 - dampingNormal, Time.deltaTime * 10f);
+            }
+        }
+        else
+        {
+            horizontalV = (Mathf.Abs(horizontalV) > Mathf.Abs(horizontal * dashSpeed)) ? Mathf.Sign(horizontal) * Mathf.Abs(horizontalV) + horizontal * additionalVelocity * Time.deltaTime : horizontal * dashSpeed;
+        }
+        
+        
 
         if(isWallSliding)
             extraJumpsLeft = extraJumps;
@@ -164,15 +218,26 @@ public class PlayerController : MonoBehaviour
         }
         if (jumpBufferLeft > 0 && wallJumpingCounter <= 0 && !isWallJumping)
         {
+
             if(coyoteTimeLeft > 0f)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                if (grappling)
+                {
+                    hook.TryRetractHook();
+                    grappling = false;
+                }
             } else
             {
                 if(extraJumpsLeft > 0)
                 {
                     extraJumpsLeft -= 1;
                     rb.velocity = new Vector2(rb.velocity.x, extraJumpPower);
+                }
+                if (grappling)
+                {
+                    hook.TryRetractHook();
+                    grappling = false;
                 }
             }        
         }
@@ -212,9 +277,9 @@ public class PlayerController : MonoBehaviour
             dashCDLeft -= Time.deltaTime;
         }
 
-        if (!isWallJumping)
+        if (!isWallJumping && !grappling)
         {
-            rb.velocity = ((dashTimeLeft> 0) ? (new Vector2(horizontal * (speed + dashSpeed), rb.velocity.y)) : (new Vector2(horizontal * speed, rb.velocity.y)));
+            rb.velocity = new Vector2(horizontalV, rb.velocity.y);
         }
         if(Input.GetKeyDown(KeyCode.S))
         {
@@ -295,6 +360,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && wallJumpingCounter > 0f)
         {
+            if (grappling)
+            {
+                hook.TryRetractHook();
+                grappling = false;
+            }
             isWallJumping = true;
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
