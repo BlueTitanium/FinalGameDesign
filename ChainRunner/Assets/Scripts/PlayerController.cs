@@ -94,6 +94,8 @@ public class PlayerController : MonoBehaviour
     */
 
     [Header("Weapon")]
+    public LeftArm arm;
+
     [Header("Grappling")]
     [SerializeField] private float grappleSpeed = 30f;
     public bool grappling = false;
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ChainHook hook;
 
     [Header("Assign Value")]
-    [SerializeField] private Rigidbody2D rb;
+    public Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
@@ -122,6 +124,7 @@ public class PlayerController : MonoBehaviour
 
     public void GrappleToLocation(Vector2 dir, Vector2 point)
     {
+        extraJumpsLeft = extraJumps;
         grappling = true;
         grappleEndPoint = point;
     }
@@ -134,23 +137,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        /*
-        //if we decide on ledge climbing? idk it kinda looks wack with no animations not worth pursuing till then
-        checkForLedge();
-        if (canClimbOver)
-        {
-            if((horizontal > 0 && isFacingRight) || (horizontal < 0 && !isFacingRight))
-            {
-                ledgeClimbOver();
-            }
-            else if((horizontal < 0 && isFacingRight) || (horizontal > 0 && !isFacingRight) || Input.GetButtonDown("Jump"))
-            {
-                canClimb = false;
-                canClimbOver = false;
-                Invoke("ResetCanGrabLedge", .1f);
-            }
-        }
-        */
+        
         if (grappling)
         {
             if (!hook.hookSent)
@@ -281,14 +268,31 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(horizontalV, rb.velocity.y);
         }
-        if(Input.GetKeyDown(KeyCode.S))
+        if(Input.GetKeyDown(KeyCode.S) && !grappling)
         {
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -10000, fastFallSpeed));
         } else
-        if(rb.velocity.y < 0)
+        if(rb.velocity.y < 0 && !grappling)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
         }
+        /*
+        //if we decide on ledge climbing? idk it kinda looks wack with no animations not worth pursuing till then
+        checkForLedge();
+        if (canClimbOver)
+        {
+            if((horizontal > 0 && isFacingRight) || (horizontal < 0 && !isFacingRight))
+            {
+                ledgeClimbOver();
+            }
+            else if((horizontal < 0 && isFacingRight) || (horizontal > 0 && !isFacingRight) || Input.GetButtonDown("Jump"))
+            {
+                canClimb = false;
+                canClimbOver = false;
+                Invoke("ResetCanGrabLedge", .1f);
+            }
+        }
+        */
     }
 
     //private void checkForLedge()
@@ -365,6 +369,7 @@ public class PlayerController : MonoBehaviour
                 hook.TryRetractHook();
                 grappling = false;
             }
+            extraJumpsLeft = extraJumps;
             isWallJumping = true;
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
