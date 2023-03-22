@@ -106,6 +106,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+
+    //knockback
+    //private float kbDir; 
     
     public void TakeDamage(float amount)
     {
@@ -195,7 +198,8 @@ public class PlayerController : MonoBehaviour
             horizontalV = (Mathf.Abs(horizontalV) > Mathf.Abs(horizontal * dashSpeed)) ? Mathf.Sign(horizontal) * Mathf.Abs(horizontalV) + horizontal * additionalVelocity * Time.deltaTime : horizontal * dashSpeed;
         }
         
-        
+        //kbDir = horizontal==0? kbDir:horizontal;
+        //kbDir = horizontal;
 
         if(isWallSliding)
             extraJumpsLeft = extraJumps;
@@ -396,4 +400,18 @@ public class PlayerController : MonoBehaviour
             transform.localScale = localScale;
         }
     }
+
+    public void KnockBack(Vector2 dir, float kbForce) {
+        rb.AddForce(dir * kbForce, ForceMode2D.Impulse);
+    }
+    //public void KnockBack(Vector2 dir, float kbX, float kbY) {
+        // if (kbDir == 0) {
+        //     rb.velocity = new Vector2(0, rb.velocity.y + kbY);
+        // } else {
+        //     rb.velocity = new Vector2(kbDir * kbX, rb.velocity.y + kbY);
+        // }
+
+        //rb.velocity = new Vector2(kbDir * kbX, rb.velocity.y + kbY);
+    //}
 }
+
