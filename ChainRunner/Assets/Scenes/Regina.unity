@@ -1331,7 +1331,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueBox: {fileID: 374491773}
+  charName: {fileID: 1579697821}
   dialogueText: {fileID: 1988940974}
+  cName: Aeneas
   dialogue:
   - 
   wordSpeed: 0

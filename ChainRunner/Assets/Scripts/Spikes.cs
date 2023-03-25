@@ -11,7 +11,7 @@ public class Spikes : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.tag == "Player") {
             Vector2 dir = (transform.position - other.transform.position).normalized;
-            GameObject.FindObjectOfType<PlayerController>().KnockBack(dir, kbForce);
+            GameObject.FindObjectOfType<PlayerController>().KnockBack(dir.normalized, kbForce);
             //GameObject.FindObjectOfType<PlayerController>().KnockBack(dir, kbX, kbY);
         }
     }

@@ -8,7 +8,9 @@ public class Dialogue : MonoBehaviour
 {
     //public GameObject npc;
     public GameObject dialogueBox;
+    public TextMeshProUGUI charName;
     public TextMeshProUGUI dialogueText;
+    public string cName;
     public string[] dialogue;
 
     private int index;
@@ -52,7 +54,8 @@ public class Dialogue : MonoBehaviour
     }
 
     IEnumerator Typing() {
-        foreach(char letter in dialogue[index].ToCharArray()) {
+        charName.text = cName;
+        foreach (char letter in dialogue[index].ToCharArray()) {
             dialogueText.text += letter;
             yield return new WaitForSeconds(wordSpeed);
         }
@@ -64,6 +67,7 @@ public class Dialogue : MonoBehaviour
 
         if (index < dialogue.Length - 1) {
             index++;
+            
             dialogueText.text = "";
             StartCoroutine(Typing());
         } else {
