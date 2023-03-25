@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,11 +24,22 @@ public class PlayerController : MonoBehaviour
     private float maxHP = 100f;
     private float curHP = 100f;
 
+    [Header("HP Bar")]
+    [SerializeField]
+    private Image frontHealthBar;
+    [SerializeField]
+    private Image backHealthBar;
+    [SerializeField]
+    private float chipSpeed = 2f;
+    private float lerpTimer;
+    [SerializeField]
+    private TextMeshProUGUI curHPText, maxHPText;
+
 
     [Header("Movement")]
-    private float horizontal;
     [SerializeField]
     private float speed = 8f;
+    private float horizontal;
     [SerializeField] [Range(0f, 1f)]
     private float dampingStop, dampingTurn, dampingNormal;
 
@@ -109,9 +122,41 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
     
+    private void UpdateHealthUI()
+    {
+        float fillF = frontHealthBar.fillAmount;
+        float fillB = backHealthBar.fillAmount;
+        float hFraction = curHP / maxHP;
+        if(fillB > hFraction)
+        {
+            frontHealthBar.fillAmount = hFraction;
+            backHealthBar.color = Color.red;
+            lerpTimer += Time.deltaTime;
+            float percentComplete = lerpTimer / chipSpeed;
+            percentComplete *= percentComplete;
+            backHealthBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
+        }
+        if (fillF < hFraction)
+        {
+            backHealthBar.fillAmount = hFraction;
+            backHealthBar.color = Color.green;
+            lerpTimer += Time.deltaTime;
+            float percentComplete = lerpTimer / chipSpeed;
+            percentComplete *= percentComplete;
+            frontHealthBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
+        }
+    }
+
     public void TakeDamage(float amount)
     {
-
+        curHP -= amount;
+        lerpTimer = 0f;
+        curHP = Mathf.Clamp(curHP, 0, maxHP);
+        curHPText.text = ""+ curHP;
+        if(curHP <= 0)
+        {
+            Die();
+        }
     }
     public void Die()
     {
@@ -119,7 +164,10 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeHeal(float amount)
     {
-
+        curHP += amount;
+        lerpTimer = 0f;
+        curHP = Mathf.Clamp(curHP, 0, maxHP);
+        curHPText.text = "" + curHP;
     }
 
     public void GrappleToLocation(Vector2 dir, Vector2 point)
@@ -133,12 +181,24 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         p = this;
+        curHP = maxHP;
     }
 
     private void Update()
     {
-        
-        if (grappling)
+        UpdateHealthUI();
+
+        //TESTING BINDS BELOW
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            TakeDamage(10);
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            TakeHeal(10);
+        }
+
+            if (grappling)
         {
             if (!hook.hookSent)
             {
