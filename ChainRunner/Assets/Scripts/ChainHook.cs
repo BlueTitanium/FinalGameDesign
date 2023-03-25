@@ -67,6 +67,9 @@ public class ChainHook : MonoBehaviour
                 if (!hitObject)
                 {
                     StartCoroutine(RetractHook(retractDelay));
+                } else
+                {
+                    p.GrappleToLocation(originalDir, endPoint);
                 }
             }
             
@@ -75,10 +78,10 @@ public class ChainHook : MonoBehaviour
                 StartCoroutine(RetractHook(0));
 
             }
-            if (Input.GetMouseButtonDown(0) && hitObject)
-            {
-                p.GrappleToLocation(originalDir, endPoint);
-            }
+            //if (Input.GetMouseButtonDown(0) && hitObject)
+            //{
+            //    p.GrappleToLocation(originalDir, endPoint);
+            //}
         }
     }
 
