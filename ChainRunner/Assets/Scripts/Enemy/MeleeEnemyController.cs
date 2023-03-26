@@ -2,35 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class MeleeEnemyController : Enemy
 {
-    [Header("Health")]
-    [SerializeField] private float maxHP = 100;
-    private float currHP; // initialize in Start()
-
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 1f;
+    [Header("Melee Movement")]
     [SerializeField] private float chaseSpeed = 2f;
-    [SerializeField] private bool isFacingRight = true;
 
-    [Header("Attack")]
+    [Header("Melee Attack")]
     [SerializeField] private Transform lineOfSight;
     [SerializeField] private float lineOfSightDistance = 5f;
-    public float attackDamage = 5f;
     [SerializeField] private float attackDistance = 2f;
     [SerializeField] private float attackCooldown = 1.5f;
     float attackTimer;
     bool isAttackCooldown = false;
-    [HideInInspector] public bool playerDetected = false;
     float playerDistance; // distance between self and player
 
-    [Header("State")]
+    [Header("Melee States")]
     [SerializeField] private State initialState = State.Idle;
     private State currentState;
     [HideInInspector] public enum State {Idle, Patrol, Chase, Attack}
 
 
-    [Header("Colliders")]
+    [Header("Melee Colliders")]
     [SerializeField] private Transform wallCheck;
     [SerializeField] private Transform ledgeCheck;
     [SerializeField] private float ledgeCastDist = 0.75f;
@@ -39,27 +31,33 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
 
 
-    private Rigidbody2D rb;
     private Transform playerTransform;
-    private Animator animator;
-    
+
+
+    [Header("Others")]
+    [SerializeField] EnemyHotzone hotzone;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        currHP = maxHP;
+        base.Start();
+
         attackTimer = attackCooldown;
         SwitchToState(initialState);
 
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         playerDistance = Vector2.Distance(transform.position, playerTransform.position);
+
+        hotzone.PlayerExitedCallback += PatrolState;
     }
 
+    void OnDestroy() {
+        hotzone.PlayerExitedCallback -= PatrolState;
+    }
 
     void Update() {
+        if (currHP <= 0) return;
+
         RaycastHit2D hit = Physics2D.Raycast(lineOfSight.position, transform.right, 
             (isFacingRight) ? lineOfSightDistance : -lineOfSightDistance, ~enemyLayer);
         Debug.DrawRay(lineOfSight.position, transform.right * ((isFacingRight) ? lineOfSightDistance : -lineOfSightDistance), 
@@ -92,16 +90,20 @@ public class EnemyController : MonoBehaviour
     }
 
     void FixedUpdate() {
+        if (currHP <= 0) {
+            return;
+        }
+        
         // state behaviors
         switch (currentState) {
             case State.Idle:
                 animator.SetTrigger("Idle");
-                rb.velocity = Vector2.zero;
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case State.Patrol:
                 animator.SetBool("canAttack", false);
                 animator.SetTrigger("Walk");
-                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
                     float vX = (isFacingRight) ? moveSpeed : -moveSpeed;
                     rb.velocity = new Vector2(vX, rb.velocity.y);    
 
@@ -114,9 +116,19 @@ public class EnemyController : MonoBehaviour
             case State.Chase:
                 animator.SetBool("canAttack", false);
                 animator.SetTrigger("Walk");
-                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
-                    Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
-                    transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+                    // Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
+                    // transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
+                    
+                    if (attackDistance >= playerDistance) {
+                        rb.velocity = new Vector2(0, rb.velocity.y);
+                    }
+                    else if (rb.position.x < playerTransform.position.x) {
+                        rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
+                    }
+                    else if (rb.position.x > playerTransform.position.x) {
+                        rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
+                    }
 
                     if ((playerTransform.position.x > transform.position.x && !isFacingRight) ||
                         (playerTransform.position.x < transform.position.x && isFacingRight)) {
@@ -126,10 +138,9 @@ public class EnemyController : MonoBehaviour
 
                 break;
             case State.Attack:
-                if (!isAttackCooldown)
-                    animator.SetBool("canAttack", true);
-                else
-                    animator.SetBool("canAttack", false);
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                animator.SetBool("canAttack", !isAttackCooldown);
+
                 break;
             default:
                 Debug.Log("Current state not in switch-case");
@@ -137,18 +148,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
-    void TakeDamage(float dmg) {
-        currHP -= dmg;
-
-        if (currHP <= 0) {
-            Die();
-        }
-    }
-
-    void Die() {
-        Destroy(gameObject);
-    }
 
     void flipX() {
         isFacingRight = !isFacingRight;
@@ -181,6 +180,10 @@ public class EnemyController : MonoBehaviour
     // call this at last frame of attack animation
     public void StartAttackCooldown() {
         isAttackCooldown = true;
+    }
+
+    public void PatrolState() {
+        SwitchToState(MeleeEnemyController.State.Patrol);
     }
 
 
