@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,11 +24,22 @@ public class PlayerController : MonoBehaviour
     private float maxHP = 100f;
     private float curHP = 100f;
 
+    [Header("HP Bar")]
+    [SerializeField]
+    private Image frontHealthBar;
+    [SerializeField]
+    private Image backHealthBar;
+    [SerializeField]
+    private float chipSpeed = 2f;
+    private float lerpTimer;
+    [SerializeField]
+    private TextMeshProUGUI curHPText, maxHPText;
+
 
     [Header("Movement")]
-    private float horizontal;
     [SerializeField]
     private float speed = 8f;
+    private float horizontal;
     [SerializeField] [Range(0f, 1f)]
     private float dampingStop, dampingTurn, dampingNormal;
 
@@ -108,10 +121,45 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+
+    //knockback
+    //private float kbDir; 
     
+    private void UpdateHealthUI()
+    {
+        float fillF = frontHealthBar.fillAmount;
+        float fillB = backHealthBar.fillAmount;
+        float hFraction = curHP / maxHP;
+        if(fillB > hFraction)
+        {
+            frontHealthBar.fillAmount = hFraction;
+            backHealthBar.color = Color.red;
+            lerpTimer += Time.deltaTime;
+            float percentComplete = lerpTimer / chipSpeed;
+            percentComplete *= percentComplete;
+            backHealthBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
+        }
+        if (fillF < hFraction)
+        {
+            backHealthBar.fillAmount = hFraction;
+            backHealthBar.color = Color.green;
+            lerpTimer += Time.deltaTime;
+            float percentComplete = lerpTimer / chipSpeed;
+            percentComplete *= percentComplete;
+            frontHealthBar.fillAmount = Mathf.Lerp(fillF, hFraction, percentComplete);
+        }
+    }
+
     public void TakeDamage(float amount)
     {
-
+        curHP -= amount;
+        lerpTimer = 0f;
+        curHP = Mathf.Clamp(curHP, 0, maxHP);
+        curHPText.text = ""+ curHP;
+        if(curHP <= 0)
+        {
+            Die();
+        }
     }
     public void Die()
     {
@@ -119,7 +167,10 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeHeal(float amount)
     {
-
+        curHP += amount;
+        lerpTimer = 0f;
+        curHP = Mathf.Clamp(curHP, 0, maxHP);
+        curHPText.text = "" + curHP;
     }
 
     public void GrappleToLocation(Vector2 dir, Vector2 point)
@@ -133,12 +184,24 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         p = this;
+        curHP = maxHP;
     }
 
     private void Update()
     {
-        
-        if (grappling)
+        UpdateHealthUI();
+
+        //TESTING BINDS BELOW
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            TakeDamage(10);
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            TakeHeal(10);
+        }
+
+            if (grappling)
         {
             if (!hook.hookSent)
             {
@@ -182,7 +245,8 @@ public class PlayerController : MonoBehaviour
             horizontalV = (Mathf.Abs(horizontalV) > Mathf.Abs(horizontal * dashSpeed)) ? Mathf.Sign(horizontal) * Mathf.Abs(horizontalV) + horizontal * additionalVelocity * Time.deltaTime : horizontal * dashSpeed;
         }
         
-        
+        //kbDir = horizontal==0? kbDir:horizontal;
+        //kbDir = horizontal;
 
         if(isWallSliding)
             extraJumpsLeft = extraJumps;
@@ -401,4 +465,18 @@ public class PlayerController : MonoBehaviour
             transform.localScale = localScale;
         }
     }
+
+    public void KnockBack(Vector2 dir, float kbForce) {
+        rb.AddForce(dir * kbForce, ForceMode2D.Impulse);
+    }
+    //public void KnockBack(Vector2 dir, float kbX, float kbY) {
+        // if (kbDir == 0) {
+        //     rb.velocity = new Vector2(0, rb.velocity.y + kbY);
+        // } else {
+        //     rb.velocity = new Vector2(kbDir * kbX, rb.velocity.y + kbY);
+        // }
+
+        //rb.velocity = new Vector2(kbDir * kbX, rb.velocity.y + kbY);
+    //}
 }
+
