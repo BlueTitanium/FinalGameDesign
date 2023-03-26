@@ -39,12 +39,14 @@ public class Enemy : MonoBehaviour
         playerDetected = true;
 
         if (currHP <= 0) {
-            StopAllCoroutines();
             Die();
         }
     }
 
     protected virtual void Die() {
-        Destroy(gameObject);
+        rb.velocity = new Vector2(0, rb.velocity.y);
+        animator.SetTrigger("Death");
+        StopAllCoroutines();
+        // Destroy(gameObject);
     }
 }
