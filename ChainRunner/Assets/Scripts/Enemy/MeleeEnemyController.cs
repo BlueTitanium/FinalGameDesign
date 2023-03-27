@@ -56,6 +56,7 @@ public class MeleeEnemyController : Enemy
     }
 
     void Update() {
+        if (Input.GetKeyDown(KeyCode.J)) TakeDamage(10);
         if (currHP <= 0) return;
 
         RaycastHit2D hit = Physics2D.Raycast(lineOfSight.position, transform.right, 
@@ -98,20 +99,30 @@ public class MeleeEnemyController : Enemy
         switch (currentState) {
             case State.Idle:
                 animator.SetTrigger("Idle");
-                rb.velocity = new Vector2(0, rb.velocity.y);
+                {
+                    float vX = (!knockbacked) ? 0 : Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
+                    rb.velocity = new Vector2(vX, rb.velocity.y);
+                }
                 break;
             case State.Patrol:
                 animator.SetBool("canAttack", false);
                 animator.SetTrigger("Walk");
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
-                    float vX = (isFacingRight) ? moveSpeed : -moveSpeed;
-                    rb.velocity = new Vector2(vX, rb.velocity.y);    
+                {
+                    if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+                        float vX = (isFacingRight) ? moveSpeed : -moveSpeed;
 
-                    if (isHittingWall() || isNearEdge()) {
-                        flipX();
+                        if (!knockbacked) {
+                            rb.velocity = new Vector2(vX, rb.velocity.y);    
+
+                            if (isHittingWall() || isNearEdge()) {
+                                flipX();
+                            }
+                        } else {
+                            float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
+                            rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
+                        }
                     }
                 }
-
                 break;
             case State.Chase:
                 animator.SetBool("canAttack", false);
@@ -120,27 +131,34 @@ public class MeleeEnemyController : Enemy
                     // Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
                     // transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
                     
-                    if (attackDistance >= playerDistance) {
-                        rb.velocity = new Vector2(0, rb.velocity.y);
-                    }
-                    else if (rb.position.x < playerTransform.position.x) {
-                        rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
-                    }
-                    else if (rb.position.x > playerTransform.position.x) {
-                        rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
-                    }
+                    if (!knockbacked) {
+                        if (attackDistance >= playerDistance) {
+                            rb.velocity = new Vector2(0, rb.velocity.y);
+                        }
+                        else if (rb.position.x < playerTransform.position.x) {
+                            rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
+                        }
+                        else if (rb.position.x > playerTransform.position.x) {
+                            rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
+                        }
 
-                    if ((playerTransform.position.x > transform.position.x && !isFacingRight) ||
-                        (playerTransform.position.x < transform.position.x && isFacingRight)) {
-                        flipX();
+                        if ((playerTransform.position.x > transform.position.x && !isFacingRight) ||
+                            (playerTransform.position.x < transform.position.x && isFacingRight)) {
+                            flipX();
+                        }
+                    } else {
+                        float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
+                        rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
                     }
                 }
 
                 break;
             case State.Attack:
-                rb.velocity = new Vector2(0, rb.velocity.y);
                 animator.SetBool("canAttack", !isAttackCooldown);
-
+                {
+                    float vX = (!knockbacked) ? 0 : Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
+                    rb.velocity = new Vector2(vX, rb.velocity.y);
+                }
                 break;
             default:
                 Debug.Log("Current state not in switch-case");

@@ -15,9 +15,18 @@ public class Enemy : MonoBehaviour
     [Header("Attack")]
     public float attackDamage = 5f;
     [HideInInspector] public bool playerDetected = false;
+    [SerializeField] protected bool canBeStunned = true;
+    protected bool isStunned = false;
+    [SerializeField] protected bool canBeKnockbacked = true;
+    protected bool knockbacked;
+
+    [Header("Sprite")]
+    [SerializeField] protected SpriteRenderer spriteRenderer;
+    protected Coroutine damageFlashCoroutine;
 
     protected Rigidbody2D rb;
     protected Animator animator;
+
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -34,9 +43,16 @@ public class Enemy : MonoBehaviour
         
     }
 
-    protected virtual void TakeDamage(float dmg) {
+    public virtual void TakeDamage(float dmg) {
         currHP -= dmg;
         playerDetected = true;
+        
+        /*
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
+            animator.SetTrigger("Hurt");
+        }
+        */
+        DamageFlash();
 
         if (currHP <= 0) {
             Die();
@@ -47,6 +63,45 @@ public class Enemy : MonoBehaviour
         rb.velocity = new Vector2(0, rb.velocity.y);
         animator.SetTrigger("Death");
         StopAllCoroutines();
-        // Destroy(gameObject);
+        Destroy(gameObject);
+    }
+
+    public virtual void Stun(float duration) {
+        StartCoroutine(StunIE(duration));
+    }
+
+    IEnumerator StunIE(float duration) {
+        isStunned = true;
+        yield return new WaitForSeconds(duration);
+        isStunned = false;
+    }
+
+    protected virtual void DamageFlash() {
+        if (damageFlashCoroutine != null) {
+            StopCoroutine(damageFlashCoroutine);
+        }
+
+        damageFlashCoroutine = StartCoroutine(DamageFlashIE());
+    }
+
+    IEnumerator DamageFlashIE() {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = Color.white;
+    }
+
+    public virtual void Knockback(Transform t, float knockbackForce) {
+        if (!canBeKnockbacked) return;
+
+        Vector2 dir = transform.position - t.position;
+        // rb.AddForce(dir.normalized * knockbackForce, ForceMode2D.Impulse);
+        knockbacked = true;
+        rb.velocity = dir.normalized * knockbackForce;
+        StartCoroutine(KnockbackTimer());
+    }
+
+    IEnumerator KnockbackTimer() {
+        yield return new WaitForSeconds(0.1f);
+        knockbacked = false;
     }
 }

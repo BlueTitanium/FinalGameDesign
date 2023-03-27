@@ -23,7 +23,12 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (isPlayerOwned && collision.CompareTag("Enemy")) {
+            Enemy enemyController = collision.GetComponent<Enemy>();
+            enemyController.Knockback(transform, 2);
+            enemyController.TakeDamage(damage);
+            Destroy(gameObject);
+        }
     }
 
 }
