@@ -160,8 +160,8 @@ public class MeleeEnemyController : Enemy
     void SetMovement() {
         // state movement behavior
         if (knockbacked) {
-            float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
-            rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
+            //float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
+            //rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
             return;
         }
 

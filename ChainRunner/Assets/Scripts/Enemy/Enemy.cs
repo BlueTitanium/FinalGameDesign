@@ -107,14 +107,17 @@ public class Enemy : MonoBehaviour
         if (!canBeKnockbacked) return;
 
         Vector2 dir = transform.position - t.position;
-        // rb.AddForce(dir.normalized * knockbackForce, ForceMode2D.Impulse);
-        knockbacked = true;
-        rb.velocity = dir.normalized * knockbackForce;
-        StartCoroutine(KnockbackTimer());
+        StartCoroutine(KnockbackTimer(dir, knockbackForce));
     }
 
-    IEnumerator KnockbackTimer() {
-        yield return new WaitForSeconds(0.1f);
+    IEnumerator KnockbackTimer(Vector2 dir, float knockbackForce) {
+        knockbacked = true;
+        yield return null;
+        // rb.velocity = dir.normalized * knockbackForce;
+        rb.velocity = new Vector2(0, rb.velocity.y);
+        rb.AddForce(dir.normalized * knockbackForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.2f);
         knockbacked = false;
+        rb.velocity = new Vector2(0, rb.velocity.y);
     }
 }
