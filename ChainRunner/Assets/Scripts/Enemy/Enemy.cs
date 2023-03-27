@@ -43,6 +43,13 @@ public class Enemy : MonoBehaviour
         
     }
 
+    protected void flipX() {
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
+    }
+
     public virtual void TakeDamage(float dmg) {
         currHP -= dmg;
         playerDetected = true;

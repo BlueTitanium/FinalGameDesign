@@ -99,80 +99,26 @@ public class MeleeEnemyController : Enemy
         switch (currentState) {
             case State.Idle:
                 animator.SetTrigger("Idle");
-                {
-                    float vX = (!knockbacked) ? 0 : Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
-                    rb.velocity = new Vector2(vX, rb.velocity.y);
-                }
                 break;
             case State.Patrol:
                 animator.SetBool("canAttack", false);
                 animator.SetTrigger("Walk");
-                {
-                    if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
-                        float vX = (isFacingRight) ? moveSpeed : -moveSpeed;
-
-                        if (!knockbacked) {
-                            rb.velocity = new Vector2(vX, rb.velocity.y);    
-
-                            if (isHittingWall() || isNearEdge()) {
-                                flipX();
-                            }
-                        } else {
-                            float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
-                            rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
-                        }
-                    }
-                }
                 break;
             case State.Chase:
                 animator.SetBool("canAttack", false);
                 animator.SetTrigger("Walk");
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
-                    // Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
-                    // transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
-                    
-                    if (!knockbacked) {
-                        if (attackDistance >= playerDistance) {
-                            rb.velocity = new Vector2(0, rb.velocity.y);
-                        }
-                        else if (rb.position.x < playerTransform.position.x) {
-                            rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
-                        }
-                        else if (rb.position.x > playerTransform.position.x) {
-                            rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
-                        }
-
-                        if ((playerTransform.position.x > transform.position.x && !isFacingRight) ||
-                            (playerTransform.position.x < transform.position.x && isFacingRight)) {
-                            flipX();
-                        }
-                    } else {
-                        float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
-                        rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
-                    }
-                }
-
                 break;
             case State.Attack:
                 animator.SetBool("canAttack", !isAttackCooldown);
-                {
-                    float vX = (!knockbacked) ? 0 : Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
-                    rb.velocity = new Vector2(vX, rb.velocity.y);
-                }
                 break;
             default:
                 Debug.Log("Current state not in switch-case");
                 break;
         }
+
+        SetMovement();
     }
 
-
-    void flipX() {
-        isFacingRight = !isFacingRight;
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1f;
-        transform.localScale = localScale;
-    }
 
     bool isHittingWall() {
         float castDist = (isFacingRight) ? ledgeCastDist : -ledgeCastDist;
@@ -194,6 +140,13 @@ public class MeleeEnemyController : Enemy
         return !Physics2D.Linecast(ledgeCheck.position, targetPos, groundLayer | wallLayer);
     }
 
+    void LookAtPlayer() {
+        if ((playerTransform.position.x > transform.position.x && !isFacingRight) ||
+            (playerTransform.position.x < transform.position.x && isFacingRight)) {
+            flipX();
+        }
+    }
+
 
     // call this at last frame of attack animation
     public void StartAttackCooldown() {
@@ -202,6 +155,56 @@ public class MeleeEnemyController : Enemy
 
     public void PatrolState() {
         SwitchToState(MeleeEnemyController.State.Patrol);
+    }
+
+    void SetMovement() {
+        // state movement behavior
+        if (knockbacked) {
+            float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
+            rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
+            return;
+        }
+
+        switch (currentState) {
+            case State.Idle:
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                break;
+            case State.Patrol:
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+                    float vX = (isFacingRight) ? moveSpeed : -moveSpeed;
+
+                    rb.velocity = new Vector2(vX, rb.velocity.y);    
+
+                    if (isHittingWall() || isNearEdge()) {
+                        flipX();
+                    }
+                }
+                break;
+            case State.Chase:
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+                    // Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
+                    // transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
+                    if (attackDistance >= playerDistance) {
+                        rb.velocity = new Vector2(0, rb.velocity.y);
+                    }
+                    else if (rb.position.x < playerTransform.position.x) {
+                        rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
+                    }
+                    else if (rb.position.x > playerTransform.position.x) {
+                        rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
+                    }
+
+                    LookAtPlayer();
+                }
+
+                break;
+            case State.Attack:
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                break;
+            default:
+                Debug.Log("Current state not in switch-case");
+                break;
+        }
     }
 
 
