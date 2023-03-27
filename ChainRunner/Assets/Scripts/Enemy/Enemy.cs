@@ -86,8 +86,14 @@ public class Enemy : MonoBehaviour
 
     IEnumerator DamageFlashIE() {
         spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = Color.white;
+
+        while (spriteRenderer.color != Color.white) {
+            yield return null;
+            spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, Time.deltaTime * 3);
+        }
+
+        // yield return new WaitForSeconds(0.2f);
+        // spriteRenderer.color = Color.white;
     }
 
     public virtual void Knockback(Transform t, float knockbackForce) {
