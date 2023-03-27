@@ -17,7 +17,7 @@ public class RiftTempTP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (nearObject && Input.GetKeyDown(KeyCode.E))
+        if (nearObject)
         {
             SceneManager.LoadScene("JessDemoLimbo");
         }
