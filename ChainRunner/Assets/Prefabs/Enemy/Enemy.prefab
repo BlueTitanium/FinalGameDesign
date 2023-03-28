@@ -45,7 +45,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2412812301235363596}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LineOfSight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2412812301281978060}
   - component: {fileID: 2412812301281978061}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: EnemySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2412812301297753800}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LedgeCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2412812301471465506}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 2412812302505424943}
   - component: {fileID: 2412812302505424936}
   - component: {fileID: 2412812302505424937}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 2412812302605468756}
   - component: {fileID: 2412812302605468757}
   - component: {fileID: 2412812302605468760}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HotZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
