@@ -33,13 +33,11 @@ public class MeleeEnemyController : Enemy
 
 
     [Header("Pathfinding")]
-    [SerializeField] private float nextWaypointDistance = 3f;
+    [SerializeField] private float nextWaypointDistance = 1f;
     private Path path;
     private int currentWaypoint = 0;
     bool reachedEndOfPath = false;
     Seeker seeker;
-
-    private Transform playerTransform;
 
 
     [Header("Others")]
@@ -53,7 +51,6 @@ public class MeleeEnemyController : Enemy
         attackTimer = attackCooldown;
         SwitchToState(initialState);
 
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         playerDistance = Vector2.Distance(transform.position, playerTransform.position);
 
         seeker = GetComponent<Seeker>();
@@ -149,13 +146,6 @@ public class MeleeEnemyController : Enemy
         Debug.DrawLine(ledgeCheck.position, targetPos, Color.red);
 
         return !Physics2D.Linecast(ledgeCheck.position, targetPos, groundLayer | wallLayer);
-    }
-
-    void LookAtPlayer() {
-        if ((playerTransform.position.x > transform.position.x && !isFacingRight) ||
-            (playerTransform.position.x < transform.position.x && isFacingRight)) {
-            flipX();
-        }
     }
 
 
@@ -284,7 +274,7 @@ public class MeleeEnemyController : Enemy
         Vector2 force = dir * chaseSpeed * Time.deltaTime;
 
         // rb.AddForce(force);
-        if (Mathf.Abs(dir.x) < 0.1) { 
+        if (Mathf.Abs(dir.x) < 0.05) { 
             rb.velocity = new Vector2(0, rb.velocity.y);
             LookAtPlayer();
         } else {
@@ -299,11 +289,6 @@ public class MeleeEnemyController : Enemy
             currentWaypoint++;
         }
 
-    }
-
-    void FaceMovementDirection() {
-        if ((rb.velocity.x > 0.05 && !isFacingRight) || 
-            (rb.velocity.x < 0.05 && isFacingRight)) flipX();
     }
 
     void OnPathComplete(Path p) {

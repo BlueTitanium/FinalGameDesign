@@ -500,7 +500,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  nextWaypointDistance: 3
+  nextWaypointDistance: 1
   hotzone: {fileID: 2412812302605468760}
 --- !u!114 &1839185241750330203
 MonoBehaviour:

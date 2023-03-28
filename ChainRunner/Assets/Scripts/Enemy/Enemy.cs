@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
 
     protected Rigidbody2D rb;
     protected Animator animator;
+    protected Transform playerTransform;
 
 
     // Start is called before the first frame update
@@ -35,6 +36,8 @@ public class Enemy : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -121,7 +124,22 @@ public class Enemy : MonoBehaviour
         rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
+    protected void LookAtPlayer() {
+        if ((playerTransform.position.x > transform.position.x && !isFacingRight) ||
+            (playerTransform.position.x < transform.position.x && isFacingRight)) {
+            flipX();
+        }
+    }
+
+    protected void FaceMovementDirection() {
+        if ((rb.velocity.x > 0.05 && !isFacingRight) || 
+            (rb.velocity.x < 0.05 && isFacingRight)) flipX();
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
-        if (other.collider.CompareTag("Player")) playerDetected = true;
+        if (other.collider.CompareTag("Player")) {
+            playerDetected = true;
+            LookAtPlayer();
+        }
     }
 }
