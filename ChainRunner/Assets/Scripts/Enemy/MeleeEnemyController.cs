@@ -29,7 +29,7 @@ public class MeleeEnemyController : Enemy
     [SerializeField] private float ledgeCastDist = 0.75f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask lineOfSightLayers;
 
 
     [Header("Pathfinding")]
@@ -68,7 +68,7 @@ public class MeleeEnemyController : Enemy
         if (currHP <= 0) return;
 
         RaycastHit2D hit = Physics2D.Raycast(lineOfSight.position, transform.right, 
-            (isFacingRight) ? lineOfSightDistance : -lineOfSightDistance, ~enemyLayer);
+            (isFacingRight) ? lineOfSightDistance : -lineOfSightDistance, lineOfSightLayers);
         Debug.DrawRay(lineOfSight.position, transform.right * ((isFacingRight) ? lineOfSightDistance : -lineOfSightDistance), 
             (playerDistance > attackDistance) ? Color.red : Color.green);
 
@@ -228,6 +228,9 @@ public class MeleeEnemyController : Enemy
                     if (Random.value > 0.5f) flipX(); // choose new direction to patrol
                     float patrol_seconds = Random.Range(5f, 10f);
                     ChangeState = StartCoroutine(SwitchToStateIE(State.Idle, patrol_seconds));
+                    break;
+                case State.Chase:
+                    UpdatePath();
                     break;
                 case State.Attack:
                     break;

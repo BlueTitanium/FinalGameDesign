@@ -497,9 +497,9 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 128
-  enemyLayer:
+  lineOfSightLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 608
   nextWaypointDistance: 1
   hotzone: {fileID: 2412812302605468760}
 --- !u!114 &1839185241750330203
