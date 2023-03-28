@@ -135,11 +135,4 @@ public class Enemy : MonoBehaviour
         if ((rb.velocity.x > 0.05 && !isFacingRight) || 
             (rb.velocity.x < 0.05 && isFacingRight)) flipX();
     }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-        if (other.collider.CompareTag("Player")) {
-            playerDetected = true;
-            LookAtPlayer();
-        }
-    }
 }

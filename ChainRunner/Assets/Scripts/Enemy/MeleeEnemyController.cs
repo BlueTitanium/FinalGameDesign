@@ -41,7 +41,8 @@ public class MeleeEnemyController : Enemy
 
 
     [Header("Others")]
-    [SerializeField] EnemyHotzone hotzone;
+    [SerializeField] PlayerDetector closeRangePlayerDetection;
+    [SerializeField] PlayerDetector hotzone;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -56,11 +57,13 @@ public class MeleeEnemyController : Enemy
         seeker = GetComponent<Seeker>();
         InvokeRepeating("UpdatePath", 0f, 0.5f);
 
-        hotzone.PlayerExitedCallback += PatrolState;
+        closeRangePlayerDetection.PlayerEnterCallback += PlayerDetected;
+        hotzone.PlayerExitedCallback += StopEngagePlayer;
     }
 
     void OnDestroy() {
-        hotzone.PlayerExitedCallback -= PatrolState;
+        closeRangePlayerDetection.PlayerEnterCallback -= PlayerDetected;
+        hotzone.PlayerExitedCallback -= StopEngagePlayer;
     }
 
     void Update() {
@@ -157,7 +160,12 @@ public class MeleeEnemyController : Enemy
         if (playerDetected) LookAtPlayer();
     }
 
-    public void PatrolState() {
+    void PlayerDetected() {
+        playerDetected = true;
+    }
+
+    public void StopEngagePlayer() {
+        playerDetected = false;
         SwitchToState(MeleeEnemyController.State.Patrol);
     }
 
