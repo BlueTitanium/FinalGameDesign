@@ -3485,10 +3485,6 @@ PrefabInstance:
       propertyPath: enemyLayer.m_Bits
       value: 704
       objectReference: {fileID: 0}
-    - target: {fileID: 2412812302818155378, guid: 9d6c58b719a2a5c44bb554fd4ad16435, type: 3}
-      propertyPath: lineOfSightLayers.m_Bits
-      value: 608
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d6c58b719a2a5c44bb554fd4ad16435, type: 3}
 --- !u!1001 &3127245855588502315
