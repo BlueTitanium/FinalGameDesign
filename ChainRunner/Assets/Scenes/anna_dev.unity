@@ -169,39 +169,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &964701477 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2412812302818155376, guid: 9d6c58b719a2a5c44bb554fd4ad16435, type: 3}
-  m_PrefabInstance: {fileID: 447985481447972694}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &964701483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 964701477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
 --- !u!1001 &1459553341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3174,6 +3141,31 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!1 &2059517093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5903701292702111211, guid: 6279f27d8e1e22643b951f22dd8277a5, type: 3}
+  m_PrefabInstance: {fileID: 2118650524}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2059517095
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059517093}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5b096adb6a149034091addeb56dd8690, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &2107065302
 GameObject:
   m_ObjectHideFlags: 0
@@ -3420,6 +3412,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5903701292702111209, guid: 6279f27d8e1e22643b951f22dd8277a5, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 2059517095}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6279f27d8e1e22643b951f22dd8277a5, type: 3}
 --- !u!1001 &447985481447972694

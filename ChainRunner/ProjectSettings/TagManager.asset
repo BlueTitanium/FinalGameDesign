@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Rift
+  - Enemy
   layers:
   - Default
   - TransparentFX
