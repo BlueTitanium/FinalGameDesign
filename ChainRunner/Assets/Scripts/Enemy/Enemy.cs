@@ -120,4 +120,8 @@ public class Enemy : MonoBehaviour
         knockbacked = false;
         rb.velocity = new Vector2(0, rb.velocity.y);
     }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.collider.CompareTag("Player")) playerDetected = true;
+    }
 }

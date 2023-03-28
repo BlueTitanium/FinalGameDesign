@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class MeleeEnemyController : Enemy
 {
@@ -31,6 +32,13 @@ public class MeleeEnemyController : Enemy
     [SerializeField] private LayerMask enemyLayer;
 
 
+    [Header("Pathfinding")]
+    [SerializeField] private float nextWaypointDistance = 3f;
+    private Path path;
+    private int currentWaypoint = 0;
+    bool reachedEndOfPath = false;
+    Seeker seeker;
+
     private Transform playerTransform;
 
 
@@ -47,6 +55,9 @@ public class MeleeEnemyController : Enemy
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         playerDistance = Vector2.Distance(transform.position, playerTransform.position);
+
+        seeker = GetComponent<Seeker>();
+        InvokeRepeating("UpdatePath", 0f, 0.5f);
 
         hotzone.PlayerExitedCallback += PatrolState;
     }
@@ -151,6 +162,9 @@ public class MeleeEnemyController : Enemy
     // call this at last frame of attack animation
     public void StartAttackCooldown() {
         isAttackCooldown = true;
+        animator.SetBool("canAttack", false);
+
+        if (playerDetected) LookAtPlayer();
     }
 
     public void PatrolState() {
@@ -182,19 +196,7 @@ public class MeleeEnemyController : Enemy
                 break;
             case State.Chase:
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
-                    // Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
-                    // transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
-                    if (attackDistance >= playerDistance) {
-                        rb.velocity = new Vector2(0, rb.velocity.y);
-                    }
-                    else if (rb.position.x < playerTransform.position.x) {
-                        rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
-                    }
-                    else if (rb.position.x > playerTransform.position.x) {
-                        rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
-                    }
-
-                    LookAtPlayer();
+                    ChasePlayerAI();
                 }
 
                 break;
@@ -248,5 +250,66 @@ public class MeleeEnemyController : Enemy
     IEnumerator SwitchToStateIE(State newState, float seconds) {
         yield return new WaitForSeconds(seconds);
         SwitchToState(newState);
+    }
+
+
+    void ChasePlayer() {
+        // Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
+        // transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
+        if (attackDistance >= playerDistance) {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        else if (rb.position.x < playerTransform.position.x) {
+            rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
+        }
+        else if (rb.position.x > playerTransform.position.x) {
+            rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
+        }
+
+        LookAtPlayer();
+    }
+
+
+    void UpdatePath() {
+        if (playerDetected && seeker.IsDone())
+            seeker.StartPath(rb.position, playerTransform.position, OnPathComplete);
+    }
+
+    void ChasePlayerAI() {
+        if (path == null) return;
+
+        if (currentWaypoint >= path.vectorPath.Count) return;
+
+        Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        Vector2 force = dir * chaseSpeed * Time.deltaTime;
+
+        // rb.AddForce(force);
+        if (Mathf.Abs(dir.x) < 0.1) { 
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            LookAtPlayer();
+        } else {
+            if (dir.x > 0) rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
+            else if (dir.x < 0) rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
+            FaceMovementDirection();
+        }
+
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+
+        if (distance < nextWaypointDistance) {
+            currentWaypoint++;
+        }
+
+    }
+
+    void FaceMovementDirection() {
+        if ((rb.velocity.x > 0.05 && !isFacingRight) || 
+            (rb.velocity.x < 0.05 && isFacingRight)) flipX();
+    }
+
+    void OnPathComplete(Path p) {
+        if (!p.error) {
+            path = p;
+            currentWaypoint = 0;
+        }
     }
 }
