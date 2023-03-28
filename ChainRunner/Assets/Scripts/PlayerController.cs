@@ -170,6 +170,18 @@ public class PlayerController : MonoBehaviour
         grappleEndPoint = point;
     }
 
+    public void Punch()
+    {
+        anim.SetTrigger("Punch");
+    }
+    public void ThrowItem()
+    {
+        anim.SetTrigger("ItemToss");
+    }
+    public void StartHook()
+    {
+        anim.SetTrigger("ChainToss");
+    }
 
     private void Start()
     {
@@ -338,7 +350,7 @@ public class PlayerController : MonoBehaviour
 
         //ANIMATION
         anim.SetBool("Grounded", grounded);
-        anim.SetBool("Walled", walled);
+        anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
         anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
         anim.SetFloat("YSpeed", (rb.velocity.y));
         

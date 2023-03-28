@@ -87,6 +87,7 @@ public class ChainHook : MonoBehaviour
 
     void StartHook()
     {
+        p.StartHook();
         hookSent = true;
         transform.position = p.transform.position;
         hookPoint.position = startPoint.position;

@@ -65,10 +65,11 @@ public class LeftArm : MonoBehaviour
         Projectile g = Instantiate(projectilePrefab, shootpoint.position, transform.rotation).GetComponent<Projectile>();
         g.rb.velocity = g.transform.up * (p.rb.velocity.magnitude + g.speed);
         hasItem = false;
+        p.ThrowItem();
     }
 
     public void Punch()
     {
-
+        p.Punch();
     }
 }
