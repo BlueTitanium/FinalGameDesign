@@ -149,6 +149,7 @@ public class PlayerController : MonoBehaviour
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
         curHPText.text = ""+ curHP;
+        anim.SetTrigger("Damaged");
         if(curHP <= 0)
         {
             Die();
@@ -485,6 +486,11 @@ public class PlayerController : MonoBehaviour
     public void KnockBack(Vector2 dir, float kbForce, float time = .5f) {
         rb.AddForce(dir * kbForce, ForceMode2D.Impulse);
         knockBackTimeLeft = time;
+        if (grappling)
+        {
+            hook.TryRetractHook();
+            grappling = false;
+        }
     }
 
     //public void KnockBack(Vector2 dir, float kbX, float kbY) {
