@@ -7,6 +7,7 @@ using TMPro;
 public class Dialogue : MonoBehaviour
 {
     //public GameObject npc;
+    public GameObject player;
     public GameObject dialoguePanel;
     public GameObject contArrow;
     public TextMeshProUGUI charName;
@@ -22,11 +23,38 @@ public class Dialogue : MonoBehaviour
     void Start() {
         if (this.gameObject.name == "aeneas") {
             AeneasText();
+        } 
+        if (this.gameObject.name == "aristotle") {
+            AristotleText();
+        }
+        if (this.gameObject.name == "hector") {
+            HectorText();
+        }
+        if (this.gameObject.name == "hippocrates") {
+            HippocratesText();
+        }
+        if (this.gameObject.name == "homer") {
+            HomerText();
+        }
+        if (this.gameObject.name == "lavinia") {
+            LaviniaText();
+        }
+        if (this.gameObject.name == "penthesilea") {
+            PenthesileaText();
+        }
+        if (this.gameObject.name == "plato") {
+            PlatoText();
         }
     }
 
     void Update()
     {
+        if (player.transform.position.x < this.gameObject.transform.position.x) {
+            print("left");
+        } else { 
+            print("right");
+        }
+
         if (Input.GetKeyDown(KeyCode.E) && playerIsNear) {
             // if (dialogueBox.activeInHierarchy) {
             //     noText();
@@ -92,7 +120,43 @@ public class Dialogue : MonoBehaviour
 
     private void AeneasText() {
         dialogue = new string[2];
-        dialogue[0] = "hey";
+        dialogue[0] = "I'm Aeneas";
         dialogue[1] = "wassup";
     }
+    private void AristotleText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Aristotle";
+        dialogue[1] = "wee";
+    }
+    private void HectorText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Hector";
+        dialogue[1] = "wee";
+    }
+    private void HippocratesText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Hippocrates";
+        dialogue[1] = "wee";
+    }
+    private void HomerText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Homer";
+        dialogue[1] = "wee";
+    }
+    private void LaviniaText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Lavinia";
+        dialogue[1] = "wee";
+    }
+    private void PenthesileaText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Penthesilea";
+        dialogue[1] = "wee";
+    }
+    private void PlatoText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Plato";
+        dialogue[1] = "wee";
+    }
+        
 }
