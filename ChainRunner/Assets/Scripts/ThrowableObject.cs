@@ -18,7 +18,7 @@ public class ThrowableObject : MonoBehaviour
     {
         if (nearObject && Input.GetKeyDown(KeyCode.F))
         {
-            if(PlayerController.p.arm.GrabItem())
+            if(PlayerController.p.arm.GrabItem(GetComponent<SpriteRenderer>().sprite))
                 Destroy(gameObject);
         }
     }

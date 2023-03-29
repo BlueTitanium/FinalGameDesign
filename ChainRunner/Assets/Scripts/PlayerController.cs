@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float maxHP = 100f;
     private float curHP = 100f;
+    public bool LockFlipDirection = false;
 
     [Header("HP Bar")]
     [SerializeField]
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
+    
     [SerializeField]
     private float coyoteTime = .2f;
     private float coyoteTimeLeft;
@@ -111,7 +113,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Animator anim;
-
+    [SerializeField] private SpriteRenderer sprite;
     //knockback
     //private float kbDir; 
     
@@ -170,6 +172,56 @@ public class PlayerController : MonoBehaviour
         grappleEndPoint = point;
     }
 
+    public void Punch()
+    {
+        anim.SetTrigger("Punch");
+        StartCoroutine(HandleAnimDirection("Player_Punch"));
+    }
+
+    IEnumerator HandleAnimDirection(string str)
+    {
+        
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == str);
+
+        LockFlipDirection = true;
+        var mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+        var playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+        if (mouse.x < playerScreenPoint.x)
+        {
+            isFacingRight = false;
+            Vector3 localScale = transform.localScale;
+            localScale.x = -1f*Mathf.Abs(localScale.x);
+            transform.localScale = localScale;
+        }
+        else
+        {
+            isFacingRight = true;
+            Vector3 localScale = transform.localScale;
+            localScale.x = 1f * Mathf.Abs(localScale.x);
+            transform.localScale = localScale;
+        }
+
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != str);
+
+        LockFlipDirection = false;
+
+        yield return null;
+    }
+
+    public void ThrowItem()
+    {
+        anim.SetTrigger("ItemToss");
+        StartCoroutine(HandleAnimDirection("Player_ItemToss"));
+    }
+    public void ActuallyThrowItem()
+    {
+        arm.ActuallyThrowItem();
+    }
+    public void StartHook()
+    {
+        anim.SetTrigger("ChainToss");
+        StartCoroutine(HandleAnimDirection("Player_ChainToss"));
+    }
 
     private void Start()
     {
@@ -300,11 +352,12 @@ public class PlayerController : MonoBehaviour
         WallSlide();
         WallJump();
         
-        if (!isWallJumping)
+        if (!isWallJumping && !LockFlipDirection)
         {
             Flip();
         }
-
+        
+        /*
         if (dashCDLeft <= 0f && Input.GetKeyDown(KeyCode.LeftShift))
         {
             if(horizontal == 0)
@@ -321,7 +374,7 @@ public class PlayerController : MonoBehaviour
         if(dashCDLeft > 0)
         {
             dashCDLeft -= Time.deltaTime;
-        }
+        }*/
 
         if (!isWallJumping && !grappling)
         {
@@ -338,7 +391,7 @@ public class PlayerController : MonoBehaviour
 
         //ANIMATION
         anim.SetBool("Grounded", grounded);
-        anim.SetBool("Walled", walled);
+        anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
         anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
         anim.SetFloat("YSpeed", (rb.velocity.y));
         

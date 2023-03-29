@@ -7,7 +7,9 @@ using TMPro;
 public class Dialogue : MonoBehaviour
 {
     //public GameObject npc;
-    public GameObject dialogueBox;
+    public GameObject player;
+    public GameObject dialoguePanel;
+    public GameObject contArrow;
     public TextMeshProUGUI charName;
     public TextMeshProUGUI dialogueText;
     public string cName;
@@ -16,16 +18,43 @@ public class Dialogue : MonoBehaviour
     private int index;
     public float wordSpeed;
     public bool playerIsNear;
-    public GameObject contButton;
+    //public GameObject contButton;
 
     void Start() {
         if (this.gameObject.name == "aeneas") {
             AeneasText();
+        } 
+        if (this.gameObject.name == "aristotle") {
+            AristotleText();
+        }
+        if (this.gameObject.name == "hector") {
+            HectorText();
+        }
+        if (this.gameObject.name == "hippocrates") {
+            HippocratesText();
+        }
+        if (this.gameObject.name == "homer") {
+            HomerText();
+        }
+        if (this.gameObject.name == "lavinia") {
+            LaviniaText();
+        }
+        if (this.gameObject.name == "penthesilea") {
+            PenthesileaText();
+        }
+        if (this.gameObject.name == "plato") {
+            PlatoText();
         }
     }
 
     void Update()
     {
+        if (player.transform.position.x < this.gameObject.transform.position.x) {
+            print("left");
+        } else { 
+            print("right");
+        }
+
         if (Input.GetKeyDown(KeyCode.E) && playerIsNear) {
             // if (dialogueBox.activeInHierarchy) {
             //     noText();
@@ -33,24 +62,24 @@ public class Dialogue : MonoBehaviour
             //     dialogueBox.SetActive(true);
             //     StartCoroutine(Typing());
             // }
-            if (dialogueBox.activeSelf) {
+            if (dialoguePanel.activeSelf) {
                 NextLine();
             } else {
-                dialogueBox.SetActive(true);
+                dialoguePanel.SetActive(true);
                 StartCoroutine(Typing());
             }
 
         }
 
         if (dialogueText.text == dialogue[index]) {
-            contButton.SetActive(true);
+            contArrow.SetActive(true);
         }
     }
 
     public void noText() {
         dialogueText.text = "";
         index = 0;
-        dialogueBox.SetActive(false);
+        dialoguePanel.SetActive(false);
     }
 
     IEnumerator Typing() {
@@ -63,7 +92,7 @@ public class Dialogue : MonoBehaviour
 
     public void NextLine() {
 
-        contButton.SetActive(false);
+        contArrow.SetActive(false);
 
         if (index < dialogue.Length - 1) {
             index++;
@@ -91,7 +120,43 @@ public class Dialogue : MonoBehaviour
 
     private void AeneasText() {
         dialogue = new string[2];
-        dialogue[0] = "hey";
+        dialogue[0] = "I'm Aeneas";
         dialogue[1] = "wassup";
     }
+    private void AristotleText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Aristotle";
+        dialogue[1] = "wee";
+    }
+    private void HectorText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Hector";
+        dialogue[1] = "wee";
+    }
+    private void HippocratesText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Hippocrates";
+        dialogue[1] = "wee";
+    }
+    private void HomerText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Homer";
+        dialogue[1] = "wee";
+    }
+    private void LaviniaText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Lavinia";
+        dialogue[1] = "wee";
+    }
+    private void PenthesileaText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Penthesilea";
+        dialogue[1] = "wee";
+    }
+    private void PlatoText() {
+        dialogue = new string[2];
+        dialogue[0] = "I'm Plato";
+        dialogue[1] = "wee";
+    }
+        
 }

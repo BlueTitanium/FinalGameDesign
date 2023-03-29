@@ -41,7 +41,7 @@ public class ChainHook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (!p.LockFlipDirection && Input.GetMouseButtonDown(1))
         {
            
             if (!hookSent && !retractingHook)
@@ -87,6 +87,7 @@ public class ChainHook : MonoBehaviour
 
     void StartHook()
     {
+        p.StartHook();
         hookSent = true;
         transform.position = p.transform.position;
         hookPoint.position = startPoint.position;
