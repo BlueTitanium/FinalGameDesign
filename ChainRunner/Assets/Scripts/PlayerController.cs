@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float maxHP = 100f;
     private float curHP = 100f;
+    public bool LockFlipDirection = false;
 
     [Header("HP Bar")]
     [SerializeField]
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
+    
     [SerializeField]
     private float coyoteTime = .2f;
     private float coyoteTimeLeft;
@@ -94,18 +96,6 @@ public class PlayerController : MonoBehaviour
     private float wallJumpingDuration = 0.2f;
     private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
-    /*
-    [Header("LedgeClimb")]
-    public bool ledgeDetected = false;
-    [SerializeField] private LedgeDetection ledge;
-    [SerializeField] private Vector2 offset1;
-    [SerializeField] private Vector2 offset2;
-    private Vector2 climbBeginPos;
-    private Vector2 climbEndPos;
-    private bool canGrabLedge = true, canClimb;
-    private bool canClimbOver = false;
-    */
-
     [Header("Weapon")]
     public LeftArm arm;
 
@@ -114,6 +104,7 @@ public class PlayerController : MonoBehaviour
     public bool grappling = false;
     private Vector2 grappleEndPoint;
     [SerializeField] private ChainHook hook;
+    private float shouldLatch = 0f;
 
     [Header("Assign Value")]
     public Rigidbody2D rb;
@@ -121,7 +112,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-
+    [SerializeField] private Animator anim;
+    [SerializeField] private SpriteRenderer sprite;
     //knockback
     //private float kbDir; 
     
@@ -180,6 +172,56 @@ public class PlayerController : MonoBehaviour
         grappleEndPoint = point;
     }
 
+    public void Punch()
+    {
+        anim.SetTrigger("Punch");
+        StartCoroutine(HandleAnimDirection("Player_Punch"));
+    }
+
+    IEnumerator HandleAnimDirection(string str)
+    {
+        
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == str);
+
+        LockFlipDirection = true;
+        var mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+        var playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+        if (mouse.x < playerScreenPoint.x)
+        {
+            isFacingRight = false;
+            Vector3 localScale = transform.localScale;
+            localScale.x = -1f*Mathf.Abs(localScale.x);
+            transform.localScale = localScale;
+        }
+        else
+        {
+            isFacingRight = true;
+            Vector3 localScale = transform.localScale;
+            localScale.x = 1f * Mathf.Abs(localScale.x);
+            transform.localScale = localScale;
+        }
+
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != str);
+
+        LockFlipDirection = false;
+
+        yield return null;
+    }
+
+    public void ThrowItem()
+    {
+        anim.SetTrigger("ItemToss");
+        StartCoroutine(HandleAnimDirection("Player_ItemToss"));
+    }
+    public void ActuallyThrowItem()
+    {
+        arm.ActuallyThrowItem();
+    }
+    public void StartHook()
+    {
+        anim.SetTrigger("ChainToss");
+        StartCoroutine(HandleAnimDirection("Player_ChainToss"));
+    }
 
     private void Start()
     {
@@ -203,6 +245,7 @@ public class PlayerController : MonoBehaviour
 
             if (grappling)
         {
+            shouldLatch = 1f;
             if (!hook.hookSent)
             {
                 grappling = false;
@@ -213,6 +256,10 @@ public class PlayerController : MonoBehaviour
                 hook.TryRetractHook();
                 grappling = false;
             }
+        }
+        if (shouldLatch > 0f)
+        {
+            shouldLatch -= Time.deltaTime;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -305,11 +352,12 @@ public class PlayerController : MonoBehaviour
         WallSlide();
         WallJump();
         
-        if (!isWallJumping)
+        if (!isWallJumping && !LockFlipDirection)
         {
             Flip();
         }
-
+        
+        /*
         if (dashCDLeft <= 0f && Input.GetKeyDown(KeyCode.LeftShift))
         {
             if(horizontal == 0)
@@ -326,7 +374,7 @@ public class PlayerController : MonoBehaviour
         if(dashCDLeft > 0)
         {
             dashCDLeft -= Time.deltaTime;
-        }
+        }*/
 
         if (!isWallJumping && !grappling)
         {
@@ -340,51 +388,15 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
         }
-        /*
-        //if we decide on ledge climbing? idk it kinda looks wack with no animations not worth pursuing till then
-        checkForLedge();
-        if (canClimbOver)
-        {
-            if((horizontal > 0 && isFacingRight) || (horizontal < 0 && !isFacingRight))
-            {
-                ledgeClimbOver();
-            }
-            else if((horizontal < 0 && isFacingRight) || (horizontal > 0 && !isFacingRight) || Input.GetButtonDown("Jump"))
-            {
-                canClimb = false;
-                canClimbOver = false;
-                Invoke("ResetCanGrabLedge", .1f);
-            }
-        }
-        */
+
+        //ANIMATION
+        anim.SetBool("Grounded", grounded);
+        anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
+        anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
+        anim.SetFloat("YSpeed", (rb.velocity.y));
+        
     }
 
-    //private void checkForLedge()
-    //{
-    //    if(ledgeDetected && canGrabLedge)
-    //    {
-    //        canGrabLedge = false;
-    //        Vector2 ledgePos = ledge.transform.position;
-    //        climbBeginPos = ledgePos + new Vector2(offset1.x * (isFacingRight ? 1 : -1), offset1.y);
-    //        climbEndPos = ledgePos + new Vector2(offset2.x * (isFacingRight ? 1 : -1), offset2.y);
-    //        canClimb = true;
-    //        Invoke("AllowClimbOver", .3f);
-    //    }
-    //    if (canClimb)
-    //    {
-    //        transform.position = climbBeginPos;
-    //    }
-    //}
-
-    //private void ledgeClimbOver()
-    //{
-    //    canClimbOver = false;
-    //    canClimb = false;
-    //    transform.position = climbEndPos;
-    //    Invoke("ResetCanGrabLedge", .1f);
-    //}
-    //private void AllowClimbOver() => canClimbOver = true;
-    //private void ResetCanGrabLedge() => canGrabLedge = true;
 
     private bool IsGrounded()
     {
@@ -400,7 +412,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallSlide()
     {
-        if (walled && !grounded && horizontal != 0f)
+        if (walled && !grounded && horizontal != 0f && !grappling && (rb.velocity.y <= 0 || shouldLatch > 0))
         {
             isWallSliding = true;
             rb.velocity = new Vector2(0, -Mathf.Abs(Mathf.Clamp(rb.velocity.y, wallSlidingSpeed, float.MaxValue)));
