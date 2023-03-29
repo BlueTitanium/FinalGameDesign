@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeftArm : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class LeftArm : MonoBehaviour
     [SerializeField] private PlayerController p;
     [SerializeField] private Transform shootpoint;
     private bool hasItem = false;
+    public Image ItemSpriteHolder;
 
 
 
@@ -34,7 +36,7 @@ public class LeftArm : MonoBehaviour
         transform.position = p.transform.position;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
-        if (Input.GetMouseButtonDown(0))
+        if (!p.LockFlipDirection && Input.GetMouseButtonDown(0))
         {
             if (hasItem)
             {
@@ -47,10 +49,12 @@ public class LeftArm : MonoBehaviour
         }
     }
 
-    public bool GrabItem()
+    public bool GrabItem(Sprite s)
     {
         if (!hasItem)
         {
+            ItemSpriteHolder.sprite = s;
+            ItemSpriteHolder.gameObject.SetActive(true);
             hasItem = true;
             return true;
         }
@@ -62,10 +66,15 @@ public class LeftArm : MonoBehaviour
 
     public void ThrowItem()
     {
-        Projectile g = Instantiate(projectilePrefab, shootpoint.position, transform.rotation).GetComponent<Projectile>();
-        g.rb.velocity = g.transform.up * (p.rb.velocity.magnitude + g.speed);
         hasItem = false;
+        ItemSpriteHolder.gameObject.SetActive(false);
         p.ThrowItem();
+    }
+    public void ActuallyThrowItem()
+    {
+        Projectile g = Instantiate(projectilePrefab, shootpoint.position, transform.rotation).GetComponent<Projectile>();
+        g.SetSprite(ItemSpriteHolder.sprite);
+        g.rb.velocity = g.transform.up * (p.rb.velocity.magnitude + g.speed);
     }
 
     public void Punch()

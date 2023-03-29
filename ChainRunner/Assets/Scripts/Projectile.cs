@@ -21,6 +21,11 @@ public class Projectile : MonoBehaviour
         
     }
 
+    public void SetSprite(Sprite s)
+    {
+        GetComponent<SpriteRenderer>().sprite = s;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
