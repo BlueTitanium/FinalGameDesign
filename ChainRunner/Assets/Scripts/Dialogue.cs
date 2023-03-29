@@ -7,7 +7,8 @@ using TMPro;
 public class Dialogue : MonoBehaviour
 {
     //public GameObject npc;
-    public GameObject dialogueBox;
+    public GameObject dialoguePanel;
+    public GameObject contArrow;
     public TextMeshProUGUI charName;
     public TextMeshProUGUI dialogueText;
     public string cName;
@@ -16,7 +17,7 @@ public class Dialogue : MonoBehaviour
     private int index;
     public float wordSpeed;
     public bool playerIsNear;
-    public GameObject contButton;
+    //public GameObject contButton;
 
     void Start() {
         if (this.gameObject.name == "aeneas") {
@@ -33,24 +34,24 @@ public class Dialogue : MonoBehaviour
             //     dialogueBox.SetActive(true);
             //     StartCoroutine(Typing());
             // }
-            if (dialogueBox.activeSelf) {
+            if (dialoguePanel.activeSelf) {
                 NextLine();
             } else {
-                dialogueBox.SetActive(true);
+                dialoguePanel.SetActive(true);
                 StartCoroutine(Typing());
             }
 
         }
 
         if (dialogueText.text == dialogue[index]) {
-            contButton.SetActive(true);
+            contArrow.SetActive(true);
         }
     }
 
     public void noText() {
         dialogueText.text = "";
         index = 0;
-        dialogueBox.SetActive(false);
+        dialoguePanel.SetActive(false);
     }
 
     IEnumerator Typing() {
@@ -63,7 +64,7 @@ public class Dialogue : MonoBehaviour
 
     public void NextLine() {
 
-        contButton.SetActive(false);
+        contArrow.SetActive(false);
 
         if (index < dialogue.Length - 1) {
             index++;
