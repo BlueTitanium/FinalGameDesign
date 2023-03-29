@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private float horizontal;
     [SerializeField] [Range(0f, 1f)]
     private float dampingStop, dampingTurn, dampingNormal;
+    private float knockBackTimeLeft = 0;
 
     [Header("Jumping")]
     [SerializeField]
@@ -155,7 +156,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Die()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void TakeHeal(float amount)
     {
@@ -375,8 +376,11 @@ public class PlayerController : MonoBehaviour
         {
             dashCDLeft -= Time.deltaTime;
         }*/
-
-        if (!isWallJumping && !grappling)
+        if(knockBackTimeLeft > 0)
+        {
+            knockBackTimeLeft -= Time.deltaTime;
+        }
+        if (!isWallJumping && !grappling && knockBackTimeLeft <= 0)
         {
             rb.velocity = new Vector2(horizontalV, rb.velocity.y);
         }
@@ -478,9 +482,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void KnockBack(Vector2 dir, float kbForce) {
+    public void KnockBack(Vector2 dir, float kbForce, float time = .5f) {
         rb.AddForce(dir * kbForce, ForceMode2D.Impulse);
+        knockBackTimeLeft = time;
     }
+
     //public void KnockBack(Vector2 dir, float kbX, float kbY) {
         // if (kbDir == 0) {
         //     rb.velocity = new Vector2(0, rb.velocity.y + kbY);
