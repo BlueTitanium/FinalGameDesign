@@ -505,6 +505,9 @@ MonoBehaviour:
   nextWaypointDistance: 1
   closeRangePlayerDetection: {fileID: 8538808891810419015}
   hotzone: {fileID: 7548131679669887210}
+  enableSurround: 0
+  surroundDistance: 3
+  surroundSpeed: 2
 --- !u!114 &1839185241750330203
 MonoBehaviour:
   m_ObjectHideFlags: 0

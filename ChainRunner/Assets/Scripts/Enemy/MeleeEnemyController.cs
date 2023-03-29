@@ -20,7 +20,7 @@ public class MeleeEnemyController : Enemy
     [Header("Melee States")]
     [SerializeField] private State initialState = State.Idle;
     private State currentState;
-    [HideInInspector] public enum State {Idle, Patrol, Chase, Attack}
+    [HideInInspector] public enum State {Idle, Patrol, Chase, Attack, Surround}
 
 
     [Header("Melee Colliders")]
@@ -44,6 +44,12 @@ public class MeleeEnemyController : Enemy
     [SerializeField] PlayerDetector closeRangePlayerDetection;
     [SerializeField] PlayerDetector hotzone;
 
+    [Header("Surround")]
+    [SerializeField] private bool enableSurround;
+    [SerializeField] private float surroundDistance = 3f;
+    [SerializeField] private float surroundSpeed = 2f;
+    private float surroundDistance_;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -57,6 +63,8 @@ public class MeleeEnemyController : Enemy
         seeker = GetComponent<Seeker>();
         InvokeRepeating("UpdatePath", 0f, 0.5f);
 
+        surroundDistance_ = surroundDistance - 0.15f;
+
         closeRangePlayerDetection.PlayerEnterCallback += PlayerDetected;
         hotzone.PlayerExitedCallback += StopEngagePlayer;
     }
@@ -67,7 +75,6 @@ public class MeleeEnemyController : Enemy
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.J)) TakeDamage(10);
         if (currHP <= 0) return;
 
         RaycastHit2D hit = Physics2D.Raycast(lineOfSight.position, transform.right, 
@@ -82,12 +89,28 @@ public class MeleeEnemyController : Enemy
         if (playerDetected) {
             playerDistance = Vector2.Distance(transform.position, playerTransform.position);
 
-            if (playerDistance > attackDistance) {
-                SwitchToState(State.Chase);
-            } else if (attackDistance >= playerDistance && !isAttackCooldown) {
-                SwitchToState(State.Attack);
-            } else if (attackDistance >= playerDistance && isAttackCooldown) {
-                SwitchToState(State.Idle);
+            if (!enableSurround) {
+                if (0.5 >= playerDistance) { SwitchToState(State.Surround); }
+                else if (playerDistance > attackDistance) {
+                    SwitchToState(State.Chase);
+                } else if (attackDistance >= playerDistance && !isAttackCooldown) {
+                    SwitchToState(State.Attack);
+                } else if (attackDistance >= playerDistance && isAttackCooldown) {
+                    SwitchToState(State.Idle);
+                }
+            } else {
+                // IN DEVELOPMENT
+                if (playerDistance > surroundDistance) {
+                    SwitchToState(State.Chase);
+                } else if (0.5 >= playerDistance) {
+                    SwitchToState(State.Surround);
+                } else if (surroundDistance >= playerDistance && isAttackCooldown) {
+                    SwitchToState(State.Surround);
+                } else if (attackDistance >= playerDistance && !isAttackCooldown) {
+                    SwitchToState(State.Attack);
+                } else if (surroundDistance >= playerDistance && !isAttackCooldown) {
+                    SwitchToState(State.Chase);
+                }
             }
         }
 
@@ -113,11 +136,12 @@ public class MeleeEnemyController : Enemy
                 break;
             case State.Patrol:
                 animator.SetBool("canAttack", false);
-                animator.SetTrigger("Walk");
                 break;
             case State.Chase:
                 animator.SetBool("canAttack", false);
-                animator.SetTrigger("Walk");
+                break;
+            case State.Surround:
+                animator.SetBool("canAttack", false);
                 break;
             case State.Attack:
                 animator.SetBool("canAttack", !isAttackCooldown);
@@ -126,6 +150,9 @@ public class MeleeEnemyController : Enemy
                 Debug.Log("Current state not in switch-case");
                 break;
         }
+
+        if (!knockbacked) animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+        else animator.SetFloat("Speed", 0);
 
         SetMovement();
     }
@@ -182,7 +209,7 @@ public class MeleeEnemyController : Enemy
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case State.Patrol:
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
                     float vX = (isFacingRight) ? moveSpeed : -moveSpeed;
 
                     rb.velocity = new Vector2(vX, rb.velocity.y);    
@@ -193,10 +220,22 @@ public class MeleeEnemyController : Enemy
                 }
                 break;
             case State.Chase:
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Walk")) {
+                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
                     ChasePlayerAI();
                 }
 
+                break;
+            case State.Surround:
+                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
+                    LookAtPlayer();
+
+                    if (surroundDistance_ > playerDistance) {
+                        float vX = (isFacingRight) ? -surroundSpeed : surroundSpeed;
+                        rb.velocity = new Vector2(vX, rb.velocity.y);
+                    } else {
+                        rb.velocity = new Vector2(0, rb.velocity.y);
+                    }
+                }
                 break;
             case State.Attack:
                 rb.velocity = new Vector2(0, rb.velocity.y);
