@@ -21,7 +21,7 @@ public class LeftArm : MonoBehaviour
     [SerializeField] private Transform shootpoint;
     private bool hasItem = false;
     public Image ItemSpriteHolder;
-
+    private bool throwing = false;
 
 
     // Start is called before the first frame update
@@ -36,7 +36,7 @@ public class LeftArm : MonoBehaviour
         transform.position = p.transform.position;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
-        if (!p.LockFlipDirection && Input.GetMouseButtonDown(0))
+        if ((!p.LockFlipDirection || (p.LockFlipDirection && p.grappling)) && !throwing && Input.GetMouseButtonDown(0))
         {
             if (hasItem)
             {
@@ -66,15 +66,19 @@ public class LeftArm : MonoBehaviour
 
     public void ThrowItem()
     {
-        hasItem = false;
+        throwing = true;
         ItemSpriteHolder.gameObject.SetActive(false);
         p.ThrowItem();
     }
     public void ActuallyThrowItem()
     {
+        throwing = false;
+        hasItem = false;
         Projectile g = Instantiate(projectilePrefab, shootpoint.position, transform.rotation).GetComponent<Projectile>();
         g.SetSprite(ItemSpriteHolder.sprite);
-        g.rb.velocity = g.transform.up * (p.rb.velocity.magnitude + g.speed);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 dir = (mousePos - g.transform.position).normalized;
+        g.rb.velocity = dir * (p.rb.velocity.magnitude + g.speed);
     }
 
     public void Punch()

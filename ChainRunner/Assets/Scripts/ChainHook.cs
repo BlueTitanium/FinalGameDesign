@@ -26,6 +26,8 @@ public class ChainHook : MonoBehaviour
     private float maxDistanceAllowed = 20f;
     [SerializeField]
     private LayerMask layer;
+    [SerializeField]
+    private LayerMask enemyLayer;
     private Vector2 originalDir;
     private Vector2 endPoint;
     private bool hitObject = false;
@@ -41,7 +43,7 @@ public class ChainHook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!p.LockFlipDirection && Input.GetMouseButtonDown(1))
+        if ((!p.LockFlipDirection) && Input.GetMouseButtonDown(1))
         {
            
             if (!hookSent && !retractingHook)
@@ -105,7 +107,16 @@ public class ChainHook : MonoBehaviour
             hitObject = true;
         } else
         {
-            endPoint = startPoint.position + transform.up * distance;
+            hit = Physics2D.Raycast(startPoint.position, transform.up, distance, enemyLayer);
+            if (hit)
+            {
+                endPoint = hit.point;
+                hitObject = true;
+            }
+            else
+            {
+                endPoint = startPoint.position + transform.up * distance;
+            }
         }
         originalDir = transform.up.normalized;
         hookRb.velocity = transform.up.normalized * hookSpeed;
