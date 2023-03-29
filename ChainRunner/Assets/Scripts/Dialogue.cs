@@ -13,9 +13,12 @@ public class Dialogue : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public GameObject contArrow;
 
+
     public Image leftCharRend;
     public Image rightCharRend;
     public RectTransform rightCharScale;
+    public Image leftOverlay;
+    public Image rightOverlay;
     public Sprite npcIcon;
 
     public string cName;
@@ -67,7 +70,7 @@ public class Dialogue : MonoBehaviour
             // }
 
             rightCharRend.sprite = npcIcon;
-            
+
             if (this.gameObject.name == "aeneas" || this.gameObject.name == "hector" || this.gameObject.name == "homer" || this.gameObject.name == "plato") {
                 rightCharScale.localScale = new Vector3(-2, 2); // npc face left
             } else {
@@ -108,11 +111,17 @@ public class Dialogue : MonoBehaviour
         if (this.gameObject.name == "aeneas") {
             if (index == 2 || index == 3) {
                 charName.text = "Player";
+                leftOverlay.enabled = false;
+                rightOverlay.enabled = true;
             } else {
                 charName.text = cName;
+                leftOverlay.enabled = true;
+                rightOverlay.enabled = false;
             }
         } else {
             charName.text = cName;
+            leftOverlay.enabled = true;
+            rightOverlay.enabled = false;
         }
         foreach (char letter in dialogue[index].ToCharArray()) {
             dialogueText.text += letter;
