@@ -22,10 +22,8 @@ public class DamageCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print(collision.name);
         if (isPlayerOwned && collision.CompareTag("Enemy"))
         {
-            print("Hello");
             Enemy enemyController = collision.GetComponent<Enemy>();
             enemyController.Knockback(transform, kbAmount);
             enemyController.TakeDamage(damage);

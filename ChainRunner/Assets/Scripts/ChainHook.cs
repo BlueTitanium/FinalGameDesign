@@ -27,7 +27,14 @@ public class ChainHook : MonoBehaviour
     [SerializeField]
     private LayerMask layer;
     [SerializeField]
-    private LayerMask enemyLayer;
+    private LayerMask illegalLayer;
+    [SerializeField]
+    private Transform ChainHookRotator;
+    [SerializeField]
+    private Transform ValidityDisplayer;
+    [SerializeField]
+    private SpriteRenderer ValidityDisplayerSprite;
+
     private Vector2 originalDir;
     private Vector2 endPoint;
     private bool hitObject = false;
@@ -58,9 +65,11 @@ public class ChainHook : MonoBehaviour
         
         l.SetPosition(0, startPoint.position);
         l.SetPosition(1, hookPoint.position);
+
         
-        if(hookSent && !retractingHook)
+        if (hookSent && !retractingHook)
         {
+            ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, 0f);
             Vector2 checkDir = ((Vector2) hookPoint.position - endPoint).normalized;
             if (Vector2.Dot(checkDir, originalDir) > 0)
             {
@@ -84,6 +93,22 @@ public class ChainHook : MonoBehaviour
             //{
             //    p.GrappleToLocation(originalDir, endPoint);
             //}
+        } else if(!hookSent && !retractingHook)
+        {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            ChainHookRotator.position = p.transform.position;
+            ChainHookRotator.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
+            ValidityDisplayer.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
+            RaycastHit2D hit;
+            hit = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, layer);
+            if (hit)
+            {
+                ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .6f);
+            }
+            else
+            {
+                ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .08f);
+            }
         }
     }
 
@@ -100,23 +125,22 @@ public class ChainHook : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
         
         RaycastHit2D hit;
-        hit = Physics2D.Raycast(startPoint.position, transform.up, distance, layer);
+        hit = Physics2D.Raycast(p.transform.position, transform.up, distance, layer);
+        RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
         if (hit)
         {
             endPoint = hit.point;
             hitObject = true;
-        } else
+        } 
+        else if (checkIllegal)
         {
-            hit = Physics2D.Raycast(startPoint.position, transform.up, distance, enemyLayer);
-            if (hit)
-            {
-                endPoint = hit.point;
-                hitObject = true;
-            }
-            else
-            {
-                endPoint = startPoint.position + transform.up * distance;
-            }
+            endPoint = checkIllegal.point;
+            hitObject = false;
+        } 
+        else
+        {
+            endPoint = startPoint.position + transform.up * distance;
+            hitObject = false;
         }
         originalDir = transform.up.normalized;
         hookRb.velocity = transform.up.normalized * hookSpeed;
