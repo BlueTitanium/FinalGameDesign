@@ -29,6 +29,8 @@ public class ChainHook : MonoBehaviour
     [SerializeField]
     private LayerMask illegalLayer;
     [SerializeField]
+    private LayerMask bringBackLayer;
+    [SerializeField]
     private Transform ChainHookRotator;
     [SerializeField]
     private Transform ValidityDisplayer;
@@ -38,6 +40,9 @@ public class ChainHook : MonoBehaviour
     private Vector2 originalDir;
     private Vector2 endPoint;
     private bool hitObject = false;
+    private bool bringBack = false;
+    private GameObject objectHit;
+
     public bool hookSent = false;
     public bool retractingHook = false;
     // Start is called before the first frame update
@@ -99,9 +104,11 @@ public class ChainHook : MonoBehaviour
             ChainHookRotator.position = p.transform.position;
             ChainHookRotator.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
             ValidityDisplayer.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
-            RaycastHit2D hit;
-            hit = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, layer);
-            if (hit)
+            RaycastHit2D hit = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, layer);
+            RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
+            RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, transform.up, distance, bringBackLayer);
+
+            if ((hit||checkBringBack) && !checkIllegal)
             {
                 ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .6f);
             }
@@ -119,18 +126,33 @@ public class ChainHook : MonoBehaviour
         transform.position = p.transform.position;
         hookPoint.position = startPoint.position;
         hitObject = false;
+        bringBack = false;
         l.gameObject.SetActive(true);
         hookPoint.gameObject.SetActive(true);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
         
-        RaycastHit2D hit;
-        hit = Physics2D.Raycast(p.transform.position, transform.up, distance, layer);
+        RaycastHit2D hit = Physics2D.Raycast(p.transform.position, transform.up, distance, layer);
         RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
-        if (hit)
+        RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, transform.up, distance, bringBackLayer);
+        if (checkBringBack)
+        {
+            endPoint = checkBringBack.point;
+            objectHit = checkBringBack.collider.gameObject;
+            bringBack = true;
+            hitObject = false;
+        }
+        else if (hit && !checkIllegal)
         {
             endPoint = hit.point;
             hitObject = true;
+            objectHit = hit.collider.gameObject;
+            var p = objectHit.GetComponent<Projectile>();
+            if (p != null)
+            {
+                print("hit");
+                p.rb.velocity = Vector2.zero;
+            }
         } 
         else if (checkIllegal)
         {
@@ -160,9 +182,13 @@ public class ChainHook : MonoBehaviour
             while (Vector2.Distance(hookPoint.position, startPoint.position) > .1f)
             {
                 hookPoint.position = Vector3.MoveTowards(hookPoint.position, startPoint.position, retractSpeed * 100 * Time.deltaTime);
+                if(bringBack)
+                    objectHit.transform.position = Vector3.MoveTowards(hookPoint.position, startPoint.position, retractSpeed * 100 * Time.deltaTime);
                 yield return null;
             }
             EndHook();
+            
+            
             retractingHook = false;
             hookSent = false;
         }
@@ -172,6 +198,14 @@ public class ChainHook : MonoBehaviour
     {
         l.gameObject.SetActive(false);
         hookPoint.gameObject.SetActive(false);
+        if (objectHit != null)
+        {
+            var p = objectHit.GetComponent<Projectile>();
+            if (p != null)
+            {
+                Destroy(objectHit);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
