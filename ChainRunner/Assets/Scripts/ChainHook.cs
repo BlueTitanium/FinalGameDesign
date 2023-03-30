@@ -105,20 +105,48 @@ public class ChainHook : MonoBehaviour
             ChainHookRotator.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
             ValidityDisplayer.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
             RaycastHit2D hit = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, layer);
-            RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
             RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, transform.up, distance, bringBackLayer);
+            RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
+            float[] distances = { distance + 1, distance + 1, distance + 1, distance };
 
-            if ((hit||checkBringBack) && !checkIllegal)
+            if (hit)
             {
-                ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .6f);
+                distances[0] = Vector2.Distance(p.transform.position, hit.point);
             }
-            else
+            if (checkBringBack)
             {
-                ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .08f);
+                distances[1] = Vector2.Distance(p.transform.position, checkBringBack.point);
+            }
+            if (checkIllegal)
+            {
+                distances[2] = Vector2.Distance(p.transform.position, checkIllegal.point);
+            }
+            int lowest = GetIndexOfLowestValue(distances);
+            switch (lowest)
+            {
+                case 0: case 1:
+                    ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .6f);
+                    break;
+                default:
+                    ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .08f);
+                    break;
             }
         }
     }
-
+    public int GetIndexOfLowestValue(float[] arr)
+    {
+        float value = float.PositiveInfinity;
+        int index = -1;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (arr[i] < value)
+            {
+                index = i;
+                value = arr[i];
+            }
+        }
+        return index;
+    }
     void StartHook()
     {
         p.StartHook();
@@ -133,36 +161,54 @@ public class ChainHook : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
         
         RaycastHit2D hit = Physics2D.Raycast(p.transform.position, transform.up, distance, layer);
-        RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
         RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, transform.up, distance, bringBackLayer);
+        RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
+        float[] distances = { distance + 1, distance + 1, distance + 1, distance+.1f};
+
+        if (hit)
+        {
+            distances[0] = Vector2.Distance(p.transform.position, hit.point);
+        }
         if (checkBringBack)
         {
-            endPoint = checkBringBack.point;
-            objectHit = checkBringBack.collider.gameObject;
-            bringBack = true;
-            hitObject = false;
+            distances[1] = Vector2.Distance(p.transform.position, checkBringBack.point);
         }
-        else if (hit && !checkIllegal)
+        if (checkIllegal)
         {
-            endPoint = hit.point;
-            hitObject = true;
-            objectHit = hit.collider.gameObject;
-            var p = objectHit.GetComponent<Projectile>();
-            if (p != null)
-            {
-                print("hit");
-                p.rb.velocity = Vector2.zero;
-            }
-        } 
-        else if (checkIllegal)
+            print("hey!");
+            distances[2] = Vector2.Distance(p.transform.position, checkIllegal.point);
+        }
+        print(distances);
+        int lowest = GetIndexOfLowestValue(distances);
+        print(lowest);
+        switch (lowest)
         {
-            endPoint = checkIllegal.point;
-            hitObject = false;
-        } 
-        else
-        {
-            endPoint = startPoint.position + transform.up * distance;
-            hitObject = false;
+            case 0:
+                endPoint = hit.point;
+                hitObject = true;
+                objectHit = hit.collider.gameObject;
+                var p = objectHit.GetComponent<Projectile>();
+                if (p != null)
+                {
+                    print("hit");
+                    p.rb.velocity = Vector2.zero;
+                }
+                break;
+            case 1:
+                
+                endPoint = checkBringBack.point;
+                objectHit = checkBringBack.collider.gameObject;
+                bringBack = true;
+                hitObject = false;
+                break;
+            case 2:
+                endPoint = checkIllegal.point;
+                hitObject = false;
+                break;
+            default:
+                endPoint = startPoint.position + transform.up * (distance - 1);
+                hitObject = false;
+                break;
         }
         originalDir = transform.up.normalized;
         hookRb.velocity = transform.up.normalized * hookSpeed;
