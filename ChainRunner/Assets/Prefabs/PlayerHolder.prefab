@@ -104,7 +104,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1256699657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 1.8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -138,11 +138,11 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6.5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1015
+    m_Bits: 2039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -520,11 +520,11 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 16.99
+  orthographic size: 30.71
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4194496
+    m_Bits: 4195520
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: d7e6c473b982c03439247ad6d138c831, type: 2}
   m_TargetDisplay: 1
@@ -907,17 +907,17 @@ MonoBehaviour:
   startPoint: {fileID: 5903701292282779687}
   hookPoint: {fileID: 5903701292442740163}
   hookRb: {fileID: 5903701292442740160}
-  hookSpeed: 70
+  hookSpeed: 50
   retractSpeed: 1
   retractDelay: 0.1
-  distance: 13
+  distance: 16
   maxDistanceAllowed: 20
   layer:
     serializedVersion: 2
-    m_Bits: 192
-  enemyLayer:
+    m_Bits: 448
+  illegalLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1024
   hookSent: 0
   retractingHook: 0
 --- !u!1 &5903701290928404544
@@ -1132,7 +1132,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5903701291031690242}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 1.8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1162,7 +1162,7 @@ MonoBehaviour:
   m_Follow: {fileID: 5903701292702111210}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 6.5
+    OrthographicSize: 8
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -2493,7 +2493,7 @@ Canvas:
   m_GameObject: {fileID: 5903701291425357973}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1256699659}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -2668,8 +2668,8 @@ RectTransform:
   m_GameObject: {fileID: 5903701291464438789}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.45, y: 1.45, z: 1.45}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5903701291953491694}
   - {fileID: 1667361232}
@@ -2679,7 +2679,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -18.9, y: 1.15}
   m_SizeDelta: {x: 284.375, y: 171.875}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5903701291508427362
@@ -5304,7 +5304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_FollowOffset: {x: 0, y: 1.8, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -6900,7 +6900,7 @@ MonoBehaviour:
   chipSpeed: 2
   curHPText: {fileID: 5903701291341418524}
   maxHPText: {fileID: 5903701292182357279}
-  speed: 30
+  speed: 15
   dampingStop: 0.1
   dampingTurn: 0.255
   dampingNormal: 0.159
@@ -6920,18 +6920,18 @@ MonoBehaviour:
   wallJumpingTime: 0.2
   wallJumpingDuration: 0.15
   arm: {fileID: 5903701291905872668}
-  grappleSpeed: 40
+  grappleSpeed: 25
   grappling: 0
   hook: {fileID: 5903701290919381918}
   rb: {fileID: 5903701292702111208}
   groundCheck: {fileID: 5903701291039907626}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
   wallCheck: {fileID: 5903701292294127386}
   wallLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 1216
   anim: {fileID: 5903701291312002277}
   sprite: {fileID: 5903701292944706893}
 --- !u!50 &5903701292702111208
