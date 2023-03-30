@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     private float jumpBufferTime = .2f;
     private float jumpBufferLeft;
     private bool grounded = false;
+    private bool closeToGround = false;
     private bool walled = false;
 
     [Header("Falling")]
@@ -406,6 +407,7 @@ public class PlayerController : MonoBehaviour
     private bool IsGrounded()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        closeToGround = Physics2D.Raycast(groundCheck.position, Vector2.down, 1.5f, groundLayer);
         return grounded;
     }
 
@@ -417,7 +419,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallSlide()
     {
-        if (walled && !grounded && horizontal != 0f && !grappling && (rb.velocity.y <= 0 || shouldLatch > 0))
+        if (walled && !closeToGround && horizontal != 0f && !grappling && (rb.velocity.y <= 0 || shouldLatch > 0))
         {
             isWallSliding = true;
             rb.velocity = new Vector2(0, -Mathf.Abs(Mathf.Clamp(rb.velocity.y, wallSlidingSpeed, float.MaxValue)));
