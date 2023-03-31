@@ -27,10 +27,22 @@ public class ChainHook : MonoBehaviour
     [SerializeField]
     private LayerMask layer;
     [SerializeField]
-    private LayerMask enemyLayer;
+    private LayerMask illegalLayer;
+    [SerializeField]
+    private LayerMask bringBackLayer;
+    [SerializeField]
+    private Transform ChainHookRotator;
+    [SerializeField]
+    private Transform ValidityDisplayer;
+    [SerializeField]
+    private SpriteRenderer ValidityDisplayerSprite;
+
     private Vector2 originalDir;
     private Vector2 endPoint;
     private bool hitObject = false;
+    private bool bringBack = false;
+    private GameObject objectHit;
+
     public bool hookSent = false;
     public bool retractingHook = false;
     // Start is called before the first frame update
@@ -58,9 +70,11 @@ public class ChainHook : MonoBehaviour
         
         l.SetPosition(0, startPoint.position);
         l.SetPosition(1, hookPoint.position);
+
         
-        if(hookSent && !retractingHook)
+        if (hookSent && !retractingHook)
         {
+            ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, 0f);
             Vector2 checkDir = ((Vector2) hookPoint.position - endPoint).normalized;
             if (Vector2.Dot(checkDir, originalDir) > 0)
             {
@@ -84,9 +98,55 @@ public class ChainHook : MonoBehaviour
             //{
             //    p.GrappleToLocation(originalDir, endPoint);
             //}
+        } else if(!hookSent && !retractingHook)
+        {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            ChainHookRotator.position = p.transform.position;
+            ChainHookRotator.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
+            ValidityDisplayer.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
+            RaycastHit2D hit = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, layer);
+            RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, transform.up, distance, bringBackLayer);
+            RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
+            float[] distances = { distance + 1, distance + 1, distance + 1, distance };
+
+            if (hit)
+            {
+                distances[0] = Vector2.Distance(p.transform.position, hit.point);
+            }
+            if (checkBringBack)
+            {
+                distances[1] = Vector2.Distance(p.transform.position, checkBringBack.point);
+            }
+            if (checkIllegal)
+            {
+                distances[2] = Vector2.Distance(p.transform.position, checkIllegal.point);
+            }
+            int lowest = GetIndexOfLowestValue(distances);
+            switch (lowest)
+            {
+                case 0: case 1:
+                    ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .6f);
+                    break;
+                default:
+                    ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .08f);
+                    break;
+            }
         }
     }
-
+    public int GetIndexOfLowestValue(float[] arr)
+    {
+        float value = float.PositiveInfinity;
+        int index = -1;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (arr[i] < value)
+            {
+                index = i;
+                value = arr[i];
+            }
+        }
+        return index;
+    }
     void StartHook()
     {
         p.StartHook();
@@ -94,29 +154,61 @@ public class ChainHook : MonoBehaviour
         transform.position = p.transform.position;
         hookPoint.position = startPoint.position;
         hitObject = false;
+        bringBack = false;
         l.gameObject.SetActive(true);
         hookPoint.gameObject.SetActive(true);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
         
-        RaycastHit2D hit;
-        hit = Physics2D.Raycast(startPoint.position, transform.up, distance, layer);
+        RaycastHit2D hit = Physics2D.Raycast(p.transform.position, transform.up, distance, layer);
+        RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, transform.up, distance, bringBackLayer);
+        RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
+        float[] distances = { distance + 1, distance + 1, distance + 1, distance+.1f};
+
         if (hit)
         {
-            endPoint = hit.point;
-            hitObject = true;
-        } else
+            distances[0] = Vector2.Distance(p.transform.position, hit.point);
+        }
+        if (checkBringBack)
         {
-            hit = Physics2D.Raycast(startPoint.position, transform.up, distance, enemyLayer);
-            if (hit)
-            {
+            distances[1] = Vector2.Distance(p.transform.position, checkBringBack.point);
+        }
+        if (checkIllegal)
+        {
+            print("hey!");
+            distances[2] = Vector2.Distance(p.transform.position, checkIllegal.point);
+        }
+        print(distances);
+        int lowest = GetIndexOfLowestValue(distances);
+        print(lowest);
+        switch (lowest)
+        {
+            case 0:
                 endPoint = hit.point;
                 hitObject = true;
-            }
-            else
-            {
-                endPoint = startPoint.position + transform.up * distance;
-            }
+                objectHit = hit.collider.gameObject;
+                var p = objectHit.GetComponent<Projectile>();
+                if (p != null)
+                {
+                    print("hit");
+                    p.rb.velocity = Vector2.zero;
+                }
+                break;
+            case 1:
+                
+                endPoint = checkBringBack.point;
+                objectHit = checkBringBack.collider.gameObject;
+                bringBack = true;
+                hitObject = false;
+                break;
+            case 2:
+                endPoint = checkIllegal.point;
+                hitObject = false;
+                break;
+            default:
+                endPoint = startPoint.position + transform.up * (distance - 1);
+                hitObject = false;
+                break;
         }
         originalDir = transform.up.normalized;
         hookRb.velocity = transform.up.normalized * hookSpeed;
@@ -136,9 +228,13 @@ public class ChainHook : MonoBehaviour
             while (Vector2.Distance(hookPoint.position, startPoint.position) > .1f)
             {
                 hookPoint.position = Vector3.MoveTowards(hookPoint.position, startPoint.position, retractSpeed * 100 * Time.deltaTime);
+                if(bringBack)
+                    objectHit.transform.position = Vector3.MoveTowards(hookPoint.position, startPoint.position, retractSpeed * 100 * Time.deltaTime);
                 yield return null;
             }
             EndHook();
+            
+            
             retractingHook = false;
             hookSent = false;
         }
@@ -148,6 +244,14 @@ public class ChainHook : MonoBehaviour
     {
         l.gameObject.SetActive(false);
         hookPoint.gameObject.SetActive(false);
+        if (objectHit != null)
+        {
+            var p = objectHit.GetComponent<Projectile>();
+            if (p != null)
+            {
+                Destroy(objectHit);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

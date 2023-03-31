@@ -19,7 +19,7 @@ public class LeftArm : MonoBehaviour
     public GameObject projectilePrefab;
     [SerializeField] private PlayerController p;
     [SerializeField] private Transform shootpoint;
-    private bool hasItem = false;
+    public bool hasItem = false;
     public Image ItemSpriteHolder;
     private bool throwing = false;
 
@@ -78,7 +78,8 @@ public class LeftArm : MonoBehaviour
         g.SetSprite(ItemSpriteHolder.sprite);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 dir = (mousePos - g.transform.position).normalized;
-        g.rb.velocity = dir * (p.rb.velocity.magnitude + g.speed);
+        dir.z = 0;
+        g.rb.velocity = dir.normalized * (/*p.rb.velocity.magnitude +*/ g.speed);
     }
 
     public void Punch()

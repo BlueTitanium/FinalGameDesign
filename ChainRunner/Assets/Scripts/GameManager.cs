@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager g;
+
     [Header("Pause Menu")]
     [SerializeField]
     private Animator pauseScreen;
@@ -21,11 +24,27 @@ public class GameManager : MonoBehaviour
     public AudioMixerGroup musicMixerGroup;
     public AudioMixerGroup sfxMixerGroup;
 
+    [Header("Interaction UI")]
+    [SerializeField]
+    private GameObject ItemPickup;
+    [SerializeField]
+    private GameObject Interaction;
+
     // Start is called before the first frame update
     void Start()
     {
+        g = this;
         Time.timeScale = 1;
         LoadOptions();
+    }
+
+    public void ItemPickupDisplayToggle(bool toggle)
+    {
+        ItemPickup.SetActive(toggle);
+    }
+    public void InteractionDisplayToggle(bool toggle)
+    {
+        Interaction.SetActive(toggle);
     }
 
     public void SaveOptions()
@@ -91,6 +110,22 @@ public class GameManager : MonoBehaviour
             {
                 StartCoroutine(Pause());
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SceneManager.LoadScene("JessDemo");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SceneManager.LoadScene("JessDemoLimbo");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SceneManager.LoadScene("Regina");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SceneManager.LoadScene("TaneimTesting");
         }
     }
 

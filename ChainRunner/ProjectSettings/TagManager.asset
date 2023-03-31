@@ -18,9 +18,9 @@ TagManager:
   - Wall
   - Enemy
   - Player
-  - 
-  - 
-  - 
+  - InvalidChainSpot
+  - BringBack
+  - Pickup
   - 
   - 
   - 

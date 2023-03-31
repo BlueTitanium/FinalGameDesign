@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 652125732109076960}
   - component: {fileID: 652125732109076966}
   - component: {fileID: 652125732109076967}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerOwned: 1
-  speed: 25
+  speed: 20
   damage: 10
   rb: {fileID: 652125732109076966}
 --- !u!50 &652125732109076966
@@ -148,5 +148,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
