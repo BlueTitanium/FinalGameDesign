@@ -36,7 +36,7 @@ public class MeleeEnemyController : Enemy
     [SerializeField] private float nextWaypointDistance = 1f;
     private Path path;
     private int currentWaypoint = 0;
-    bool reachedEndOfPath = false;
+    // bool reachedEndOfPath = false;
     Seeker seeker;
 
 
@@ -77,6 +77,17 @@ public class MeleeEnemyController : Enemy
     void Update() {
         if (currHP <= 0) return;
 
+        if (isAttackCooldown) {
+            attackTimer -= Time.deltaTime;
+
+            if (attackTimer <= 0 && isAttackCooldown) {
+                isAttackCooldown = false;
+                attackTimer = attackCooldown;
+            }
+        }
+
+        if (isStunned) return;
+
         RaycastHit2D hit = Physics2D.Raycast(lineOfSight.position, transform.right, 
             (isFacingRight) ? lineOfSightDistance : -lineOfSightDistance, lineOfSightLayers);
         Debug.DrawRay(lineOfSight.position, transform.right * ((isFacingRight) ? lineOfSightDistance : -lineOfSightDistance), 
@@ -113,21 +124,15 @@ public class MeleeEnemyController : Enemy
                 }
             }
         }
-
-        if (isAttackCooldown) {
-            attackTimer -= Time.deltaTime;
-
-            if (attackTimer <= 0 && isAttackCooldown) {
-                isAttackCooldown = false;
-                attackTimer = attackCooldown;
-            }
-        }
     }
 
     void FixedUpdate() {
-        if (currHP <= 0) {
-            return;
-        }
+        if (currHP <= 0) return;
+
+        if (!knockbacked) animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+        else animator.SetFloat("Speed", 0);
+
+        if (isStunned) return;
         
         // state behaviors
         switch (currentState) {
@@ -150,9 +155,6 @@ public class MeleeEnemyController : Enemy
                 Debug.Log("Current state not in switch-case");
                 break;
         }
-
-        if (!knockbacked) animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
-        else animator.SetFloat("Speed", 0);
 
         SetMovement();
     }
@@ -346,5 +348,19 @@ public class MeleeEnemyController : Enemy
             path = p;
             currentWaypoint = 0;
         }
+    }
+
+
+    [Header("Ranged Attacks")]
+    [SerializeField] GameObject projectilePrefab;
+    [SerializeField] Transform shootpoint;
+    [SerializeField] Vector2 shootDir;
+    public void SetRangedAttackDir() {
+        shootDir = (playerTransform.position - transform.position).normalized;
+    }
+    public void AttackRange() {
+        Projectile g = Instantiate(projectilePrefab, shootpoint.position, transform.rotation).GetComponent<Projectile>();
+        // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
+        g.rb.velocity = shootDir * g.speed;
     }
 }

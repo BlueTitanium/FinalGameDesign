@@ -80,10 +80,12 @@ public class Enemy : MonoBehaviour
         StartCoroutine(StunIE(duration));
     }
 
-    IEnumerator StunIE(float duration) {
+    protected virtual IEnumerator StunIE(float duration) {
         isStunned = true;
+        animator.SetTrigger("Hurt");
         yield return new WaitForSeconds(duration);
         isStunned = false;
+        animator.SetTrigger("Idle");
     }
 
     protected virtual void DamageFlash() {
