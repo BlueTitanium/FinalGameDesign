@@ -1152,7 +1152,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4195520
+    m_Bits: 4197568
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: d7e6c473b982c03439247ad6d138c831, type: 2}
   m_TargetDisplay: 1
@@ -4057,8 +4057,8 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 676402427
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -6093,11 +6093,11 @@ MonoBehaviour:
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
   m_ScreenX: 0.5
-  m_ScreenY: 0.5
+  m_ScreenY: 0.617
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
+  m_SoftZoneWidth: 0.179
+  m_SoftZoneHeight: 0.17
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
@@ -6115,8 +6115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 1.8, z: -10}
-  m_XDamping: 1
-  m_YDamping: 1
+  m_XDamping: 0
+  m_YDamping: 0
   m_ZDamping: 1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
