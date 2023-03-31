@@ -487,7 +487,7 @@ MonoBehaviour:
   chaseSpeed: 5
   lineOfSight: {fileID: 2412812301235363596}
   lineOfSightDistance: 5
-  attackDistance: 2
+  attackDistance: 1.75
   attackCooldown: 1.5
   initialState: 1
   wallCheck: {fileID: 2412812301471465506}
@@ -505,6 +505,12 @@ MonoBehaviour:
   nextWaypointDistance: 1
   closeRangePlayerDetection: {fileID: 8538808891810419015}
   hotzone: {fileID: 7548131679669887210}
+  enableSurround: 0
+  surroundDistance: 3
+  surroundSpeed: 2
+  projectilePrefab: {fileID: 0}
+  shootpoint: {fileID: 0}
+  shootDir: {x: 0, y: 0}
 --- !u!114 &1839185241750330203
 MonoBehaviour:
   m_ObjectHideFlags: 0
