@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("WallJump")]
+    public bool wallJumpEnabled = true;
     [SerializeField]
     private bool isWallJumping;
     private float wallJumpingDirection;
@@ -419,7 +420,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallSlide()
     {
-        if (walled && !closeToGround && horizontal != 0f && !grappling && (rb.velocity.y <= 0 || shouldLatch > 0))
+        if (wallJumpEnabled && walled && !closeToGround && horizontal != 0f && !grappling && (rb.velocity.y <= 0 || shouldLatch > 0))
         {
             isWallSliding = true;
             rb.velocity = new Vector2(0, -Mathf.Abs(Mathf.Clamp(rb.velocity.y, wallSlidingSpeed, float.MaxValue)));
