@@ -21,7 +21,7 @@ public class LeftArm : MonoBehaviour
     [SerializeField] private Transform shootpoint;
     public bool hasItem = false;
     public Image ItemSpriteHolder;
-    private bool throwing = false;
+    public bool throwing = false;
 
 
     // Start is called before the first frame update
