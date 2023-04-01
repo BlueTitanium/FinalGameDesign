@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
     [Header("Sprite")]
     [SerializeField] protected SpriteRenderer spriteRenderer;
     protected Coroutine damageFlashCoroutine;
+    protected Coroutine stunCoroutine;
 
     protected Rigidbody2D rb;
     protected Animator animator;
@@ -77,11 +78,16 @@ public class Enemy : MonoBehaviour
     }
 
     public virtual void Stun(float duration) {
-        StartCoroutine(StunIE(duration));
+        if (stunCoroutine != null) {
+            StopCoroutine(stunCoroutine);
+        }
+        
+        stunCoroutine = StartCoroutine(StunIE(duration));
     }
 
     protected virtual IEnumerator StunIE(float duration) {
         isStunned = true;
+        animator.ResetTrigger("Idle");
         animator.SetTrigger("Hurt");
         yield return new WaitForSeconds(duration);
         isStunned = false;
