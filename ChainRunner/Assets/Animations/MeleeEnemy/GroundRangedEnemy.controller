@@ -46,7 +46,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 65b6a0fac4b563844899a882cae81318, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7bb3503cbe444d74395caf031473f712, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -247,7 +247,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MeleeEnemy
+  m_Name: GroundRangedEnemy
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Idle
