@@ -35,6 +35,12 @@ public class Projectile : MonoBehaviour
             enemyController.Stun(5f);
             Destroy(gameObject);
         }
+
+        if (!isPlayerOwned && collision.CompareTag("Player")) {
+            PlayerController.p.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+
         if (collision.CompareTag("Ground"))
         {
             Destroy(gameObject);

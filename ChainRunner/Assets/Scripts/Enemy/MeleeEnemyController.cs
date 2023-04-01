@@ -11,25 +11,27 @@ public class MeleeEnemyController : Enemy
     [Header("Melee Attack")]
     [SerializeField] private Transform lineOfSight;
     [SerializeField] private float lineOfSightDistance = 5f;
-    [SerializeField] private float attackDistance = 2f;
+    [SerializeField] protected float attackDistance = 2f;
     [SerializeField] private float attackCooldown = 1.5f;
     float attackTimer;
-    bool isAttackCooldown = false;
-    float playerDistance; // distance between self and player
+    protected bool isAttackCooldown = false;
+    protected float playerDistance; // distance between self and player
 
     [Header("Melee States")]
-    [SerializeField] private State initialState = State.Idle;
-    private State currentState;
+    [SerializeField] protected State initialState = State.Idle;
+    protected State currentState;
     [HideInInspector] public enum State {Idle, Patrol, Chase, Attack, Surround}
 
 
     [Header("Melee Colliders")]
     [SerializeField] private Transform wallCheck;
     [SerializeField] private Transform ledgeCheck;
+    [SerializeField] private Transform backWallCheck;
+    [SerializeField] private Transform backLedgeCheck;
     [SerializeField] private float ledgeCastDist = 0.75f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private LayerMask lineOfSightLayers;
+    [SerializeField] protected LayerMask lineOfSightLayers;
 
 
     [Header("Pathfinding")]
@@ -45,8 +47,7 @@ public class MeleeEnemyController : Enemy
     [SerializeField] PlayerDetector hotzone;
 
     [Header("Surround")]
-    [SerializeField] private bool enableSurround;
-    [SerializeField] private float surroundDistance = 3f;
+    [SerializeField] protected float surroundDistance = 3f;
     [SerializeField] private float surroundSpeed = 2f;
     private float surroundDistance_;
 
@@ -69,12 +70,12 @@ public class MeleeEnemyController : Enemy
         hotzone.PlayerExitedCallback += StopEngagePlayer;
     }
 
-    void OnDestroy() {
+    protected void OnDestroy() {
         closeRangePlayerDetection.PlayerEnterCallback -= PlayerDetected;
         hotzone.PlayerExitedCallback -= StopEngagePlayer;
     }
 
-    void Update() {
+    protected virtual void Update() {
         if (currHP <= 0) return;
 
         if (isAttackCooldown) {
@@ -100,33 +101,11 @@ public class MeleeEnemyController : Enemy
         if (playerDetected) {
             playerDistance = Vector2.Distance(transform.position, playerTransform.position);
 
-            if (!enableSurround) {
-                if (0.5 >= playerDistance) { SwitchToState(State.Surround); }
-                else if (playerDistance > attackDistance) {
-                    SwitchToState(State.Chase);
-                } else if (attackDistance >= playerDistance && !isAttackCooldown) {
-                    SwitchToState(State.Attack);
-                } else if (attackDistance >= playerDistance && isAttackCooldown) {
-                    SwitchToState(State.Idle);
-                }
-            } else {
-                // IN DEVELOPMENT
-                if (playerDistance > surroundDistance) {
-                    SwitchToState(State.Chase);
-                } else if (0.5 >= playerDistance) {
-                    SwitchToState(State.Surround);
-                } else if (surroundDistance >= playerDistance && isAttackCooldown) {
-                    SwitchToState(State.Surround);
-                } else if (attackDistance >= playerDistance && !isAttackCooldown) {
-                    SwitchToState(State.Attack);
-                } else if (surroundDistance >= playerDistance && !isAttackCooldown) {
-                    SwitchToState(State.Chase);
-                }
-            }
+            DecideState();
         }
     }
 
-    void FixedUpdate() {
+    protected void FixedUpdate() {
         if (currHP <= 0) return;
 
         if (!knockbacked) animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
@@ -180,6 +159,26 @@ public class MeleeEnemyController : Enemy
         return !Physics2D.Linecast(ledgeCheck.position, targetPos, groundLayer | wallLayer);
     }
 
+    bool isBackHittingWall() {
+        float castDist = (!isFacingRight) ? 0.25f : -0.25f;
+
+        Vector3 targetPos = backWallCheck.position;
+        targetPos.x += castDist;
+
+        Debug.DrawLine(backWallCheck.position, targetPos, Color.blue);
+
+        return Physics2D.Linecast(backWallCheck.position, targetPos, groundLayer | wallLayer);
+    }
+
+    bool isBackNearEdge() {
+        Vector3 targetPos = backLedgeCheck.position;
+        targetPos.y -= ledgeCastDist;
+
+        Debug.DrawLine(backLedgeCheck.position, targetPos, Color.blue);
+
+        return !Physics2D.Linecast(backLedgeCheck.position, targetPos, groundLayer | wallLayer);
+    }
+
 
     // call this at last frame of attack animation
     public void StartAttackCooldown() {
@@ -196,6 +195,17 @@ public class MeleeEnemyController : Enemy
     public void StopEngagePlayer() {
         playerDetected = false;
         SwitchToState(MeleeEnemyController.State.Patrol);
+    }
+
+    protected virtual void DecideState() {
+        if (0.5 >= playerDistance) { SwitchToState(State.Surround); }
+        else if (playerDistance > attackDistance) {
+            SwitchToState(State.Chase);
+        } else if (attackDistance >= playerDistance && !isAttackCooldown) {
+            SwitchToState(State.Attack);
+        } else if (attackDistance >= playerDistance && isAttackCooldown) {
+            SwitchToState(State.Idle);
+        }
     }
 
     void SetMovement() {
@@ -231,7 +241,7 @@ public class MeleeEnemyController : Enemy
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
                     LookAtPlayer();
 
-                    if (surroundDistance_ > playerDistance) {
+                    if (surroundDistance_ > playerDistance && !isBackHittingWall() && !isBackNearEdge()) {
                         float vX = (isFacingRight) ? -surroundSpeed : surroundSpeed;
                         rb.velocity = new Vector2(vX, rb.velocity.y);
                     } else {
@@ -240,7 +250,7 @@ public class MeleeEnemyController : Enemy
                 }
                 break;
             case State.Attack:
-                rb.velocity = new Vector2(0, rb.velocity.y);
+                AttackBehavior();
                 break;
             default:
                 Debug.Log("Current state not in switch-case");
@@ -343,24 +353,14 @@ public class MeleeEnemyController : Enemy
 
     }
 
+    protected virtual void AttackBehavior() {
+        rb.velocity = new Vector2(0, rb.velocity.y);
+    }
+
     void OnPathComplete(Path p) {
         if (!p.error) {
             path = p;
             currentWaypoint = 0;
         }
-    }
-
-
-    [Header("Ranged Attacks")]
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] Transform shootpoint;
-    [SerializeField] Vector2 shootDir;
-    public void SetRangedAttackDir() {
-        shootDir = (playerTransform.position - transform.position).normalized;
-    }
-    public void AttackRange() {
-        Projectile g = Instantiate(projectilePrefab, shootpoint.position, transform.rotation).GetComponent<Projectile>();
-        // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
-        g.rb.velocity = shootDir * g.speed;
     }
 }
