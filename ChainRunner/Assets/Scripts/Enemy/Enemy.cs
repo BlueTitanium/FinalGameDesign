@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Attack")]
     public float attackDamage = 5f;
-    public bool playerDetected = false;
+    [HideInInspector] public bool playerDetected = false;
     [SerializeField] protected bool canBeStunned = true;
     protected bool isStunned = false;
     [SerializeField] protected bool canBeKnockbacked = true;
