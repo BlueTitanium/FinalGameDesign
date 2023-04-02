@@ -36,7 +36,8 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI[] titleEffectTexts;
     [SerializeField]
     private Animation titleEffect;
-
+    [SerializeField]
+    private Animation hudAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +45,16 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         LoadOptions();
     }
-
+    public void RemoveHud()
+    {
+        hudAnim.Stop();
+        hudAnim.Play("Hud_Leave");
+    }
+    public void BringBackHud()
+    {
+        hudAnim.Stop();
+        hudAnim.Play("Hud_Open");
+    }
     public void ShowTitleEffect(string text)
     {
         titleEffect.Stop();
