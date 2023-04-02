@@ -79,6 +79,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2412812301235363596}
+  - component: {fileID: 9212426354009730088}
+  - component: {fileID: 5298344464610558908}
   m_Layer: 0
   m_Name: LineOfSight
   m_TagString: Untagged
@@ -101,6 +103,47 @@ Transform:
   m_Father: {fileID: 2412812301036106935}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &9212426354009730088
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2412812301235363603}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.014718, y: 0.7386124}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 8.124041, y: 2.4772248}
+  m_EdgeRadius: 0
+--- !u!114 &5298344464610558908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2412812301235363603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c3468b682c5394bb7ccdbd0f0cb9e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectPlayerEnter: 0
+  detectPlayerLeave: 0
+  detectPlayerStay: 1
 --- !u!1 &2412812301281978067
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectPlayerEnter: 0
   detectPlayerLeave: 1
+  detectPlayerStay: 0
 --- !u!1 &2412812302818155376
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,8 +562,6 @@ MonoBehaviour:
   canBeKnockbacked: 1
   spriteRenderer: {fileID: 2412812301281978061}
   chaseSpeed: 5
-  lineOfSight: {fileID: 2412812301235363596}
-  lineOfSightDistance: 5
   attackDistance: 1.75
   attackCooldown: 1.5
   initialState: 1
@@ -540,6 +582,7 @@ MonoBehaviour:
   nextWaypointDistance: 1
   closeRangePlayerDetection: {fileID: 8538808891810419015}
   hotzone: {fileID: 7548131679669887210}
+  rangeOfSight: {fileID: 5298344464610558908}
   surroundDistance: 3
   surroundSpeed: 2
 --- !u!114 &1839185241750330203
@@ -674,3 +717,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectPlayerEnter: 1
   detectPlayerLeave: 0
+  detectPlayerStay: 0

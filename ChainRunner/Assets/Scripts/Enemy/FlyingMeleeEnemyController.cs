@@ -3,31 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class MeleeEnemyController : Enemy
+public class FlyingMeleeEnemyController : Enemy
 {
-    [Header("Chase Speed")]
+    [Header("Melee Movement")]
     [SerializeField] private float chaseSpeed = 2f;
 
-    [Header("Attack Stats")]
-    // [SerializeField] private Transform lineOfSight;
-    // [SerializeField] private float lineOfSightDistance = 5f;
+    [Header("Melee Attack")]
     [SerializeField] protected float attackDistance = 2f;
     [SerializeField] private float attackCooldown = 1.5f;
     float attackTimer;
     protected bool isAttackCooldown = false;
     protected float playerDistance; // distance between self and player
 
-    [Header("States")]
+    [Header("Melee States")]
     [SerializeField] protected State initialState = State.Idle;
     protected State currentState;
-    [HideInInspector] public enum State {Idle, Patrol, Chase, Attack, Surround}
+    [HideInInspector] public enum State {Idle, Patrol, Chase, Attack, Surround, Return}
 
+    
 
-    [Header("Colliders")]
+    [Header("Melee Colliders")]
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private Transform ledgeCheck;
     [SerializeField] private Transform backWallCheck;
-    [SerializeField] private Transform backLedgeCheck;
     [SerializeField] private float ledgeCastDist = 0.75f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
@@ -44,13 +41,24 @@ public class MeleeEnemyController : Enemy
 
     [Header("Others")]
     [SerializeField] PlayerDetector closeRangePlayerDetection;
+    
+    [SerializeField] PlayerDetector view;
     [SerializeField] PlayerDetector hotzone;
-    [SerializeField] PlayerDetector rangeOfSight;
 
     [Header("Surround")]
     [SerializeField] protected float surroundDistance = 3f;
     [SerializeField] private float surroundSpeed = 2f;
     private float surroundDistance_;
+
+    [Header("Return to SpawnPoint")]
+    [SerializeField] bool returnToSpawnpoint;
+    [SerializeField] Transform spawnpoint;
+    [SerializeField] float playerYOffset = 1f;
+
+    [Header("Extra Stun Option")]
+    [SerializeField] bool fallOnStun;
+    float originalLinearDrag;
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -69,13 +77,16 @@ public class MeleeEnemyController : Enemy
 
         closeRangePlayerDetection.PlayerEnterCallback += PlayerDetected;
         hotzone.PlayerExitedCallback += StopEngagePlayer;
-        rangeOfSight.PlayerStayCallback += SeekPlayer;
+        view.PlayerStayCallback += SeekPlayer;
+
+        originalLinearDrag = rb.drag;
     }
 
+    
     protected void OnDestroy() {
         closeRangePlayerDetection.PlayerEnterCallback -= PlayerDetected;
         hotzone.PlayerExitedCallback -= StopEngagePlayer;
-        rangeOfSight.PlayerStayCallback -= SeekPlayer;
+        view.PlayerExitedCallback += SeekPlayer;
     }
 
     protected virtual void Update() {
@@ -101,20 +112,10 @@ public class MeleeEnemyController : Enemy
 
     void SeekPlayer() {
         RaycastHit2D hit = Physics2D.Linecast(transform.position, playerTransform.position, lineOfSightLayers);
-        Debug.DrawLine(transform.position, playerTransform.position, Color.red);
-
+        
         if (hit.collider != null && hit.collider.CompareTag("Player")) {
             playerDetected = true;
         }
-
-        // RaycastHit2D hit = Physics2D.Raycast(lineOfSight.position, transform.right, 
-        //     (isFacingRight) ? lineOfSightDistance : -lineOfSightDistance, lineOfSightLayers);
-        // Debug.DrawRay(lineOfSight.position, transform.right * ((isFacingRight) ? lineOfSightDistance : -lineOfSightDistance), 
-        //     (playerDistance > attackDistance) ? Color.red : Color.green);
-
-        // if (hit.collider != null && hit.collider.CompareTag("Player")) {
-        //     playerDetected = true;
-        // } 
     }
 
     protected void FixedUpdate() {
@@ -123,7 +124,14 @@ public class MeleeEnemyController : Enemy
         if (!knockbacked) animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         else animator.SetFloat("Speed", 0);
 
-        if (isStunned) return;
+        if (isStunned) { 
+            rb.gravityScale = 1;
+            rb.drag = 0.25f;
+            return; 
+        } else {
+            rb.gravityScale = 0;
+            rb.drag = originalLinearDrag;
+        }
         
         // state behaviors
         switch (currentState) {
@@ -141,6 +149,9 @@ public class MeleeEnemyController : Enemy
                 break;
             case State.Attack:
                 animator.SetBool("canAttack", !isAttackCooldown);
+                break;
+            case State.Return:
+                animator.SetBool("canAttack", false);
                 break;
             default:
                 Debug.Log("Current state not in switch-case");
@@ -162,15 +173,6 @@ public class MeleeEnemyController : Enemy
         return Physics2D.Linecast(wallCheck.position, targetPos, groundLayer | wallLayer);
     }
 
-    bool isNearEdge() {
-        Vector3 targetPos = ledgeCheck.position;
-        targetPos.y -= ledgeCastDist;
-
-        Debug.DrawLine(ledgeCheck.position, targetPos, Color.red);
-
-        return !Physics2D.Linecast(ledgeCheck.position, targetPos, groundLayer | wallLayer);
-    }
-
     bool isBackHittingWall() {
         float castDist = (!isFacingRight) ? 0.25f : -0.25f;
 
@@ -180,15 +182,6 @@ public class MeleeEnemyController : Enemy
         Debug.DrawLine(backWallCheck.position, targetPos, Color.blue);
 
         return Physics2D.Linecast(backWallCheck.position, targetPos, groundLayer | wallLayer);
-    }
-
-    bool isBackNearEdge() {
-        Vector3 targetPos = backLedgeCheck.position;
-        targetPos.y -= ledgeCastDist;
-
-        Debug.DrawLine(backLedgeCheck.position, targetPos, Color.blue);
-
-        return !Physics2D.Linecast(backLedgeCheck.position, targetPos, groundLayer | wallLayer);
     }
 
 
@@ -206,7 +199,8 @@ public class MeleeEnemyController : Enemy
 
     public void StopEngagePlayer() {
         playerDetected = false;
-        SwitchToState(MeleeEnemyController.State.Patrol);
+        if (!returnToSpawnpoint) SwitchToState(FlyingMeleeEnemyController.State.Patrol);
+        else SwitchToState(FlyingMeleeEnemyController.State.Return);
     }
 
     protected virtual void DecideState() {
@@ -223,8 +217,6 @@ public class MeleeEnemyController : Enemy
     void SetMovement() {
         // state movement behavior
         if (knockbacked) {
-            //float lerpedXVelocity = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime);
-            //rb.velocity = new Vector2(lerpedXVelocity, rb.velocity.y);
             return;
         }
 
@@ -238,7 +230,7 @@ public class MeleeEnemyController : Enemy
 
                     rb.velocity = new Vector2(vX, rb.velocity.y);    
 
-                    if (isHittingWall() || isNearEdge()) {
+                    if (isHittingWall()) {
                         flipX();
                     }
                 }
@@ -253,7 +245,7 @@ public class MeleeEnemyController : Enemy
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
                     LookAtPlayer();
 
-                    if (surroundDistance_ > playerDistance && !isBackHittingWall() && !isBackNearEdge()) {
+                    if (surroundDistance_ > playerDistance && !isBackHittingWall()) {
                         float vX = (isFacingRight) ? -surroundSpeed : surroundSpeed;
                         rb.velocity = new Vector2(vX, rb.velocity.y);
                     } else {
@@ -263,6 +255,11 @@ public class MeleeEnemyController : Enemy
                 break;
             case State.Attack:
                 AttackBehavior();
+                break;
+            case State.Return:
+                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
+                    ReturnToSpawnpointAI();
+                }
                 break;
             default:
                 Debug.Log("Current state not in switch-case");
@@ -317,26 +314,13 @@ public class MeleeEnemyController : Enemy
     }
 
 
-    void ChasePlayer() {
-        // Vector2 targetPos = new Vector2(playerTransform.position.x, rb.position.y);
-        // transform.position = Vector2.MoveTowards(rb.position, targetPos, chaseSpeed * Time.fixedDeltaTime);
-        if (attackDistance >= playerDistance) {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
-        else if (rb.position.x < playerTransform.position.x) {
-            rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
-        }
-        else if (rb.position.x > playerTransform.position.x) {
-            rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
-        }
-
-        LookAtPlayer();
-    }
-
-
     void UpdatePath() {
-        if (playerDetected && seeker.IsDone())
-            seeker.StartPath(rb.position, playerTransform.position, OnPathComplete);
+        if (playerDetected && seeker.IsDone()) {
+            Vector2 playerPos = new Vector2(playerTransform.position.x, playerTransform.position.y + playerYOffset);
+            seeker.StartPath(rb.position, playerPos, OnPathComplete);
+        }
+        else if (!playerDetected && currentState == State.Return && seeker.IsDone())
+            seeker.StartPath(rb.position, spawnpoint.position, OnPathComplete);
     }
 
     protected virtual void ChasePlayerAI() {
@@ -345,15 +329,10 @@ public class MeleeEnemyController : Enemy
         if (currentWaypoint >= path.vectorPath.Count) return;
 
         Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-
-        if (Mathf.Abs(dir.x) < 0.05) { 
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            LookAtPlayer();
-        } else {
-            if (dir.x > 0) rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
-            else if (dir.x < 0) rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
-            FaceMovementDirection();
-        }
+        
+        Vector2 force = dir * chaseSpeed * 100 * Time.deltaTime;
+        rb.AddForce(force);
+        FaceMovementDirection();
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 
@@ -361,6 +340,27 @@ public class MeleeEnemyController : Enemy
             currentWaypoint++;
         }
 
+    }
+
+    protected virtual void ReturnToSpawnpointAI() {
+        if (path == null) return;
+
+        if (currentWaypoint >= path.vectorPath.Count) {
+            SwitchToState(State.Patrol);
+            return;
+        } 
+
+        Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        
+        Vector2 force = dir * moveSpeed * 100 * Time.deltaTime;
+        rb.AddForce(force);
+        FaceMovementDirection();
+
+        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+
+        if (distance < nextWaypointDistance) {
+            currentWaypoint++;
+        }
     }
 
     void OnPathComplete(Path p) {
