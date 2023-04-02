@@ -20,8 +20,7 @@ public class PlayerController : MonoBehaviour
      */
 
     [Header("Gameplay Stats")]
-    [SerializeField]
-    private float maxHP = 100f;
+    public float maxHP = 100f;
     private float curHP = 100f;
     public bool LockFlipDirection = false;
 
@@ -208,7 +207,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != str);
 
         LockFlipDirection = false;
-
+        if(str == "Player_ItemToss")
+        {
+            arm.throwing = false;
+        }
         yield return null;
     }
 
