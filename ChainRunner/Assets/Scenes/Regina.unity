@@ -542,7 +542,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1256699659, guid: 6279f27d8e1e22643b951f22dd8277a5, type: 3}
       propertyPath: orthographic size
-      value: 6.5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5903701291101464325, guid: 6279f27d8e1e22643b951f22dd8277a5, type: 3}
       propertyPath: m_RootOrder
@@ -3820,6 +3820,14 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 2508835533864093617, guid: 5e13145b959227e4cad7b5abda8210c2, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508835533864093617, guid: 5e13145b959227e4cad7b5abda8210c2, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: I'm Plato
+      objectReference: {fileID: 0}
     - target: {fileID: 2508835533864093619, guid: 5e13145b959227e4cad7b5abda8210c2, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -3880,6 +3888,10 @@ PrefabInstance:
     - target: {fileID: 3890557376787617905, guid: 13f6694196012d54796c23766c549df0, type: 3}
       propertyPath: m_Name
       value: aeneas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890557376787617905, guid: 13f6694196012d54796c23766c549df0, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3890557376787617906, guid: 13f6694196012d54796c23766c549df0, type: 3}
       propertyPath: m_RootOrder
@@ -3965,6 +3977,18 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 3890557376787617919, guid: 13f6694196012d54796c23766c549df0, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890557376787617919, guid: 13f6694196012d54796c23766c549df0, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: Hi
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890557376787617919, guid: 13f6694196012d54796c23766c549df0, type: 3}
+      propertyPath: dialogue.Array.data[1]
+      value: I'm Aeneas
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13f6694196012d54796c23766c549df0, type: 3}
 --- !u!1001 &4613976993279342737
@@ -4062,6 +4086,14 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 4613976992768678239, guid: 02f58e5757ebdab419b0ac3ac3c18bd3, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613976992768678239, guid: 02f58e5757ebdab419b0ac3ac3c18bd3, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: I'm Homer
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02f58e5757ebdab419b0ac3ac3c18bd3, type: 3}
 --- !u!1001 &5139140981705954986
@@ -4111,6 +4143,14 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 5139140983093559730, guid: 115c38bb4b21e5245aa72788948c1716, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5139140983093559730, guid: 115c38bb4b21e5245aa72788948c1716, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: I'm Hector
+      objectReference: {fileID: 0}
     - target: {fileID: 5139140983093559740, guid: 115c38bb4b21e5245aa72788948c1716, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -4370,6 +4410,14 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 7204019675041563156, guid: c89b3115525327242b0188bc3342ac94, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7204019675041563156, guid: c89b3115525327242b0188bc3342ac94, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: Penthesilea
+      objectReference: {fileID: 0}
     - target: {fileID: 7204019675041563158, guid: c89b3115525327242b0188bc3342ac94, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -4511,6 +4559,14 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 7585321996088966389, guid: 9a2f6793594065149ac722639e72b99b, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7585321996088966389, guid: 9a2f6793594065149ac722639e72b99b, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: I'm Lavinia
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a2f6793594065149ac722639e72b99b, type: 3}
 --- !u!1001 &8669028606930653729
@@ -4608,6 +4664,14 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 8669028605731199951, guid: 0748166873307f04f8f719f3f81200cb, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669028605731199951, guid: 0748166873307f04f8f719f3f81200cb, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: I'm Hippocrates
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0748166873307f04f8f719f3f81200cb, type: 3}
 --- !u!1001 &9087574542005565736
@@ -4705,5 +4769,13 @@ PrefabInstance:
       propertyPath: rightCharScale
       value: 
       objectReference: {fileID: 1732993896}
+    - target: {fileID: 9087574541908787311, guid: dbfafe34b3d28e049a23797315e03022, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9087574541908787311, guid: dbfafe34b3d28e049a23797315e03022, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: I'm Aristotle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbfafe34b3d28e049a23797315e03022, type: 3}
