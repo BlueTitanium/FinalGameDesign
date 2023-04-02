@@ -36,7 +36,7 @@ public class LeftArm : MonoBehaviour
         transform.position = p.transform.position;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
-        if ((!p.LockFlipDirection || (p.LockFlipDirection && p.grappling)) && !throwing && Input.GetMouseButtonDown(0))
+        if ((!p.LockFlipDirection || (p.anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Player_ChainToss")) && !throwing && Input.GetMouseButtonDown(0))
         {
             if (hasItem)
             {

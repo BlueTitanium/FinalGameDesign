@@ -109,13 +109,15 @@ public class PlayerController : MonoBehaviour
     public ChainHook hook;
     private float shouldLatch = 0f;
     public GameObject chainHookIcon;
+
+
     [Header("Assign Value")]
     public Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private Animator anim;
+    public Animator anim;
     [SerializeField] private SpriteRenderer sprite;
     //knockback
     //private float kbDir; 
@@ -147,6 +149,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        CameraShake.cs.cameraShake(.3f, 1.6f);
         curHP -= amount;
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
@@ -422,6 +425,8 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
         anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
         anim.SetFloat("YSpeed", (rb.velocity.y));
+
+
         
     }
 

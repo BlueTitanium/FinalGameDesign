@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator DamageFlashIE() {
         spriteRenderer.color = Color.red;
-
+        CameraShake.cs.cameraShake(.3f, 1.6f);
         while (spriteRenderer.color != Color.white) {
             yield return null;
             spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, Time.deltaTime * 3);

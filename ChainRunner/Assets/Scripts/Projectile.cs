@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
     public float speed = 10f;
     public float damage = 10f;
     public Rigidbody2D rb;
+    public GameObject explosion;
+    private Transform child;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,14 @@ public class Projectile : MonoBehaviour
     {
         
     }
-
+    private void OnDestroy()
+    {
+        if (!gameObject.scene.isLoaded) return;
+        Instantiate(explosion, transform.position, explosion.transform.rotation);
+        child = transform.GetChild(0);
+        transform.DetachChildren();
+        Destroy(child.gameObject, 1f);
+    }
     public void SetSprite(Sprite s)
     {
         GetComponent<SpriteRenderer>().sprite = s;
