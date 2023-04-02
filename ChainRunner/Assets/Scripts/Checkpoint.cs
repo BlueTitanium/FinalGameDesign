@@ -19,9 +19,8 @@ public class Checkpoint : MonoBehaviour
     {
         if (nearObject && Input.GetKeyDown(KeyCode.E))
         {
-            PlayerController.p.TakeHeal(PlayerController.p.maxHP);
-            CheckpointController.c.curCheckPointID = id;
-            CheckpointController.c.SaveOptions();
+            
+            CheckpointController.c.setCheckPoint(id);
         }
     }
 
