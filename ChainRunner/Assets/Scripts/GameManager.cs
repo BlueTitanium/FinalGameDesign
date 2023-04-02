@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -30,12 +31,30 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject Interaction;
 
+    [Header("Effects")]
+    [SerializeField]
+    private TextMeshProUGUI[] titleEffectTexts;
+    [SerializeField]
+    private Animation titleEffect;
+
     // Start is called before the first frame update
     void Start()
     {
         g = this;
         Time.timeScale = 1;
         LoadOptions();
+    }
+
+    public void ShowTitleEffect(string text)
+    {
+        titleEffect.Stop();
+
+        foreach (TextMeshProUGUI t in titleEffectTexts)
+        {
+            t.text = text;
+        }
+        
+        titleEffect.Play();
     }
 
     public void ItemPickupDisplayToggle(bool toggle)

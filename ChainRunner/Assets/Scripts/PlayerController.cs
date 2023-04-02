@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Gameplay Stats")]
     public float maxHP = 100f;
-    private float curHP = 100f;
+    public float curHP = 100f;
     public bool LockFlipDirection = false;
 
     [Header("HP Bar")]
@@ -102,12 +102,13 @@ public class PlayerController : MonoBehaviour
     public LeftArm arm;
 
     [Header("Grappling")]
+    public bool grappleEnabled = false;
     [SerializeField] private float grappleSpeed = 30f;
     public bool grappling = false;
     private Vector2 grappleEndPoint;
-    [SerializeField] private ChainHook hook;
+    public ChainHook hook;
     private float shouldLatch = 0f;
-
+    public GameObject chainHookIcon;
     [Header("Assign Value")]
     public Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -233,8 +234,26 @@ public class PlayerController : MonoBehaviour
     {
         p = this;
         curHP = maxHP;
+        LoadOptions();
     }
+    public void SaveOptions()
+    {
+        PlayerPrefs.SetInt("grappleEnabled", grappleEnabled ? 1 : 0);
+        PlayerPrefs.SetInt("wallJumpEnabled", wallJumpEnabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+    public void LoadOptions()
+    {
+        if (!PlayerPrefs.HasKey("curCheckPointID"))
+        {
+            SaveOptions();
+        }
+        grappleEnabled = PlayerPrefs.GetInt("grappleEnabled") == 1;
+        hook.gameObject.SetActive(grappleEnabled);
+        chainHookIcon.SetActive(grappleEnabled);
+        wallJumpEnabled = PlayerPrefs.GetInt("wallJumpEnabled") == 1;
 
+    }
     private void Update()
     {
         UpdateHealthUI();

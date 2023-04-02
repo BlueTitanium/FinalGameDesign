@@ -16,6 +16,18 @@ public class CheckpointController : MonoBehaviour
         LoadOptions();
         p.transform.position = checkpoints[curCheckPointID].position;
     }
+
+    public void setCheckPoint(int id)
+    {
+        if(curCheckPointID != id || PlayerController.p.curHP < PlayerController.p.maxHP)
+        {
+            PlayerController.p.TakeHeal(PlayerController.p.maxHP);
+            curCheckPointID = id;
+            CheckpointController.c.SaveOptions();
+            GameManager.g.ShowTitleEffect("Rift Attuned");
+        }
+    }
+
     public void SaveOptions()
     {
         PlayerPrefs.SetInt("curCheckPointID", curCheckPointID);
