@@ -105,8 +105,8 @@ public class ChainHook : MonoBehaviour
             ChainHookRotator.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
             ValidityDisplayer.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - ChainHookRotator.position);
             RaycastHit2D hit = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, layer);
-            RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, transform.up, distance, bringBackLayer);
-            RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, transform.up, distance, illegalLayer);
+            RaycastHit2D checkBringBack = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, bringBackLayer);
+            RaycastHit2D checkIllegal = Physics2D.Raycast(p.transform.position, ChainHookRotator.up, distance, illegalLayer);
             float[] distances = { distance + 1, distance + 1, distance + 1, distance };
 
             if (hit)
@@ -124,7 +124,10 @@ public class ChainHook : MonoBehaviour
             int lowest = GetIndexOfLowestValue(distances);
             switch (lowest)
             {
-                case 0: case 1:
+                case 0:
+                    ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .6f);
+                    break;
+                case 1:
                     ValidityDisplayerSprite.color = new Color(ValidityDisplayerSprite.color.r, ValidityDisplayerSprite.color.g, ValidityDisplayerSprite.color.b, .6f);
                     break;
                 default:
@@ -175,12 +178,9 @@ public class ChainHook : MonoBehaviour
         }
         if (checkIllegal)
         {
-            print("hey!");
             distances[2] = Vector2.Distance(p.transform.position, checkIllegal.point);
         }
-        print(distances);
         int lowest = GetIndexOfLowestValue(distances);
-        print(lowest);
         switch (lowest)
         {
             case 0:

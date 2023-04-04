@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Attack")]
     public float attackDamage = 5f;
-    public bool playerDetected = false;
+    [HideInInspector] public bool playerDetected = false;
     [SerializeField] protected bool canBeStunned = true;
     protected bool isStunned = false;
     [SerializeField] protected bool canBeKnockbacked = true;
@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
     [Header("Sprite")]
     [SerializeField] protected SpriteRenderer spriteRenderer;
     protected Coroutine damageFlashCoroutine;
+    protected Coroutine stunCoroutine;
 
     protected Rigidbody2D rb;
     protected Animator animator;
@@ -77,13 +78,20 @@ public class Enemy : MonoBehaviour
     }
 
     public virtual void Stun(float duration) {
-        StartCoroutine(StunIE(duration));
+        if (stunCoroutine != null) {
+            StopCoroutine(stunCoroutine);
+        }
+        
+        stunCoroutine = StartCoroutine(StunIE(duration));
     }
 
-    IEnumerator StunIE(float duration) {
+    protected virtual IEnumerator StunIE(float duration) {
         isStunned = true;
+        animator.ResetTrigger("Idle");
+        animator.SetTrigger("Hurt");
         yield return new WaitForSeconds(duration);
         isStunned = false;
+        animator.SetTrigger("Idle");
     }
 
     protected virtual void DamageFlash() {
@@ -96,7 +104,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator DamageFlashIE() {
         spriteRenderer.color = Color.red;
-
+        CameraShake.cs.cameraShake(.3f, 1.6f);
         while (spriteRenderer.color != Color.white) {
             yield return null;
             spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, Time.deltaTime * 3);

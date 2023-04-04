@@ -20,9 +20,8 @@ public class PlayerController : MonoBehaviour
      */
 
     [Header("Gameplay Stats")]
-    [SerializeField]
-    private float maxHP = 100f;
-    private float curHP = 100f;
+    public float maxHP = 100f;
+    public float curHP = 100f;
     public bool LockFlipDirection = false;
 
     [Header("HP Bar")]
@@ -88,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("WallJump")]
+    public bool wallJumpEnabled = true;
     [SerializeField]
     private bool isWallJumping;
     private float wallJumpingDirection;
@@ -102,11 +102,14 @@ public class PlayerController : MonoBehaviour
     public LeftArm arm;
 
     [Header("Grappling")]
+    public bool grappleEnabled = false;
     [SerializeField] private float grappleSpeed = 30f;
     public bool grappling = false;
     private Vector2 grappleEndPoint;
-    [SerializeField] private ChainHook hook;
+    public ChainHook hook;
     private float shouldLatch = 0f;
+    public GameObject chainHookIcon;
+
 
     [Header("Assign Value")]
     public Rigidbody2D rb;
@@ -114,7 +117,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private Animator anim;
+    public Animator anim;
     [SerializeField] private SpriteRenderer sprite;
     //knockback
     //private float kbDir; 
@@ -146,6 +149,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        CameraShake.cs.cameraShake(.3f, 1.6f);
         curHP -= amount;
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
@@ -207,7 +211,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitUntil(() => anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != str);
 
         LockFlipDirection = false;
-
+        if(str == "Player_ItemToss")
+        {
+            arm.throwing = false;
+        }
         yield return null;
     }
 
@@ -230,8 +237,26 @@ public class PlayerController : MonoBehaviour
     {
         p = this;
         curHP = maxHP;
+        LoadOptions();
     }
+    public void SaveOptions()
+    {
+        PlayerPrefs.SetInt("grappleEnabled", grappleEnabled ? 1 : 0);
+        PlayerPrefs.SetInt("wallJumpEnabled", wallJumpEnabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+    public void LoadOptions()
+    {
+        if (!PlayerPrefs.HasKey("curCheckPointID"))
+        {
+            SaveOptions();
+        }
+        grappleEnabled = PlayerPrefs.GetInt("grappleEnabled") == 1;
+        hook.gameObject.SetActive(grappleEnabled);
+        chainHookIcon.SetActive(grappleEnabled);
+        wallJumpEnabled = PlayerPrefs.GetInt("wallJumpEnabled") == 1;
 
+    }
     private void Update()
     {
         UpdateHealthUI();
@@ -400,6 +425,8 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
         anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
         anim.SetFloat("YSpeed", (rb.velocity.y));
+
+
         
     }
 
@@ -419,7 +446,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallSlide()
     {
-        if (walled && !closeToGround && horizontal != 0f && !grappling && (rb.velocity.y <= 0 || shouldLatch > 0))
+        if (wallJumpEnabled && walled && !closeToGround && horizontal != 0f && !grappling && (rb.velocity.y <= 0 || shouldLatch > 0))
         {
             isWallSliding = true;
             rb.velocity = new Vector2(0, -Mathf.Abs(Mathf.Clamp(rb.velocity.y, wallSlidingSpeed, float.MaxValue)));
