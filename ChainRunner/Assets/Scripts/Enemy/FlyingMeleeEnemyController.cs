@@ -6,7 +6,7 @@ using Pathfinding;
 public class FlyingMeleeEnemyController : Enemy
 {
     [Header("Melee Movement")]
-    [SerializeField] private float chaseSpeed = 2f;
+    [SerializeField] private float chaseSpeed = 500f;
 
     [Header("Melee Attack")]
     [SerializeField] protected float attackDistance = 2f;
@@ -47,11 +47,12 @@ public class FlyingMeleeEnemyController : Enemy
 
     [Header("Surround")]
     [SerializeField] protected float surroundDistance = 3f;
-    [SerializeField] private float surroundSpeed = 2f;
+    [SerializeField] private float surroundSpeed = 200f;
     private float surroundDistance_;
 
     [Header("Return to SpawnPoint")]
     [SerializeField] bool returnToSpawnpoint;
+    [SerializeField] float returnToSpawnpointSpeed = 200f;
     [SerializeField] Transform spawnpoint;
     [SerializeField] float playerYOffset = 1f;
 
@@ -125,12 +126,16 @@ public class FlyingMeleeEnemyController : Enemy
         else animator.SetFloat("Speed", 0);
 
         if (isStunned) { 
-            rb.gravityScale = 1;
-            rb.drag = 0.25f;
+            if (fallOnStun) {
+                rb.gravityScale = 1;
+                rb.drag = 0.25f;
+            }
             return; 
         } else {
-            rb.gravityScale = 0;
-            rb.drag = originalLinearDrag;
+            if (fallOnStun) {
+                rb.gravityScale = 0;
+                rb.drag = originalLinearDrag;
+            }
         }
         
         // state behaviors
@@ -246,8 +251,14 @@ public class FlyingMeleeEnemyController : Enemy
                     LookAtPlayer();
 
                     if (surroundDistance_ > playerDistance && !isBackHittingWall()) {
-                        float vX = (isFacingRight) ? -surroundSpeed : surroundSpeed;
-                        rb.velocity = new Vector2(vX, rb.velocity.y);
+                        // float vX = (isFacingRight) ? -surroundSpeed : surroundSpeed;
+                        // rb.velocity = new Vector2(vX, rb.velocity.y);
+
+                        Vector2 dir = (rb.position - new Vector2 (playerTransform.position.x, playerTransform.position.y + playerYOffset)).normalized;
+                        if (dir.y <= 0) dir = new Vector2(dir.x, -dir.y);
+
+                        Vector2 force = dir * surroundSpeed * Time.deltaTime;
+                        rb.AddForce(force);
                     } else {
                         rb.velocity = new Vector2(0, rb.velocity.y);
                     }
@@ -330,7 +341,7 @@ public class FlyingMeleeEnemyController : Enemy
 
         Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         
-        Vector2 force = dir * chaseSpeed * 100 * Time.deltaTime;
+        Vector2 force = dir * chaseSpeed * Time.deltaTime;
         rb.AddForce(force);
         FaceMovementDirection();
 
@@ -352,7 +363,7 @@ public class FlyingMeleeEnemyController : Enemy
 
         Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         
-        Vector2 force = dir * moveSpeed * 100 * Time.deltaTime;
+        Vector2 force = dir * returnToSpawnpointSpeed * Time.deltaTime;
         rb.AddForce(force);
         FaceMovementDirection();
 
