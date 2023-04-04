@@ -103,6 +103,7 @@ MonoBehaviour:
   speed: 20
   damage: 10
   rb: {fileID: 652125732109076966}
+  explosion: {fileID: 7248098748177825819, guid: 2c4d00ef3c6e5ce429ad891385c8feac, type: 3}
 --- !u!50 &652125732109076966
 Rigidbody2D:
   serializedVersion: 4

@@ -5,7 +5,6 @@ using UnityEngine;
 public class FlyingRangedEnemyController : FlyingMeleeEnemyController
 {
     [Header("Ranged Attacks")]
-    [SerializeField] bool retreatOnAttackCooldown = true;
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform shootpoint;
     [SerializeField] bool retreatDuringAttackCooldown = true;

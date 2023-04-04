@@ -58,11 +58,11 @@ public class Enemy : MonoBehaviour
         currHP -= dmg;
         playerDetected = true;
         
-        /*
+        
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
             animator.SetTrigger("Hurt");
         }
-        */
+        
         DamageFlash();
 
         if (currHP <= 0) {
@@ -87,11 +87,10 @@ public class Enemy : MonoBehaviour
 
     protected virtual IEnumerator StunIE(float duration) {
         isStunned = true;
-        animator.ResetTrigger("Idle");
-        animator.SetTrigger("Hurt");
+        animator.SetBool("isStunned", true);
         yield return new WaitForSeconds(duration);
         isStunned = false;
-        animator.SetTrigger("Idle");
+        animator.SetBool("isStunned", false);
     }
 
     protected virtual void DamageFlash() {
