@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
     protected Coroutine damageFlashCoroutine;
     protected Coroutine stunCoroutine;
+    [SerializeField] protected GameObject dizzyEffect;
 
     protected Rigidbody2D rb;
     protected Animator animator;
@@ -88,9 +89,11 @@ public class Enemy : MonoBehaviour
     protected virtual IEnumerator StunIE(float duration) {
         isStunned = true;
         animator.SetBool("isStunned", true);
+        if (dizzyEffect != null) dizzyEffect.SetActive(true);
         yield return new WaitForSeconds(duration);
         isStunned = false;
         animator.SetBool("isStunned", false);
+        if (dizzyEffect != null) dizzyEffect.SetActive(false);
     }
 
     protected virtual void DamageFlash() {
