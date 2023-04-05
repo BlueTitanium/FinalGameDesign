@@ -300,13 +300,13 @@ MonoBehaviour:
   ledgeCastDist: 0.75
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
   wallLayer:
     serializedVersion: 2
     m_Bits: 128
   lineOfSightLayers:
     serializedVersion: 2
-    m_Bits: 704
+    m_Bits: 1728
   nextWaypointDistance: 1
   closeRangePlayerDetection: {fileID: 4217707283381928148}
   view: {fileID: 7123435939340826505}
