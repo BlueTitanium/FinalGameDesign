@@ -109,7 +109,7 @@ public class Enemy : MonoBehaviour
         CameraShake.cs.cameraShake(.3f, 1.6f);
         while (spriteRenderer.color != Color.white) {
             yield return null;
-            spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, Time.deltaTime * 3);
+            spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, Time.deltaTime);
         }
 
         // yield return new WaitForSeconds(0.2f);
