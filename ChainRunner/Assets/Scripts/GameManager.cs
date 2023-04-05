@@ -193,4 +193,9 @@ public class GameManager : MonoBehaviour
             
         }
     }
+
+    public void Exit()
+    {
+        SceneManager.LoadScene("StartMenu");
+    }
 }
