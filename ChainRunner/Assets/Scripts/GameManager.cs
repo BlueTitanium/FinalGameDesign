@@ -150,10 +150,6 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SceneManager.LoadScene("Regina");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
             SceneManager.LoadScene("TaneimTesting");
         }
     }

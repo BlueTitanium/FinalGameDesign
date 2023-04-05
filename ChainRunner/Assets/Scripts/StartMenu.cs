@@ -11,6 +11,7 @@ public class StartMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
         if (!PlayerPrefs.HasKey("curLevel"))
         {
             continueButton.SetActive(false);

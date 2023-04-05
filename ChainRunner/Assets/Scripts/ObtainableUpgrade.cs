@@ -47,10 +47,12 @@ public class ObtainableUpgrade : MonoBehaviour
                     PlayerController.p.hook.gameObject.SetActive(true);
                     PlayerController.p.chainHookIcon.SetActive(true);
                     PlayerController.p.grappleEnabled = true;
+                    GameManager.g.ShowTitleEffect("Chainhook Obtained");
                     PlayerController.p.SaveOptions();
                     break;
                 case UpgradeList.Walljump:
                     PlayerController.p.wallJumpEnabled = true;
+                    GameManager.g.ShowTitleEffect("Walljump Obtained");
                     PlayerController.p.SaveOptions();
                     break;
                 default:

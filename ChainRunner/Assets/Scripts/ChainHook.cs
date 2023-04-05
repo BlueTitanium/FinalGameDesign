@@ -228,7 +228,7 @@ public class ChainHook : MonoBehaviour
             while (Vector2.Distance(hookPoint.position, startPoint.position) > .1f)
             {
                 hookPoint.position = Vector3.MoveTowards(hookPoint.position, startPoint.position, retractSpeed * 100 * Time.deltaTime);
-                if(bringBack)
+                if(bringBack && objectHit!=null)
                     objectHit.transform.position = Vector3.MoveTowards(hookPoint.position, startPoint.position, retractSpeed * 100 * Time.deltaTime);
                 yield return null;
             }
