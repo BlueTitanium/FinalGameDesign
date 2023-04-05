@@ -1228,6 +1228,8 @@ MonoBehaviour:
   isPlayerOwned: 1
   damage: 10
   kbAmount: 10
+  HitEffect: {fileID: 424938823835960928, guid: ba1cc18251e0e57489873690d1e182cf, type: 3}
+  hitPoint: {fileID: 2039576602}
 --- !u!1 &1344579815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,6 +1752,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1558708811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558708812}
+  m_Layer: 9
+  m_Name: ParticleFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1558708812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558708811}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.59, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5903701292702111210}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1606375250
 GameObject:
   m_ObjectHideFlags: 0
@@ -2787,6 +2820,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 111}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2039576601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2039576602}
+  m_Layer: 9
+  m_Name: PunchPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2039576602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039576601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.95, y: 0.45, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5903701292702111210}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2101319717
 GameObject:
   m_ObjectHideFlags: 0
@@ -3417,6 +3481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5903701291031690241}
   - component: {fileID: 5903701291031690240}
+  - component: {fileID: 5903701291312002280}
   m_Layer: 9
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -3478,6 +3543,21 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 5903701292239535396}
+--- !u!114 &5903701291312002280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5903701291031690242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37393137a901b17429a0242b9ca8147f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 5903701291031690240}
+  shakeLeft: 0
+  profile: {fileID: 11400000, guid: a44236d9814d8394d8bd444a91e485f9, type: 2}
 --- !u!1 &5903701291039907627
 GameObject:
   m_ObjectHideFlags: 0
@@ -7539,6 +7619,7 @@ GameObject:
   - component: {fileID: 5903701292239535401}
   - component: {fileID: 5903701292239535402}
   - component: {fileID: 5903701292239535403}
+  - component: {fileID: 2365942155165510275}
   m_Layer: 9
   m_Name: cm
   m_TagString: Untagged
@@ -7622,6 +7703,23 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!114 &2365942155165510275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5903701292239535397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &5903701292241096680
 GameObject:
   m_ObjectHideFlags: 0
@@ -8418,6 +8516,8 @@ MonoBehaviour:
   isPlayerOwned: 1
   damage: 5
   kbAmount: 2
+  HitEffect: {fileID: 5271847236697835028, guid: b17d247f7bdcc2742a155decbc0e0af2, type: 3}
+  hitPoint: {fileID: 5903701292442740163}
 --- !u!1 &5903701292486420038
 GameObject:
   m_ObjectHideFlags: 0
@@ -9189,6 +9289,8 @@ Transform:
   - {fileID: 1756055273}
   - {fileID: 1292712461}
   - {fileID: 1045786770}
+  - {fileID: 2039576602}
+  - {fileID: 1558708812}
   m_Father: {fileID: 5903701291101464325}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
