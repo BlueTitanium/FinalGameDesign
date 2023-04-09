@@ -55,17 +55,19 @@ public class Enemy : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    public virtual void TakeDamage(float dmg) {
+    public virtual void TakeDamage(float dmg, bool showsDamageAnimation = true) {
         currHP -= dmg;
         playerDetected = true;
-        
-        
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
-            animator.SetTrigger("Hurt");
-        }
-        
-        DamageFlash();
+        DmgTextController.d.SpawnDmgText(dmg, transform.position);
+        if (showsDamageAnimation)
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            {
+                animator.SetTrigger("Hurt");
+            }
 
+            DamageFlash();
+        }
         if (currHP <= 0) {
             Die();
         }

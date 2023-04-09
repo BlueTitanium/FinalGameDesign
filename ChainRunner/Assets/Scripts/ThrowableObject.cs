@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class ThrowableObject : MonoBehaviour
 {
-
+    public enum ObjectType
+    {
+        StraightProjectile,
+        GravityAffected,
+        Molotov,
+    }
     private bool nearObject = false;
-
+    public ObjectType type;
+    public float damage = 10f;
+    public float speed = 20f;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +27,7 @@ public class ThrowableObject : MonoBehaviour
 
         if (nearObject && Input.GetKeyDown(KeyCode.F))
         {
-            if (PlayerController.p.arm.GrabItem(GetComponent<SpriteRenderer>().sprite))
+            if (PlayerController.p.arm.GrabItem(GetComponent<SpriteRenderer>().sprite, type, damage, speed))
             {
                 GameManager.g.ItemPickupDisplayToggle(false);
                 Destroy(transform.parent.gameObject);
