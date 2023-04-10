@@ -56,6 +56,7 @@ public class Enemy : MonoBehaviour
     }
 
     public virtual void TakeDamage(float dmg, bool showsDamageAnimation = true) {
+        dmg *= PlayerController.p.damageMultiplier;
         currHP -= dmg;
         playerDetected = true;
         DmgTextController.d.SpawnDmgText(dmg, transform.position);

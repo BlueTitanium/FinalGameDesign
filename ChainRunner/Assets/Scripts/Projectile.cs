@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject explosion;
     private Transform child;
+    public ThrowableObject.ObjectType type;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +53,11 @@ public class Projectile : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("HookPoint"))
         {
             Destroy(gameObject);
         }
