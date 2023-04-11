@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public float maxHP = 100f;
     public float curHP = 100f;
     public bool LockFlipDirection = false;
+    public float damageMultiplier = 1;
+    public float healthMultiplier = 1;
 
     [Header("HP Bar")]
     [SerializeField]
@@ -149,6 +151,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        DmgTextController.d.SpawnDmgText(amount, transform.position);
         CameraShake.cs.cameraShake(.3f, 1.6f);
         curHP -= amount;
         lerpTimer = 0f;
@@ -164,12 +167,28 @@ public class PlayerController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void MultiplyDamage(float amount)
+    {
+        damageMultiplier += amount;
+        PlayerPrefs.SetFloat("DamageMultiplier", damageMultiplier);
+    }
+
+    public void MultiplyHealth(float amount)
+    {
+        healthMultiplier += amount;
+        maxHP = 100f * healthMultiplier;
+        PlayerPrefs.SetFloat("HealthMultiplier", healthMultiplier);
+        TakeHeal(maxHP);
+    }
+
     public void TakeHeal(float amount)
     {
         curHP += amount;
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
         curHPText.text = "" + curHP;
+        maxHPText.text = ""+ maxHP;
     }
 
     public void GrappleToLocation(Vector2 dir, Vector2 point)
@@ -238,11 +257,15 @@ public class PlayerController : MonoBehaviour
         p = this;
         curHP = maxHP;
         LoadOptions();
+
     }
     public void SaveOptions()
     {
         PlayerPrefs.SetInt("grappleEnabled", grappleEnabled ? 1 : 0);
         PlayerPrefs.SetInt("wallJumpEnabled", wallJumpEnabled ? 1 : 0);
+        PlayerPrefs.SetFloat("DamageMultiplier", damageMultiplier);
+        PlayerPrefs.SetFloat("HealthMultiplier", healthMultiplier);
+        TakeHeal(maxHP);
         PlayerPrefs.Save();
     }
     public void LoadOptions()
@@ -255,7 +278,10 @@ public class PlayerController : MonoBehaviour
         hook.gameObject.SetActive(grappleEnabled);
         chainHookIcon.SetActive(grappleEnabled);
         wallJumpEnabled = PlayerPrefs.GetInt("wallJumpEnabled") == 1;
-
+        healthMultiplier = PlayerPrefs.GetFloat("HealthMultiplier");
+        maxHP = 100 * PlayerPrefs.GetFloat("HealthMultiplier");
+        damageMultiplier = PlayerPrefs.GetFloat("DamageMultiplier");
+        TakeHeal(maxHP);
     }
     private void Update()
     {

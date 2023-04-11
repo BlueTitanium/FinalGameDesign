@@ -6,12 +6,14 @@ public class ObtainableUpgrade : MonoBehaviour
 {
     public enum UpgradeList
     {
-        Zipline, Walljump, 
+        Zipline, Walljump, DamageIncrease, HealthIncrease
     }
-
     public UpgradeList upgrade;
 
     private bool nearObject = false;
+
+    public float damageMultiplier = 1.2f;
+    public float healthMultiplier = 1.2f;
 
     // Start is called before the first frame update
     IEnumerator Start()
@@ -31,9 +33,14 @@ public class ObtainableUpgrade : MonoBehaviour
                     Destroy(gameObject);
                 }
                 break;
+            case UpgradeList.DamageIncrease:
+                break;
+            case UpgradeList.HealthIncrease:
+                break;
             default:
                 break;
         }
+        
     }
 
     // Update is called once per frame
@@ -47,10 +54,22 @@ public class ObtainableUpgrade : MonoBehaviour
                     PlayerController.p.hook.gameObject.SetActive(true);
                     PlayerController.p.chainHookIcon.SetActive(true);
                     PlayerController.p.grappleEnabled = true;
+                    GameManager.g.ShowTitleEffect("Chainhook Obtained");
                     PlayerController.p.SaveOptions();
                     break;
                 case UpgradeList.Walljump:
                     PlayerController.p.wallJumpEnabled = true;
+                    GameManager.g.ShowTitleEffect("Walljump Obtained");
+                    PlayerController.p.SaveOptions();
+                    break;
+                case UpgradeList.DamageIncrease:
+                    PlayerController.p.MultiplyDamage(damageMultiplier);
+                    GameManager.g.ShowTitleEffect("Damage Increased!");
+                    PlayerController.p.SaveOptions();
+                    break;
+                case UpgradeList.HealthIncrease:
+                    PlayerController.p.MultiplyHealth(healthMultiplier);
+                    GameManager.g.ShowTitleEffect("Health Increased!");
                     PlayerController.p.SaveOptions();
                     break;
                 default:

@@ -7,11 +7,12 @@ TagManager:
   - Ground
   - Rift
   - Enemy
+  - HookPoint
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Light
   - Water
   - UI
   - Ground
@@ -41,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BG
+    uniqueID: 1602646383
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

@@ -28,7 +28,7 @@ public class DialogueUI : MonoBehaviour
     private int index;
     public float wordSpeed;
 
-    private bool dialogueActive = false;
+    public bool dialogueActive = false;
 
     private char[] characters;
     private int cIndex = 0;
@@ -61,6 +61,7 @@ public class DialogueUI : MonoBehaviour
             isPlayer = playerD;
             npcIcon = icon;
             rightCharRend.sprite = npcIcon;
+            rightOverlay.sprite = npcIcon;
             if (faceLeft)
             {
                 rightCharScale.localScale = new Vector3(-2, 2);
@@ -78,13 +79,13 @@ public class DialogueUI : MonoBehaviour
         dialogueActive = true;
         dialogueText.text = "";
         index = 0;
-        if (isPlayer[index])
+        if (isPlayer.Length > index && isPlayer[index])
         {
             charName.text = "Player";
             leftOverlay.enabled = false;
             rightOverlay.enabled = true;
         }
-        else
+        else 
         {
             charName.text = cName;
             leftOverlay.enabled = true;
@@ -109,6 +110,7 @@ public class DialogueUI : MonoBehaviour
     {
         yield return new WaitUntil(()=>!anim.isPlaying);
         anim.Play("Dialogue_End");
+
     }
     public void ShowHUD()
     {
@@ -147,7 +149,7 @@ public class DialogueUI : MonoBehaviour
 
     IEnumerator Typing()
     {
-        if (isPlayer[index])
+        if (isPlayer.Length > index  && isPlayer[index])
         {
             charName.text = "Player";
             leftOverlay.enabled = false;
@@ -159,7 +161,7 @@ public class DialogueUI : MonoBehaviour
             leftOverlay.enabled = true;
             rightOverlay.enabled = false;
         }
-        while (cIndex < characters.Length)
+        while (cIndex < characters.Length && dialogueText.text.Length < characters.Length)
         {
             dialogueText.text += characters[cIndex];
             cIndex += 1;
