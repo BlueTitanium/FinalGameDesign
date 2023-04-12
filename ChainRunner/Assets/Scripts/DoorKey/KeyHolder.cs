@@ -5,48 +5,40 @@ using UnityEngine;
 
 public class KeyHolder : MonoBehaviour {
 
-    public event EventHandler OnKeysChanged;
+    public static KeyHolder k;
 
-    private List<Key.KeyType> keyList;
+    private List<int> keyList;
 
-    private void Awake() {
-        keyList = new List<Key.KeyType>();
+    private void Start() {
+        k = this;
+        keyList = new List<int>();
     }
 
-    public List<Key.KeyType> GetKeyList() {
+    public List<int> GetKeyList() {
         return keyList;
     }
 
-    public void AddKey(Key.KeyType keyType) {
-        Debug.Log("Added Key: " + keyType);
-        keyList.Add(keyType);
-        OnKeysChanged?.Invoke(this, EventArgs.Empty);
+    public bool AddKey(int i) {
+        if (!keyList.Contains(i))
+        {
+            keyList.Add(i);
+            return true;
+        } 
+        return false;
+
     }
 
-    public void RemoveKey(Key.KeyType keyType) {
-        keyList.Remove(keyType);
-        OnKeysChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public bool ContainsKey(Key.KeyType keyType) {
-        return keyList.Contains(keyType);
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D collider) {
-        Key key = collider.GetComponent<Key>();
-        if (key != null) {
-            AddKey(key.GetKeyType());
-            Destroy(key.gameObject);
+    public bool RemoveKey(int i)
+    {
+        if (keyList.Contains(i))
+        {
+            keyList.Remove(i);
+            return true;
         }
-
-        KeyDoor keyDoor = collider.GetComponent<KeyDoor>();
-        if (keyDoor != null) {
-            if (ContainsKey(keyDoor.GetKeyType())) {
-                RemoveKey(keyDoor.GetKeyType());
-                keyDoor.OpenDoor();
-            } 
-        }
+        return false;
     }
 
+    public bool ContainsKey(int i) {
+        return keyList.Contains(i);
+    }
 }

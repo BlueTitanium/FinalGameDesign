@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class Key : MonoBehaviour {
 
-    [SerializeField] private KeyType keyType;
+    public int key;
+    private bool nearObject;
 
-    public enum KeyType {
-        Red,
-        Blue
+    // Update is called once per frame
+    void Update()
+    {
+
+
+        if (nearObject && Input.GetKeyDown(KeyCode.E))
+        {
+            KeyHolder.k.AddKey(key);
+            GameManager.g.InteractionDisplayToggle(false);
+            Destroy(gameObject);
+        }
     }
 
-    public KeyType GetKeyType() {
-        return keyType;
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            nearObject = true;
+            GameManager.g.InteractionDisplayToggle(nearObject);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            nearObject = false;
+            GameManager.g.InteractionDisplayToggle(nearObject);
+        }
     }
 
 }
