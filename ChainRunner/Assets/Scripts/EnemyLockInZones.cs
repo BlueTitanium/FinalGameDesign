@@ -7,12 +7,15 @@ public class EnemyLockInZones : MonoBehaviour
 
     private bool doOnce = false;
     private bool ready = false;
+
     public GameObject[] enemiesToSpawn;
     public Transform[] spawnPoints;
 
     public GameObject[] entrances;
     public List<GameObject> enemiesLeft;
     private int enemiesCount = 0;
+
+    public GameObject[] Rewards;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +62,8 @@ public class EnemyLockInZones : MonoBehaviour
 
     void Activate()
     {
-        foreach(var g in entrances)
+        GameManager.g.ShowTitleEffect("Battle Start!");
+        foreach (var g in entrances)
         {
             g.SetActive(true);
         }
@@ -86,5 +90,20 @@ public class EnemyLockInZones : MonoBehaviour
         {
             g.SetActive(false);
         }
+        GameManager.g.ShowTitleEffect("Room Cleared!");
+        StartCoroutine(SpawnRewards());
     }
+
+    IEnumerator SpawnRewards()
+    {
+        yield return null;
+        foreach (var g in Rewards)
+        {
+            GameObject a = Instantiate(g, PlayerController.p.transform.position, g.transform.rotation);
+            yield return null;
+            yield return new WaitUntil(() => a == null);
+            yield return null;
+        }
+    }
+
 }
