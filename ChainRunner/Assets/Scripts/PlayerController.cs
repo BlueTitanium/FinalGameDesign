@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
         curHP -= amount;
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
-        curHPText.text = ""+ curHP;
+        curHPText.text = ""+ (int) curHP;
         anim.SetTrigger("Damaged");
         if(curHP <= 0)
         {
@@ -187,8 +187,8 @@ public class PlayerController : MonoBehaviour
         curHP += amount;
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
-        curHPText.text = "" + curHP;
-        maxHPText.text = ""+ maxHP;
+        curHPText.text = "" + (int) curHP;
+        maxHPText.text = ""+ (int) maxHP;
     }
 
     public void GrappleToLocation(Vector2 dir, Vector2 point)

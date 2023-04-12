@@ -160,6 +160,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrade: 0
+  damageMultiplier: 1.2
+  healthMultiplier: 1.2
 --- !u!61 &7395000138318215002
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -224,9 +226,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 152891625
-  m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingLayerID: 676402427
+  m_SortingLayer: 2
+  m_SortingOrder: 5
   m_Sprite: {fileID: 962287171, guid: 2fd4a86c92841ac49a5c12c4d8c216bf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
