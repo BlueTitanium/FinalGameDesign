@@ -132,8 +132,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -904573795
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -461911943, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -386,7 +386,7 @@ MonoBehaviour:
   attackDamage: 10
   playerDetected: 0
   canBeStunned: 1
-  canBeKnockbacked: 1
+  canBeKnockbacked: 0
   spriteRenderer: {fileID: 2914396374041338699}
   dizzyEffect: {fileID: 4327749323851467626}
   chaseSpeed: 2
@@ -742,8 +742,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -904573795
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -1412859943, guid: ef8090fba9e5a434888a0164afd3cae8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
