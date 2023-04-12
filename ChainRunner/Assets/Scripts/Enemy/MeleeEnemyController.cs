@@ -123,6 +123,7 @@ public class MeleeEnemyController : Enemy
         if (!knockbacked) animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         else animator.SetFloat("Speed", 0);
 
+        if (isStunned && !canBeKnockbacked) rb.velocity = new Vector2(0, rb.velocity.y);
         if (isStunned) return;
         
         // state behaviors
@@ -344,16 +345,24 @@ public class MeleeEnemyController : Enemy
 
         if (currentWaypoint >= path.vectorPath.Count) return;
 
-        Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
+        Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - rb.position);
 
-        if (Mathf.Abs(dir.x) < 0.05) { 
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            LookAtPlayer();
-        } else {
-            if (dir.x > 0) rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
-            else if (dir.x < 0) rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
-            FaceMovementDirection();
+        // if (Mathf.Abs(dir.x) < 0.1) { 
+        //     rb.velocity = new Vector2(0, rb.velocity.y);
+        //     LookAtPlayer();
+        // } else {
+        //     if (dir.x > 0.1) rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
+        //     else if (dir.x < -0.1) rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
+        //     FaceMovementDirection();
+        // }
+
+        if (dir.x > 0.1) {
+            rb.velocity = new Vector2(chaseSpeed, rb.velocity.y);
         }
+        else if (dir.x < -0.1) {
+            rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
+        }
+        FaceMovementDirection();
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 

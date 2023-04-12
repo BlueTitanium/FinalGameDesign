@@ -5034,7 +5034,7 @@ Canvas:
   m_GameObject: {fileID: 5903701291425357973}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1256699659}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -6658,7 +6658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 652125732109076963, guid: 2721c6236e57a5f4d94f4ee733fdbbe5, type: 3}
   gravityAffectedProjectilePrefab: {fileID: 546792697880470597, guid: e73f6cbf2eba2e841b636638e4bb3cbd, type: 3}
-  MolotovPrefab: {fileID: 0}
+  MolotovPrefab: {fileID: 546792697880470597, guid: af2f3ba3757631d4593290bb2d67b9c7, type: 3}
   p: {fileID: 5903701292702111209}
   shootpoint: {fileID: 5903701291075118914}
   hasItem: 0
@@ -8560,7 +8560,7 @@ GameObject:
   - component: {fileID: 1194981475}
   m_Layer: 0
   m_Name: Triangle
-  m_TagString: Untagged
+  m_TagString: HookPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9487,6 +9487,8 @@ MonoBehaviour:
   maxHP: 100
   curHP: 100
   LockFlipDirection: 0
+  damageMultiplier: 1
+  healthMultiplier: 1
   frontHealthBar: {fileID: 5903701291508427360}
   backHealthBar: {fileID: 5903701292639454345}
   chipSpeed: 2

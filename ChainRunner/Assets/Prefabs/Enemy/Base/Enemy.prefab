@@ -685,7 +685,7 @@ MonoBehaviour:
     m_Bits: 128
   lineOfSightLayers:
     serializedVersion: 2
-    m_Bits: 1632
+    m_Bits: 1728
   nextWaypointDistance: 1
   closeRangePlayerDetection: {fileID: 8538808891810419015}
   hotzone: {fileID: 7548131679669887210}

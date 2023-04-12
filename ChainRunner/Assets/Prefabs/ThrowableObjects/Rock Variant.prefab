@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 543588879, guid: 525efa67290ca99499ad12e3385d43c7, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 543588879, guid: 525efa67290ca99499ad12e3385d43c7, type: 3}
+      propertyPath: damage
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 816678813, guid: 525efa67290ca99499ad12e3385d43c7, type: 3}
       propertyPath: m_Size.x
       value: 0.31037903
@@ -109,7 +117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3127245853892997454, guid: 525efa67290ca99499ad12e3385d43c7, type: 3}
       propertyPath: m_Name
-      value: Rock Variant
+      value: Rock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 525efa67290ca99499ad12e3385d43c7, type: 3}

@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
         curHP -= amount;
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
-        curHPText.text = ""+ curHP;
+        curHPText.text = ""+ (int) curHP;
         anim.SetTrigger("Damaged");
         if(curHP <= 0)
         {
@@ -187,8 +187,8 @@ public class PlayerController : MonoBehaviour
         curHP += amount;
         lerpTimer = 0f;
         curHP = Mathf.Clamp(curHP, 0, maxHP);
-        curHPText.text = "" + curHP;
-        maxHPText.text = ""+ maxHP;
+        curHPText.text = "" + (int) curHP;
+        maxHPText.text = ""+ (int) maxHP;
     }
 
     public void GrappleToLocation(Vector2 dir, Vector2 point)
@@ -259,20 +259,21 @@ public class PlayerController : MonoBehaviour
         LoadOptions();
 
     }
-    public void SaveOptions()
+    public void SaveOptions(bool start = false)
     {
         PlayerPrefs.SetInt("grappleEnabled", grappleEnabled ? 1 : 0);
         PlayerPrefs.SetInt("wallJumpEnabled", wallJumpEnabled ? 1 : 0);
         PlayerPrefs.SetFloat("DamageMultiplier", damageMultiplier);
+        print(damageMultiplier);
         PlayerPrefs.SetFloat("HealthMultiplier", healthMultiplier);
         TakeHeal(maxHP);
         PlayerPrefs.Save();
     }
     public void LoadOptions()
     {
-        if (!PlayerPrefs.HasKey("curCheckPointID"))
+        if (!PlayerPrefs.HasKey("grappleEnabled"))
         {
-            SaveOptions();
+            SaveOptions(true);
         }
         grappleEnabled = PlayerPrefs.GetInt("grappleEnabled") == 1;
         hook.gameObject.SetActive(grappleEnabled);
