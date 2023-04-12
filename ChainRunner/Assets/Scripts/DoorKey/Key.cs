@@ -15,6 +15,7 @@ public class Key : MonoBehaviour {
         if (nearObject && Input.GetKeyDown(KeyCode.E))
         {
             KeyHolder.k.AddKey(key);
+            GameManager.g.ShowTitleEffect("KEY OBTAINED");
             GameManager.g.InteractionDisplayToggle(false);
             Destroy(gameObject);
         }

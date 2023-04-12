@@ -397,14 +397,29 @@ MonoBehaviour:
   npcIcon: {fileID: -1177872456, guid: a202290608e698346b26931e10aa2d60, type: 3}
   cName: ???
   dialogue:
-  - Psst...
-  - Who's there?
-  - Just somebody who wants to help...
-  - Say... Don't you want out of here?
+  - "You, prisoner\u2026"
+  - What is your name?
   - ...
-  - No need to be shy, prisoner!
-  - Let's leave this hellhole, now!
-  isPlayer: 00010000010000
+  - 'What is your purpose? '
+  - ...
+  - 'Not a talkative fellow, I see. '
+  - 'Fine, then. If you have no purpose, I shall give you one. '
+  - ...?
+  - Even if you wish to, I cannot leave this chamber.
+  - You can enter this rift I've created.
+  - "You\u2019re probably wondering how you can possibly thank me for this."
+  - Come free me.
+  - Why should I go through the trouble?
+  - What can you possibly offer me?
+  - "I\u2019m a prisoner like you. Meet me in the center of hell."
+  - "If you find me, I will tell you who you were\u2026 and I will give you a purpose.  "
+  - "But if you don\u2019t want to, you\u2019re free to live a miserable existence
+    up here in Limbo."
+  - 'You can remain unimportant and unmemorable if you wish to. '
+  - "\u2026"
+  - "Alright, I\u2019ll take you up on your offer."
+  - Excellent.
+  isPlayer: 000001000100000101000000010100000000010100
   faceLeft: 0
   playerIsNear: 0
 --- !u!4 &718960663 stripped
@@ -26685,7 +26700,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1842226883
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.3726415, g: 1, b: 0.8665017, a: 1}
