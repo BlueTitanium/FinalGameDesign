@@ -391,7 +391,7 @@ MonoBehaviour:
   dizzyEffect: {fileID: 4327749323851467626}
   chaseSpeed: 2
   attackDistance: 8
-  attackCooldown: 3
+  attackCooldown: 2
   initialState: 1
   wallCheck: {fileID: 2914396373817689508}
   ledgeCheck: {fileID: 2914396373992004430}

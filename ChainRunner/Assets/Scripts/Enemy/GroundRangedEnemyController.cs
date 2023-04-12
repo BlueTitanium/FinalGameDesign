@@ -17,7 +17,10 @@ public class GroundRangedEnemyController : MeleeEnemyController
         shootDir = (playerTransform.position - transform.position).normalized;
     }
     public void AttackRange() {
-        Projectile g = Instantiate(projectilePrefab, shootpoint.position, transform.rotation).GetComponent<Projectile>();
+        float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        Projectile g = Instantiate(projectilePrefab, shootpoint.position, rotation).GetComponent<Projectile>();
         // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
         g.rb.velocity = shootDir * g.speed;
     }
