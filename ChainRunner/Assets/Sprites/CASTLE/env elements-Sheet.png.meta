@@ -120,10 +120,10 @@ TextureImporter:
       name: env elements-Sheet_0
       rect:
         serializedVersion: 2
-        x: 57
-        y: 1933
-        width: 490
-        height: 627
+        x: 0
+        y: 1920
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,10 +141,10 @@ TextureImporter:
       name: env elements-Sheet_1
       rect:
         serializedVersion: 2
-        x: 616
-        y: 2066
-        width: 665
-        height: 494
+        x: 640
+        y: 1920
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,10 +162,10 @@ TextureImporter:
       name: env elements-Sheet_2
       rect:
         serializedVersion: 2
-        x: 1277
-        y: 2056
-        width: 554
-        height: 504
+        x: 1280
+        y: 1920
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,10 +183,10 @@ TextureImporter:
       name: env elements-Sheet_3
       rect:
         serializedVersion: 2
-        x: 1240
-        y: 1295
-        width: 680
-        height: 719
+        x: 0
+        y: 1280
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,10 +204,10 @@ TextureImporter:
       name: env elements-Sheet_4
       rect:
         serializedVersion: 2
-        x: 702
-        y: 1252
-        width: 421
-        height: 746
+        x: 640
+        y: 1280
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,10 +225,10 @@ TextureImporter:
       name: env elements-Sheet_5
       rect:
         serializedVersion: 2
-        x: 69
-        y: 1268
-        width: 468
-        height: 655
+        x: 1280
+        y: 1280
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,10 +246,10 @@ TextureImporter:
       name: env elements-Sheet_6
       rect:
         serializedVersion: 2
-        x: 101
-        y: 635
-        width: 457
-        height: 601
+        x: 0
+        y: 640
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,10 +267,10 @@ TextureImporter:
       name: env elements-Sheet_7
       rect:
         serializedVersion: 2
-        x: 825
-        y: 630
-        width: 335
-        height: 532
+        x: 640
+        y: 640
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,10 +288,10 @@ TextureImporter:
       name: env elements-Sheet_8
       rect:
         serializedVersion: 2
-        x: 1336
-        y: 614
-        width: 510
-        height: 644
+        x: 1280
+        y: 640
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -309,10 +309,10 @@ TextureImporter:
       name: env elements-Sheet_9
       rect:
         serializedVersion: 2
-        x: 111
-        y: 103
-        width: 442
-        height: 287
+        x: 0
+        y: 0
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -330,10 +330,10 @@ TextureImporter:
       name: env elements-Sheet_10
       rect:
         serializedVersion: 2
-        x: 654
-        y: 97
-        width: 687
-        height: 325
+        x: 640
+        y: 0
+        width: 640
+        height: 640
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
