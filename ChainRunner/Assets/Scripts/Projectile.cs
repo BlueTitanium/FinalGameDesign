@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject explosion;
     private Transform child;
+    public ThrowableObject.ObjectType type;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +38,8 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isPlayerOwned && collision.CompareTag("Enemy")) {
+        
+        if (isPlayerOwned && collision.gameObject.CompareTag("Enemy")) {
             Enemy enemyController = collision.GetComponent<Enemy>();
             enemyController.Knockback(transform, 2);
             enemyController.TakeDamage(damage);
@@ -45,12 +47,17 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (!isPlayerOwned && collision.CompareTag("Player")) {
+        if (!isPlayerOwned && collision.gameObject.CompareTag("Player")) {
             PlayerController.p.TakeDamage(damage);
             Destroy(gameObject);
         }
 
-        if (collision.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("HookPoint"))
         {
             Destroy(gameObject);
         }
