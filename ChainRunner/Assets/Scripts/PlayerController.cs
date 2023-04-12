@@ -259,20 +259,21 @@ public class PlayerController : MonoBehaviour
         LoadOptions();
 
     }
-    public void SaveOptions()
+    public void SaveOptions(bool start = false)
     {
         PlayerPrefs.SetInt("grappleEnabled", grappleEnabled ? 1 : 0);
         PlayerPrefs.SetInt("wallJumpEnabled", wallJumpEnabled ? 1 : 0);
         PlayerPrefs.SetFloat("DamageMultiplier", damageMultiplier);
+        print(damageMultiplier);
         PlayerPrefs.SetFloat("HealthMultiplier", healthMultiplier);
         TakeHeal(maxHP);
         PlayerPrefs.Save();
     }
     public void LoadOptions()
     {
-        if (!PlayerPrefs.HasKey("curCheckPointID"))
+        if (!PlayerPrefs.HasKey("grappleEnabled"))
         {
-            SaveOptions();
+            SaveOptions(true);
         }
         grappleEnabled = PlayerPrefs.GetInt("grappleEnabled") == 1;
         hook.gameObject.SetActive(grappleEnabled);

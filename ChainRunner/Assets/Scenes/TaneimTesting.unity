@@ -21833,6 +21833,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3580047444646233942, guid: d2409277f636a9d4fad55e123ec1d384, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 497535678, guid: b475f0109efb8cb47872c271a479efa0, type: 3}
     - target: {fileID: 3580047444646233943, guid: d2409277f636a9d4fad55e123ec1d384, type: 3}
       propertyPath: m_Name
       value: HealthIncrease
@@ -21894,6 +21898,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamageIncrease
       objectReference: {fileID: 0}
+    - target: {fileID: 320323404057972229, guid: b672ef2d7fae1e944b6d9c6637e90b2f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1818878890, guid: b475f0109efb8cb47872c271a479efa0, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b672ef2d7fae1e944b6d9c6637e90b2f, type: 3}
 --- !u!1001 &7395000138823226606
