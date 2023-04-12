@@ -146,6 +146,6 @@ public class Enemy : MonoBehaviour
 
     protected void FaceMovementDirection() {
         if ((rb.velocity.x > 0.05 && !isFacingRight) || 
-            (rb.velocity.x < 0.05 && isFacingRight)) flipX();
+            (rb.velocity.x < -0.05 && isFacingRight)) flipX();
     }
 }

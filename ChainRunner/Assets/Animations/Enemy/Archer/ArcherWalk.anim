@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MeleeWalk
+  m_Name: ArcherWalk
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 1897514301, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+      value: {fileID: -461911943, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
     - time: 0.25
-      value: {fileID: 746793971, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+      value: {fileID: 265508907, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
     - time: 0.5
-      value: {fileID: -1616529335, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+      value: {fileID: -603253270, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
     - time: 0.75
-      value: {fileID: -1168175192, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+      value: {fileID: 139584523, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
     attribute: m_Sprite
     path: EnemySprite
     classID: 212
@@ -46,10 +46,10 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 1897514301, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
-    - {fileID: 746793971, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
-    - {fileID: -1616529335, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
-    - {fileID: -1168175192, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+    - {fileID: -461911943, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+    - {fileID: 265508907, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+    - {fileID: -603253270, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+    - {fileID: 139584523, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
