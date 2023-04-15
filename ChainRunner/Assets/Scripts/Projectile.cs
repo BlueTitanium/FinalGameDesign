@@ -43,7 +43,7 @@ public class Projectile : MonoBehaviour
             Enemy enemyController = collision.GetComponent<Enemy>();
             enemyController.Knockback(transform, 2);
             enemyController.TakeDamage(damage);
-            enemyController.Stun(5f);
+            enemyController.Stun(1.5f);
             Destroy(gameObject);
         }
 
