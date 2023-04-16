@@ -17,6 +17,7 @@ public class CheckpointController : MonoBehaviour
         p.transform.position = checkpoints[curCheckPointID].position;
     }
 
+
     public void setCheckPoint(int id)
     {
         if(curCheckPointID != id || PlayerController.p.curHP < PlayerController.p.maxHP)
@@ -52,6 +53,21 @@ public class CheckpointController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            curCheckPointID = (curCheckPointID + 1) % checkpoints.Length;
+            p.transform.position = checkpoints[curCheckPointID].position;
+            SaveOptions();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            curCheckPointID -= 1;
+            if(curCheckPointID < 0)
+            {
+                curCheckPointID = checkpoints.Length - 1;
+            }
+            p.transform.position = checkpoints[curCheckPointID].position;
+            SaveOptions();
+        }
     }
 }
