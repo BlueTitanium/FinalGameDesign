@@ -1025,7 +1025,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 6.79
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2495,7 +2495,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4197576
+    m_Bits: 4197592
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: d7e6c473b982c03439247ad6d138c831, type: 2}
   m_TargetDisplay: 1
@@ -3429,7 +3429,7 @@ MonoBehaviour:
   maxDistanceAllowed: 20
   layer:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 464
   illegalLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -3685,7 +3685,7 @@ MonoBehaviour:
   m_Follow: {fileID: 5903701292702111210}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 6
+    OrthographicSize: 6.79
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -9503,7 +9503,7 @@ MonoBehaviour:
   extraJumpPower: 19
   extraJumps: 1
   jumpBufferTime: 0.2
-  fastFallSpeed: -20
+  fastFallSpeed: -40
   dashSpeed: 20
   additionalVelocity: 20
   dashTime: 0.2
