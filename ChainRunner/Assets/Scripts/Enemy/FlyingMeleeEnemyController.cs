@@ -127,7 +127,7 @@ public class FlyingMeleeEnemyController : Enemy
 
         if (isStunned) { 
             if (fallOnStun) {
-                rb.gravityScale = 1;
+                rb.gravityScale = 5;
                 rb.drag = 0.25f;
             }
             return; 
