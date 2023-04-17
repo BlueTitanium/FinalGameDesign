@@ -10,7 +10,10 @@ public class Key : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
+        if (KeyHolder.k.ContainsKey(key))
+        {
+            Destroy(gameObject);
+        }
 
         if (nearObject && Input.GetKeyDown(KeyCode.E))
         {
