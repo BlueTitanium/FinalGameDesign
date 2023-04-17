@@ -17,4 +17,14 @@ public class Spikes : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            Vector2 dir = (transform.position - other.transform.position).normalized;
+            PlayerController.p.KnockBack(dir.normalized, kbForce);
+            PlayerController.p.TakeDamage(damage);
+        }
+    }
+
 }
