@@ -438,13 +438,13 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(horizontalV, rb.velocity.y);
         }
-        if(Input.GetKeyDown(KeyCode.S) && !grappling)
+        if(Input.GetKey(KeyCode.S) && !grappling)
         {
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -10000, fastFallSpeed));
-        } else
-        if(rb.velocity.y < 0 && !grappling)
+            rb.velocity = new Vector2(rb.velocity.x, fastFallSpeed);
+        } 
+        else if(rb.velocity.y < 0 && !grappling)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, fastFallSpeed/2, 50));
         }
 
         //ANIMATION
