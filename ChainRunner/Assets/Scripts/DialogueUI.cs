@@ -60,6 +60,7 @@ public class DialogueUI : MonoBehaviour
             dialogue = dialogues;
             isPlayer = playerD;
             npcIcon = icon;
+            rightCharRend.enabled = true;
             rightCharRend.sprite = npcIcon;
             rightOverlay.sprite = npcIcon;
             if (faceLeft)
@@ -110,7 +111,6 @@ public class DialogueUI : MonoBehaviour
     {
         yield return new WaitUntil(()=>!anim.isPlaying);
         anim.Play("Dialogue_End");
-
     }
     public void ShowHUD()
     {

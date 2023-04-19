@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     private Animation titleEffect;
     [SerializeField]
     private Animation hudAnim;
+    [SerializeField]
+    private Animator LoadingAnimator;
     // Start is called before the first frame update
     void Start()
     {
@@ -142,16 +144,37 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SceneManager.LoadScene("JessDemo");
+            LoadNextScene("JessDemo");
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SceneManager.LoadScene("JessDemoLimbo");
+            LoadNextScene("LIMBO");
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SceneManager.LoadScene("TaneimTesting");
+            LoadNextScene("anna_dev3");
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            LoadNextScene("JessLust");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            LoadNextScene("CatacombsTaneim");
+        }
+    }
+
+    public void LoadNextScene(string name)
+    {
+        StartCoroutine(ActuallyRestart(name));
+    }
+
+    private IEnumerator ActuallyRestart(string name)
+    {
+        LoadingAnimator.SetTrigger("Load");
+        yield return new WaitUntil(() => LoadingAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "LoadIn");
+        yield return new WaitUntil(() => LoadingAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Loading");
+        SceneManager.LoadScene(name);
     }
 
     private IEnumerator Pause()
@@ -192,6 +215,6 @@ public class GameManager : MonoBehaviour
 
     public void Exit()
     {
-        SceneManager.LoadScene("StartMenu");
+        LoadNextScene("StartMenu");
     }
 }

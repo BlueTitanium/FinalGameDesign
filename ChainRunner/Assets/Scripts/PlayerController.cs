@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Die()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.g.LoadNextScene(SceneManager.GetActiveScene().name);
     }
 
     public void MultiplyDamage(float amount)
@@ -319,7 +319,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            GameManager.g.LoadNextScene(SceneManager.GetActiveScene().name);
         }
 
         IsGrounded(); IsWalled();

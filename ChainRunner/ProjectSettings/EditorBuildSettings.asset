@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JessDemo.unity
     guid: 767e46b6f499aa644ae91e4b8e369211
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/JessDemoLimbo.unity
     guid: cc297f4ff6d857041b9e95a61082c8fb
   - enabled: 0
@@ -23,4 +23,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/anna_dev2.unity
     guid: 56a07d068c22d60469065b9d1ff4ae01
+  - enabled: 1
+    path: Assets/Scenes/anna_dev3.unity
+    guid: 8d76d878b997acf4fa36466982f92af2
+  - enabled: 1
+    path: Assets/Scenes/LIMBO.unity
+    guid: 415e547865e21b54aaac02c98b8ce6ad
+  - enabled: 1
+    path: Assets/Scenes/JessLust.unity
+    guid: 0b99c9dc6e3325a4b8b4dd8b6f62d495
+  - enabled: 1
+    path: Assets/Scenes/CatacombsTaneim.unity
+    guid: 3b288018a703e7842b09bc29fd41e9f8
   m_configObjects: {}

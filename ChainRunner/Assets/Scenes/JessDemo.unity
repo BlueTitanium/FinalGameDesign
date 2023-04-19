@@ -393,7 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   a: {fileID: 6231936743802235123}
-  scene: JessDemoLimbo
+  scene: LIMBO
   npcIcon: {fileID: -1177872456, guid: a202290608e698346b26931e10aa2d60, type: 3}
   cName: ???
   dialogue:

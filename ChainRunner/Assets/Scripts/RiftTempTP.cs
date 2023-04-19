@@ -11,6 +11,7 @@ public class RiftTempTP : MonoBehaviour
     private bool nearObject = false;
     public string scene = "JessDemoLimbo";
     private bool doneOnce = false;
+    private bool switchingScene = false;
 
     public Sprite npcIcon;
 
@@ -40,9 +41,10 @@ public class RiftTempTP : MonoBehaviour
                 DialogueUI.d.DialogueActivate(cName, dialogue, isPlayer, npcIcon, faceLeft);
             }
         }
-        if (doneOnce && !DialogueUI.d.dialogueActive)
+        if (doneOnce && !DialogueUI.d.dialogueActive && !switchingScene)
         {
-            SceneManager.LoadScene(scene);
+            switchingScene = true;
+            GameManager.g.LoadNextScene(scene);
         }
     }
 
