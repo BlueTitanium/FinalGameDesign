@@ -279,7 +279,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1748943734601897847}
   dizzyEffect: {fileID: 2631483857919644061}
   chaseSpeed: 1
-  attackDistance: 1.75
+  attackDistance: 2.25
   attackCooldown: 1.5
   initialState: 1
   wallCheck: {fileID: 1748943733852467608}

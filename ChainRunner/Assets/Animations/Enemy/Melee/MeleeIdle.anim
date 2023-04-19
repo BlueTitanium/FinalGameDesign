@@ -20,9 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 1325720229, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+      value: {fileID: 796266074, guid: fe1798a158dea314eae47e37a4b3d37c, type: 3}
     - time: 0.1
-      value: {fileID: 1325720229, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+      value: {fileID: 796266074, guid: fe1798a158dea314eae47e37a4b3d37c, type: 3}
     attribute: m_Sprite
     path: EnemySprite
     classID: 212
@@ -42,8 +42,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 1325720229, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
-    - {fileID: 1325720229, guid: 002c0a54af007cd47ad225e680c8bb19, type: 3}
+    - {fileID: 796266074, guid: fe1798a158dea314eae47e37a4b3d37c, type: 3}
+    - {fileID: 796266074, guid: fe1798a158dea314eae47e37a4b3d37c, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
