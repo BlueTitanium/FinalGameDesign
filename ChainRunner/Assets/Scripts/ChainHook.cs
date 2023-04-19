@@ -225,7 +225,7 @@ public class ChainHook : MonoBehaviour
             hookRb.velocity = Vector2.zero;
             retractingHook = true;
             yield return new WaitForSeconds(delay);
-            while (Vector2.Distance(hookPoint.position, startPoint.position) > .1f)
+            while (Vector2.Distance(hookPoint.position, startPoint.position) > 1f)
             {
                 hookPoint.position = Vector3.MoveTowards(hookPoint.position, startPoint.position, retractSpeed * 100 * Time.deltaTime);
                 if(bringBack && objectHit!=null)
