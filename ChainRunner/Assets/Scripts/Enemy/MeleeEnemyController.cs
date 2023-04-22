@@ -28,6 +28,9 @@ public class MeleeEnemyController : Enemy
     [SerializeField] private Transform ledgeCheck;
     [SerializeField] private Transform backWallCheck;
     [SerializeField] private Transform backLedgeCheck;
+    [SerializeField] private Transform jumpCheck;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float wallCastDist = 0.01f;
     [SerializeField] private float ledgeCastDist = 0.75f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
@@ -40,6 +43,9 @@ public class MeleeEnemyController : Enemy
     private int currentWaypoint = 0;
     // bool reachedEndOfPath = false;
     Seeker seeker;
+
+    [Header("Jumping")]
+    [SerializeField] private float jumpForce = 15f;
 
 
     [Header("Others")]
@@ -153,14 +159,15 @@ public class MeleeEnemyController : Enemy
 
 
     bool isHittingWall() {
-        float castDist = (isFacingRight) ? ledgeCastDist : -ledgeCastDist;
+        // float castDist = (isFacingRight) ? wallCastDist : -wallCastDist;
 
-        Vector3 targetPos = wallCheck.position;
-        targetPos.x += castDist;
+        // Vector3 targetPos = wallCheck.position;
+        // targetPos.x += castDist;
 
-        Debug.DrawLine(wallCheck.position, targetPos, Color.red);
+        // Debug.DrawLine(wallCheck.position, targetPos, Color.red);
 
-        return Physics2D.Linecast(wallCheck.position, targetPos, groundLayer | wallLayer);
+        // return Physics2D.Linecast(wallCheck.position, targetPos, groundLayer | wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, wallCastDist, groundLayer | wallLayer);
     }
 
     bool isNearEdge() {
@@ -170,6 +177,17 @@ public class MeleeEnemyController : Enemy
         Debug.DrawLine(ledgeCheck.position, targetPos, Color.red);
 
         return !Physics2D.Linecast(ledgeCheck.position, targetPos, groundLayer | wallLayer);
+    }
+
+    bool isHittingTallWall() {
+        float castDist = (isFacingRight) ? ledgeCastDist : -ledgeCastDist;
+
+        Vector3 targetPos = jumpCheck.position;
+        targetPos.x += castDist;
+
+        Debug.DrawLine(jumpCheck.position, targetPos, Color.red);
+
+        return Physics2D.Linecast(jumpCheck.position, targetPos, groundLayer | wallLayer);
     }
 
     bool isBackHittingWall() {
@@ -190,6 +208,11 @@ public class MeleeEnemyController : Enemy
         Debug.DrawLine(backLedgeCheck.position, targetPos, Color.blue);
 
         return !Physics2D.Linecast(backLedgeCheck.position, targetPos, groundLayer | wallLayer);
+    }
+
+
+    bool IsGrounded() {
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
 
@@ -239,8 +262,10 @@ public class MeleeEnemyController : Enemy
 
                     rb.velocity = new Vector2(vX, rb.velocity.y);    
 
-                    if (isHittingWall() || isNearEdge()) {
+                    if (isHittingTallWall() || isNearEdge()) {
                         flipX();
+                    } else if (isHittingWall() && IsGrounded()) {
+                        rb.velocity = Vector2.up * jumpForce;
                     }
                 }
                 break;
@@ -362,6 +387,12 @@ public class MeleeEnemyController : Enemy
         else if (dir.x < -0.1) {
             rb.velocity = new Vector2(-chaseSpeed, rb.velocity.y);
         }
+
+        // jump if needed
+        if (isHittingWall() && !isHittingTallWall() && IsGrounded()) {
+            rb.velocity = Vector2.up * jumpForce;
+        }
+
         FaceMovementDirection();
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
