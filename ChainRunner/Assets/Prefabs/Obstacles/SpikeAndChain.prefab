@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 7025143741334890752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.525, z: -4.8406725}
-  m_LocalScale: {x: 0.23220992, y: 3.1117098, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7025143741486415927}
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 152891625
   m_SortingLayer: 1
   m_SortingOrder: 3
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -1875847654, guid: 0d4044d9744b3224582386debdcd3a3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -141,11 +141,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1138141343, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: uniqueID
-      value: 6691286313800905985
+      value: 829094225756969025
       objectReference: {fileID: 0}
     - target: {fileID: 5547456499127769913, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: m_Name
       value: Spike
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769914, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1964757568, guid: 0d4044d9744b3224582386debdcd3a3e, type: 3}
+    - target: {fileID: 5547456499127769914, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769914, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769914, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769914, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5547456499127769915, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: m_RootOrder
@@ -153,15 +173,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5547456499127769915, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5547456499127769915, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5547456499127769915, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5547456499127769915, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: m_LocalPosition.x
@@ -206,6 +226,22 @@ PrefabInstance:
     - target: {fileID: 5547456499127769915, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769916, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_Size.x
+      value: 1.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769916, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_Size.y
+      value: 1.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769916, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.6875
+      objectReference: {fileID: 0}
+    - target: {fileID: 5547456499127769916, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.6875
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ff683025ca2cf940bf50e4730e87d23, type: 3}
