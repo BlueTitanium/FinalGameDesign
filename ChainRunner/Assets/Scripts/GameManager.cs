@@ -215,6 +215,7 @@ public class GameManager : MonoBehaviour
 
     public void Exit()
     {
+        Time.timeScale = 1;
         LoadNextScene("StartMenu");
     }
 }
