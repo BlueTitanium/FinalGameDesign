@@ -8,6 +8,7 @@ public class CrumblingPlatform : MonoBehaviour
     bool isCrumbling = false;
     [SerializeField] private BoxCollider2D b;
     [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private Animator a;
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +22,9 @@ public class CrumblingPlatform : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (!isCrumbling && collision.gameObject.CompareTag("Player"))
         {
             StartCoroutine(Crumble());
         }
@@ -34,13 +35,13 @@ public class CrumblingPlatform : MonoBehaviour
         if (!isCrumbling)
         {
             isCrumbling = true;
+            a.SetTrigger("Crumble");
+            yield return new WaitUntil(() => a.GetCurrentAnimatorClipInfo(0)[0].clip.name == "CrumblingPlatformsCrumble");
+            yield return new WaitUntil(() => a.GetCurrentAnimatorClipInfo(0)[0].clip.name == "CrumblingPlatformsGone");
             yield return new WaitForSeconds(time);
-            b.enabled = false;
-            sr.enabled = false;
-            yield return new WaitForSeconds(time*2);
-            b.enabled = true;
-            sr.enabled = true;
-            yield return new WaitForSeconds(time/2);
+            a.SetTrigger("Uncrumble");
+            yield return new WaitUntil(() => a.GetCurrentAnimatorClipInfo(0)[0].clip.name == "CrumblingPlatformsCrumble");
+            yield return new WaitUntil(() => a.GetCurrentAnimatorClipInfo(0)[0].clip.name == "CrumblingPlatforms");
             isCrumbling = false;
         }
     }

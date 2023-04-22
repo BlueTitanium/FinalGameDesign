@@ -9724,7 +9724,7 @@ MonoBehaviour:
   wallSlidingSpeed: 2
   wallJumpEnabled: 0
   isWallJumping: 0
-  wallJumpingTime: 0.4
+  wallJumpingTime: 0.2
   wallJumpingDuration: 0.5
   wallJumpingPower: {x: 8, y: 25}
   arm: {fileID: 5903701291905872668}
