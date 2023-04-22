@@ -98,6 +98,7 @@ public class PlayerController : MonoBehaviour
     private float wallJumpingCounter;
     [SerializeField]
     private float wallJumpingDuration = 0.2f;
+    [SerializeField]
     private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
     [Header("Weapon")]
