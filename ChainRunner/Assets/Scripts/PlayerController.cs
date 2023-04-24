@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public bool LockFlipDirection = false;
     public float damageMultiplier = 1;
     public float healthMultiplier = 1;
+    public bool allowControls = true;
 
     [Header("HP Bar")]
     [SerializeField]
@@ -287,175 +288,178 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        UpdateHealthUI();
+        if (allowControls)
+        {
+            UpdateHealthUI();
 
-        //TESTING BINDS BELOW
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            TakeDamage(10);
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            TakeHeal(10);
-        }
+            //TESTING BINDS BELOW
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                TakeDamage(10);
+            }
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                TakeHeal(10);
+            }
 
             if (grappling)
-        {
-            shouldLatch = 1f;
-            if (!hook.hookSent)
             {
-                grappling = false;
+                shouldLatch = 1f;
+                if (!hook.hookSent)
+                {
+                    grappling = false;
+                }
+                rb.velocity = -(transform.position - hook.hookPoint.position).normalized * grappleSpeed;
+                if (Vector2.Distance(transform.position, grappleEndPoint) < 2f)
+                {
+                    hook.TryRetractHook();
+                    grappling = false;
+                }
             }
-            rb.velocity = -(transform.position-hook.hookPoint.position).normalized * grappleSpeed;
-            if(Vector2.Distance(transform.position, grappleEndPoint) < 2f)
+            if (shouldLatch > 0f)
             {
-                hook.TryRetractHook();
-                grappling = false;
+                shouldLatch -= Time.deltaTime;
             }
-        }
-        if (shouldLatch > 0f)
-        {
-            shouldLatch -= Time.deltaTime;
-        }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            GameManager.g.LoadNextScene(SceneManager.GetActiveScene().name);
-        }
-
-        IsGrounded(); IsWalled();
-        float horizontalV = rb.velocity.x;
-        if (dashTimeLeft <= 0)
-        {
-            horizontal = Input.GetAxisRaw("Horizontal");
-            
-            horizontalV += horizontal * speed * Time.deltaTime;
-            if (Mathf.Abs(horizontal) < .1f)
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                horizontalV *= grounded ? 0 : Mathf.Pow((1f - dampingStop), Time.deltaTime * 10f);
+                GameManager.g.LoadNextScene(SceneManager.GetActiveScene().name);
             }
-            else if (Mathf.Sign(horizontal) != Mathf.Sign(horizontalV))
+
+            IsGrounded(); IsWalled();
+            float horizontalV = rb.velocity.x;
+            if (dashTimeLeft <= 0)
             {
-                horizontalV *= Mathf.Pow(1f - dampingTurn, Time.deltaTime * 10f);
+                horizontal = Input.GetAxisRaw("Horizontal");
+
+                horizontalV += horizontal * speed * Time.deltaTime;
+                if (Mathf.Abs(horizontal) < .1f)
+                {
+                    horizontalV *= grounded ? 0 : Mathf.Pow((1f - dampingStop), Time.deltaTime * 10f);
+                }
+                else if (Mathf.Sign(horizontal) != Mathf.Sign(horizontalV))
+                {
+                    horizontalV *= Mathf.Pow(1f - dampingTurn, Time.deltaTime * 10f);
+                }
+                else
+                {
+                    horizontalV *= Mathf.Pow(1 - dampingNormal, Time.deltaTime * 10f);
+                }
             }
             else
             {
-                horizontalV *= Mathf.Pow(1 - dampingNormal, Time.deltaTime * 10f);
+                horizontalV = (Mathf.Abs(horizontalV) > Mathf.Abs(horizontal * dashSpeed)) ? Mathf.Sign(horizontal) * Mathf.Abs(horizontalV) + horizontal * additionalVelocity * Time.deltaTime : horizontal * dashSpeed;
             }
-        }
-        else
-        {
-            horizontalV = (Mathf.Abs(horizontalV) > Mathf.Abs(horizontal * dashSpeed)) ? Mathf.Sign(horizontal) * Mathf.Abs(horizontalV) + horizontal * additionalVelocity * Time.deltaTime : horizontal * dashSpeed;
-        }
-        
-        //kbDir = horizontal==0? kbDir:horizontal;
-        //kbDir = horizontal;
 
-        if(isWallSliding)
-            extraJumpsLeft = extraJumps;
-        if (grounded)
-        {
-            coyoteTimeLeft = coyoteTime;
-            extraJumpsLeft = extraJumps;
-        } 
-        else
-        {
-            coyoteTimeLeft -= Time.deltaTime;
-        }
-        if (Input.GetButtonDown("Jump"))
-        {
-            jumpBufferLeft = jumpBufferTime;
-        }
-        else
-        {
-            jumpBufferLeft -= Time.deltaTime;
-        }
-        if (jumpBufferLeft > 0 && wallJumpingCounter <= 0 && !isWallJumping)
-        {
+            //kbDir = horizontal==0? kbDir:horizontal;
+            //kbDir = horizontal;
 
-            if(coyoteTimeLeft > 0f)
+            if (isWallSliding)
+                extraJumpsLeft = extraJumps;
+            if (grounded)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-                if (grappling)
-                {
-                    hook.TryRetractHook();
-                    grappling = false;
-                }
-            } else
-            {
-                if(extraJumpsLeft > 0)
-                {
-                    extraJumpsLeft -= 1;
-                    rb.velocity = new Vector2(rb.velocity.x, extraJumpPower);
-                }
-                if (grappling)
-                {
-                    hook.TryRetractHook();
-                    grappling = false;
-                }
-            }        
-        }
-
-
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-            coyoteTimeLeft = 0;
-            jumpBufferLeft = 0;
-        }
-
-
-        WallSlide();
-        WallJump();
-        
-        if (!isWallJumping && !LockFlipDirection)
-        {
-            Flip();
-        }
-        
-        /*
-        if (dashCDLeft <= 0f && Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if(horizontal == 0)
-            {
-                horizontal = isFacingRight ? 1 : -1;
+                coyoteTimeLeft = coyoteTime;
+                extraJumpsLeft = extraJumps;
             }
-            dashTimeLeft = dashTime;
-            dashCDLeft = dashCD;
-        }
-        if(dashTimeLeft > 0)
-        {
-            dashTimeLeft -= Time.deltaTime;
-        }
-        if(dashCDLeft > 0)
-        {
-            dashCDLeft -= Time.deltaTime;
-        }*/
-        if(knockBackTimeLeft > 0)
-        {
-            knockBackTimeLeft -= Time.deltaTime;
-        }
-        if (!isWallJumping && !grappling && knockBackTimeLeft <= 0)
-        {
-            rb.velocity = new Vector2(horizontalV, rb.velocity.y);
-        }
-        if(Input.GetKey(KeyCode.S) && !grappling)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, fastFallSpeed);
-        } 
-        else if(rb.velocity.y < 0 && !grappling)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, fastFallSpeed/2, 50));
-        }
+            else
+            {
+                coyoteTimeLeft -= Time.deltaTime;
+            }
+            if (Input.GetButtonDown("Jump"))
+            {
+                jumpBufferLeft = jumpBufferTime;
+            }
+            else
+            {
+                jumpBufferLeft -= Time.deltaTime;
+            }
+            if (jumpBufferLeft > 0 && wallJumpingCounter <= 0 && !isWallJumping)
+            {
 
-        //ANIMATION
-        anim.SetBool("Grounded", grounded);
-        anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
-        anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
-        anim.SetFloat("YSpeed", (rb.velocity.y));
+                if (coyoteTimeLeft > 0f)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                    if (grappling)
+                    {
+                        hook.TryRetractHook();
+                        grappling = false;
+                    }
+                }
+                else
+                {
+                    if (extraJumpsLeft > 0)
+                    {
+                        extraJumpsLeft -= 1;
+                        rb.velocity = new Vector2(rb.velocity.x, extraJumpPower);
+                    }
+                    if (grappling)
+                    {
+                        hook.TryRetractHook();
+                        grappling = false;
+                    }
+                }
+            }
 
 
-        
+            if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+                coyoteTimeLeft = 0;
+                jumpBufferLeft = 0;
+            }
+
+
+            WallSlide();
+            WallJump();
+
+            if (!isWallJumping && !LockFlipDirection)
+            {
+                Flip();
+            }
+
+            /*
+            if (dashCDLeft <= 0f && Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                if(horizontal == 0)
+                {
+                    horizontal = isFacingRight ? 1 : -1;
+                }
+                dashTimeLeft = dashTime;
+                dashCDLeft = dashCD;
+            }
+            if(dashTimeLeft > 0)
+            {
+                dashTimeLeft -= Time.deltaTime;
+            }
+            if(dashCDLeft > 0)
+            {
+                dashCDLeft -= Time.deltaTime;
+            }*/
+            if (knockBackTimeLeft > 0)
+            {
+                knockBackTimeLeft -= Time.deltaTime;
+            }
+            if (!isWallJumping && !grappling && knockBackTimeLeft <= 0)
+            {
+                rb.velocity = new Vector2(horizontalV, rb.velocity.y);
+            }
+            if (Input.GetKey(KeyCode.S) && !grappling)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, fastFallSpeed);
+            }
+            else if (rb.velocity.y < 0 && !grappling)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, fastFallSpeed / 2, 50));
+            }
+
+            //ANIMATION
+            anim.SetBool("Grounded", grounded);
+            anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
+            anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
+            anim.SetFloat("YSpeed", (rb.velocity.y));
+
+
+        }
     }
 
 

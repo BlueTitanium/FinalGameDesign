@@ -9701,6 +9701,7 @@ MonoBehaviour:
   LockFlipDirection: 0
   damageMultiplier: 1
   healthMultiplier: 1
+  allowControls: 1
   frontHealthBar: {fileID: 5903701291508427360}
   backHealthBar: {fileID: 5903701292639454345}
   chipSpeed: 2
