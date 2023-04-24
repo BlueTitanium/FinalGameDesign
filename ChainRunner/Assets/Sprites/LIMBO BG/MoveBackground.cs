@@ -32,6 +32,6 @@ public class MoveBackground : MonoBehaviour
         {
             startPos -=length;
         }
-        
+
     }
 }
