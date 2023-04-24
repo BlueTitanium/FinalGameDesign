@@ -371,7 +371,7 @@ MonoBehaviour:
   closeRangePlayerDetection: {fileID: 885340990344825074}
   view: {fileID: 6060320779696832431}
   hotzone: {fileID: 1366548125674551647}
-  surroundDistance: 5
+  surroundDistance: 7
   surroundSpeed: 300
   returnToSpawnpoint: 1
   returnToSpawnpointSpeed: 200

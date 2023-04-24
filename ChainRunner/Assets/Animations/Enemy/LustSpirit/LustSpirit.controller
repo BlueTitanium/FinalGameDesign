@@ -44,7 +44,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 67fd1b003871b76469a9ac0b1ac8d67b, type: 2}
+  m_Motion: {fileID: 7400000, guid: e3e066393f79baa40be95f53df644bfb, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -186,7 +186,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b0225852e0cb9304aa5cca6cf512ef61, type: 2}
+  m_Motion: {fileID: 7400000, guid: fc962370a4b3a604cb6cec09916d4283, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -299,7 +299,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GhostRanged
+  m_Name: LustSpirit
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Idle
@@ -372,7 +372,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 10eec664f4d824d4b9c2ff1f2784621e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6878487a1587d3c469ce3e8f5ea2899e, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -551,7 +551,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b0225852e0cb9304aa5cca6cf512ef61, type: 2}
+  m_Motion: {fileID: 7400000, guid: fc962370a4b3a604cb6cec09916d4283, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -580,7 +580,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3c2a16e1e6394334fa02e9fe65f4eecb, type: 2}
+  m_Motion: {fileID: 7400000, guid: 311f3d75482bc8f4fb660bcaa02f0b71, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

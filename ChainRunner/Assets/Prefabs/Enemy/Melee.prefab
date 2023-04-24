@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480141820285781476}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: -0.95, z: 0}
+  m_LocalPosition: {x: -0.75, y: -1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c341344bdb10343830f6180ad8c23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 200
+  maxHP: 150
   moveSpeed: 1
   isFacingRight: 1
   attackDamage: 30
@@ -289,7 +289,8 @@ MonoBehaviour:
   jumpCheck: {fileID: 1535661086127546822}
   groundCheck: {fileID: 2753947250700179346}
   wallCastDist: 0.01
-  ledgeCastDist: 0.75
+  tallWallCastDist: 0.75
+  ledgeCastDist: 1.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 1088
@@ -405,7 +406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748943734013570933}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7, y: -0.95, z: 0}
+  m_LocalPosition: {x: 0.7, y: -1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

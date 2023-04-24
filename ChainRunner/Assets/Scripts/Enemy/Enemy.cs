@@ -30,6 +30,9 @@ public class Enemy : MonoBehaviour
     protected Animator animator;
     protected Transform playerTransform;
 
+    [Header("Others")]
+    [SerializeField] private bool unkillable; // "takes damage", but doesn't actually decrease HP
+
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -57,7 +60,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void TakeDamage(float dmg, bool showsDamageAnimation = true) {
         dmg *= PlayerController.p.damageMultiplier;
-        currHP -= dmg;
+        if (!unkillable) currHP -= dmg;
         playerDetected = true;
         DmgTextController.d.SpawnDmgText(dmg, transform.position);
         if (showsDamageAnimation)
@@ -82,6 +85,8 @@ public class Enemy : MonoBehaviour
     }
 
     public virtual void Stun(float duration) {
+        if (!canBeStunned) return;
+        
         if (stunCoroutine != null) {
             StopCoroutine(stunCoroutine);
         }

@@ -31,7 +31,8 @@ public class MeleeEnemyController : Enemy
     [SerializeField] private Transform jumpCheck;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float wallCastDist = 0.01f;
-    [SerializeField] private float ledgeCastDist = 0.75f;
+    [SerializeField] private float tallWallCastDist = 0.75f;
+    [SerializeField] private float ledgeCastDist = 1.5f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] protected LayerMask lineOfSightLayers;
@@ -180,7 +181,7 @@ public class MeleeEnemyController : Enemy
     }
 
     bool isHittingTallWall() {
-        float castDist = (isFacingRight) ? ledgeCastDist : -ledgeCastDist;
+        float castDist = (isFacingRight) ? tallWallCastDist : -tallWallCastDist;
 
         Vector3 targetPos = jumpCheck.position;
         targetPos.x += castDist;
@@ -262,7 +263,7 @@ public class MeleeEnemyController : Enemy
 
                     rb.velocity = new Vector2(vX, rb.velocity.y);    
 
-                    if (isHittingTallWall() || isNearEdge()) {
+                    if (isHittingTallWall() || (isNearEdge() && IsGrounded())) {
                         flipX();
                     } else if (isHittingWall() && IsGrounded()) {
                         rb.velocity = Vector2.up * jumpForce;
