@@ -352,38 +352,18 @@ public class PlayerController : MonoBehaviour
             {
                 horizontalV = (Mathf.Abs(horizontalV) > Mathf.Abs(horizontal * dashSpeed)) ? Mathf.Sign(horizontal) * Mathf.Abs(horizontalV) + horizontal * additionalVelocity * Time.deltaTime : horizontal * dashSpeed;
             }
-        }
-        
-        
-        //kbDir = horizontal==0? kbDir:horizontal;
-        //kbDir = horizontal;
-        if (horizontal > 0 || horizontal < 0) {
-            //AudioManager.PlaySound("playerWalk");
-        }
 
-        if(isWallSliding)
-            extraJumpsLeft = extraJumps;
-        if (grounded)
-        {
-            coyoteTimeLeft = coyoteTime;
-            extraJumpsLeft = extraJumps;
-        } 
-        else
-        {
-            coyoteTimeLeft -= Time.deltaTime;
-        }
-        if (Input.GetButtonDown("Jump"))
-        {
-            jumpBufferLeft = jumpBufferTime;
-            //AudioManager.PlaySound("playerJump");
-        }
-        else
-        {
-            jumpBufferLeft -= Time.deltaTime;
-        }
-        if (jumpBufferLeft > 0 && wallJumpingCounter <= 0 && !isWallJumping)
-        {
-            if(coyoteTimeLeft > 0f)
+
+            //kbDir = horizontal==0? kbDir:horizontal;
+            //kbDir = horizontal;
+            if (horizontal > 0 || horizontal < 0)
+            {
+                //AudioManager.PlaySound("playerWalk");
+            }
+
+            if (isWallSliding)
+                extraJumpsLeft = extraJumps;
+            if (grounded)
             {
                 coyoteTimeLeft = coyoteTime;
                 extraJumpsLeft = extraJumps;
@@ -395,6 +375,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 jumpBufferLeft = jumpBufferTime;
+                //AudioManager.PlaySound("playerJump");
             }
             else
             {
@@ -402,7 +383,6 @@ public class PlayerController : MonoBehaviour
             }
             if (jumpBufferLeft > 0 && wallJumpingCounter <= 0 && !isWallJumping)
             {
-
                 if (coyoteTimeLeft > 0f)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
@@ -484,6 +464,7 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Walled", isWallSliding && ((isFacingRight && horizontal > 0) || (!isFacingRight && horizontal < 0)));
             anim.SetFloat("XSpeed", Mathf.Abs(rb.velocity.x));
             anim.SetFloat("YSpeed", (rb.velocity.y));
+
 
 
         }
