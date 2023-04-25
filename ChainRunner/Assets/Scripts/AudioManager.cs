@@ -46,7 +46,8 @@ public class AudioManager : MonoBehaviour
                 break;
             case "playerJump":
                 audioSrc.clip = playerJumpSound;
-                audioSrc.Play();
+                //audioSrc.Play();
+                audioSrc.PlayOneShot(playerJumpSound);
                 break;
             case "playerAttack":
                 audioSrc.clip = playerAttackSound;
@@ -55,7 +56,8 @@ public class AudioManager : MonoBehaviour
             case "playerChain": //throw chain
                 //audioSrc.volume = 0.1f;
                 audioSrc.clip = playerChainSound;
-                audioSrc.Play();
+                //audioSrc.Play();
+                audioSrc.PlayOneShot(playerChainSound);
                 break;
             case "woosh":
                 audioSrc.clip = wooshSound;
@@ -71,11 +73,11 @@ public class AudioManager : MonoBehaviour
                 break;
             case "itemFall":
                 audioSrc.clip = itemFallSound;
-                audioSrc.Play();
+                audioSrc.PlayOneShot(itemFallSound);
                 break;
             case "itemHit":
                 audioSrc.clip = itemHitSound;
-                audioSrc.Play();
+                audioSrc.PlayOneShot(itemHitSound);
                 break;
 
             case "attune":

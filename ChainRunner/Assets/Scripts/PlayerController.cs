@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
-    
+    private bool jumped = false;
     [SerializeField]
     private float coyoteTime = .2f;
     private float coyoteTimeLeft;
@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 jumpBufferLeft = jumpBufferTime;
-                //AudioManager.PlaySound("playerJump");
+                
             }
             else
             {
@@ -385,6 +385,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (coyoteTimeLeft > 0f)
                 {
+                    if (!jumped)
+                    {
+                        AudioManager.PlaySound("playerJump");
+                        jumped = true;
+                    }
                     rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
                     if (grappling)
                     {
@@ -396,6 +401,11 @@ public class PlayerController : MonoBehaviour
                 {
                     if (extraJumpsLeft > 0)
                     {
+                        if (!jumped)
+                        {
+                            AudioManager.PlaySound("playerJump");
+                            jumped = true;
+                        }
                         extraJumpsLeft -= 1;
                         rb.velocity = new Vector2(rb.velocity.x, extraJumpPower);
                     }
@@ -413,6 +423,7 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
                 coyoteTimeLeft = 0;
                 jumpBufferLeft = 0;
+                jumped = false;
             }
 
 
