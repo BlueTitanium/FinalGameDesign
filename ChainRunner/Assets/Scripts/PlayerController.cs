@@ -202,6 +202,7 @@ public class PlayerController : MonoBehaviour
 
     public void Punch()
     {
+        AudioManager.PlaySound("playerAttack");
         anim.SetTrigger("Punch");
         StartCoroutine(HandleAnimDirection("Player_Punch"));
     }
@@ -250,6 +251,7 @@ public class PlayerController : MonoBehaviour
     }
     public void StartHook()
     {
+        AudioManager.PlaySound("playerChain");
         anim.SetTrigger("ChainToss");
         StartCoroutine(HandleAnimDirection("Player_ChainToss"));
     }
@@ -350,13 +352,38 @@ public class PlayerController : MonoBehaviour
             {
                 horizontalV = (Mathf.Abs(horizontalV) > Mathf.Abs(horizontal * dashSpeed)) ? Mathf.Sign(horizontal) * Mathf.Abs(horizontalV) + horizontal * additionalVelocity * Time.deltaTime : horizontal * dashSpeed;
             }
+        }
+        
+        
+        //kbDir = horizontal==0? kbDir:horizontal;
+        //kbDir = horizontal;
+        if (horizontal > 0 || horizontal < 0) {
+            //AudioManager.PlaySound("playerWalk");
+        }
 
-            //kbDir = horizontal==0? kbDir:horizontal;
-            //kbDir = horizontal;
-
-            if (isWallSliding)
-                extraJumpsLeft = extraJumps;
-            if (grounded)
+        if(isWallSliding)
+            extraJumpsLeft = extraJumps;
+        if (grounded)
+        {
+            coyoteTimeLeft = coyoteTime;
+            extraJumpsLeft = extraJumps;
+        } 
+        else
+        {
+            coyoteTimeLeft -= Time.deltaTime;
+        }
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpBufferLeft = jumpBufferTime;
+            //AudioManager.PlaySound("playerJump");
+        }
+        else
+        {
+            jumpBufferLeft -= Time.deltaTime;
+        }
+        if (jumpBufferLeft > 0 && wallJumpingCounter <= 0 && !isWallJumping)
+        {
+            if(coyoteTimeLeft > 0f)
             {
                 coyoteTimeLeft = coyoteTime;
                 extraJumpsLeft = extraJumps;

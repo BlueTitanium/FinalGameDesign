@@ -48,6 +48,7 @@ public class ObtainableUpgrade : MonoBehaviour
     {
         if (nearObject && Input.GetKeyDown(KeyCode.E))
         {
+            AudioManager.PlaySound("playerPowerUp");
             switch (upgrade)
             {
                 case UpgradeList.Zipline:
