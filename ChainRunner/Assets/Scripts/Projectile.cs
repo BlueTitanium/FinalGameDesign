@@ -40,6 +40,7 @@ public class Projectile : MonoBehaviour
     {
         
         if (isPlayerOwned && collision.gameObject.CompareTag("Enemy")) {
+            AudioManager.PlaySound("itemHit");
             Enemy enemyController = collision.GetComponent<Enemy>();
             enemyController.Knockback(transform, 2);
             enemyController.TakeDamage(damage);
@@ -54,11 +55,13 @@ public class Projectile : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Ground"))
         {
+            AudioManager.PlaySound("itemFall");
             Destroy(gameObject);
         }
 
         if (collision.gameObject.CompareTag("HookPoint"))
         {
+            AudioManager.PlaySound("itemFall");
             Destroy(gameObject);
         }
     }

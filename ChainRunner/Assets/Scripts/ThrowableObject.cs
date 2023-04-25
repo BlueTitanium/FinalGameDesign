@@ -29,6 +29,7 @@ public class ThrowableObject : MonoBehaviour
         {
             if (PlayerController.p.arm.GrabItem(GetComponent<SpriteRenderer>().sprite, type, damage, speed))
             {
+                AudioManager.PlaySound("playerGrabItem");
                 GameManager.g.ItemPickupDisplayToggle(false);
                 Destroy(transform.parent.gameObject);
             }
