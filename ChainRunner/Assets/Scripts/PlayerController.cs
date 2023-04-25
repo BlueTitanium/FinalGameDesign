@@ -250,6 +250,7 @@ public class PlayerController : MonoBehaviour
     }
     public void StartHook()
     {
+        AudioManager.PlaySound("playerChain");
         anim.SetTrigger("ChainToss");
         StartCoroutine(HandleAnimDirection("Player_ChainToss"));
     }
@@ -369,7 +370,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             jumpBufferLeft = jumpBufferTime;
-            AudioManager.PlaySound("playerJump");
+            //AudioManager.PlaySound("playerJump");
         }
         else
         {
@@ -377,7 +378,6 @@ public class PlayerController : MonoBehaviour
         }
         if (jumpBufferLeft > 0 && wallJumpingCounter <= 0 && !isWallJumping)
         {
-
             if(coyoteTimeLeft > 0f)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
@@ -404,6 +404,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
+            //AudioManager.PlaySound("playerJump");
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             coyoteTimeLeft = 0;
             jumpBufferLeft = 0;

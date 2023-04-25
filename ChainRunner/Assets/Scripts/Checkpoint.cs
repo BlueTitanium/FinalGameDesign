@@ -19,7 +19,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (nearObject && Input.GetKeyDown(KeyCode.E))
         {
-            
+            AudioManager.PlaySound("attune");
             CheckpointController.c.setCheckPoint(id);
         }
     }

@@ -6,7 +6,11 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioClip playerWalkSound, 
                             playerJumpSound,
-                            playerAttackSound;
+                            playerAttackSound,
+                            playerChainSound,
+                            wooshSound,
+                            playerPowerUpSound,
+                            attuneSound;
     static AudioSource audioSrc;
     // Start is called before the first frame update
     void Start()
@@ -14,6 +18,10 @@ public class AudioManager : MonoBehaviour
         playerWalkSound = Resources.Load<AudioClip>("playerWalk");
         playerJumpSound = Resources.Load<AudioClip>("playerJump");
         playerAttackSound = Resources.Load<AudioClip>("playerAttack");
+        playerChainSound = Resources.Load<AudioClip>("playerChain");
+        wooshSound = Resources.Load<AudioClip>("woosh");
+        playerPowerUpSound = Resources.Load<AudioClip>("playerPowerUp");
+        attuneSound = Resources.Load<AudioClip>("attune");
 
         audioSrc = GetComponent<AudioSource>();
     }
@@ -34,6 +42,20 @@ public class AudioManager : MonoBehaviour
                 break;
             case "playerAttack":
                 audioSrc.PlayOneShot (playerAttackSound);
+                break;
+            case "playerChain": //throw chain
+                //audioSrc.volume = 0.1f;
+                audioSrc.PlayOneShot (playerChainSound);
+                break;
+            case "woosh":
+                audioSrc.PlayOneShot (wooshSound);
+                break;
+            case "playerPowerUp":
+                audioSrc.PlayOneShot (playerPowerUpSound);
+                break;
+
+            case "attune":
+                audioSrc.PlayOneShot (attuneSound);
                 break;
         }
     }
