@@ -356,9 +356,9 @@ public class PlayerController : MonoBehaviour
 
             //kbDir = horizontal==0? kbDir:horizontal;
             //kbDir = horizontal;
-            if (horizontal > 0 || horizontal < 0)
+            if ((horizontal > 0 || horizontal < 0) && grounded)
             {
-                //AudioManager.PlaySound("playerWalk");
+                AudioManager.PlaySound("playerWalk");
             }
 
             if (isWallSliding)

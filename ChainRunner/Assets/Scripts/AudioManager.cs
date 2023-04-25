@@ -15,6 +15,10 @@ public class AudioManager : MonoBehaviour
                             itemHitSound,
                             attuneSound;
     static AudioSource audioSrc;
+
+    public static float walkTime = .35f;
+    private static float walkTimeLeft = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,54 +39,65 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(walkTimeLeft > 0)
+        {
+            walkTimeLeft -= Time.deltaTime;
+        }
     }
 
     public static void PlaySound(string clip) {
         switch (clip) {
             case "playerWalk":
                 audioSrc.clip = playerWalkSound;
-                audioSrc.Play();
+                if (!audioSrc.isPlaying && walkTimeLeft <= 0)
+                {
+                    audioSrc.Play();
+                    walkTimeLeft = walkTime;
+                }
                 break;
             case "playerJump":
-                audioSrc.clip = playerJumpSound;
+                //audioSrc.clip = playerJumpSound;
                 //audioSrc.Play();
                 audioSrc.PlayOneShot(playerJumpSound);
                 break;
             case "playerAttack":
-                audioSrc.clip = playerAttackSound;
-                audioSrc.Play();
+                //audioSrc.clip = playerAttackSound;
+                //audioSrc.Play();
+                audioSrc.PlayOneShot(playerAttackSound);
                 break;
             case "playerChain": //throw chain
                 //audioSrc.volume = 0.1f;
-                audioSrc.clip = playerChainSound;
+                //audioSrc.clip = playerChainSound;
                 //audioSrc.Play();
                 audioSrc.PlayOneShot(playerChainSound);
                 break;
             case "woosh":
-                audioSrc.clip = wooshSound;
-                audioSrc.Play();
+                //audioSrc.clip = wooshSound;
+                //audioSrc.Play();
+                audioSrc.PlayOneShot(wooshSound);
                 break;
             case "playerPowerUp":
-                audioSrc.clip = playerPowerUpSound;
-                audioSrc.Play();
+                //audioSrc.clip = playerPowerUpSound;
+                //audioSrc.Play();
+                audioSrc.PlayOneShot(playerPowerUpSound);
                 break;
             case "playerGrabItem":
-                audioSrc.clip = playerGrabItemSound;
-                audioSrc.Play();
+                //audioSrc.clip = playerGrabItemSound;
+                //audioSrc.Play();
+                audioSrc.PlayOneShot(playerGrabItemSound);
                 break;
             case "itemFall":
-                audioSrc.clip = itemFallSound;
+                //audioSrc.clip = itemFallSound;
                 audioSrc.PlayOneShot(itemFallSound);
                 break;
             case "itemHit":
-                audioSrc.clip = itemHitSound;
+                //audioSrc.clip = itemHitSound;
                 audioSrc.PlayOneShot(itemHitSound);
                 break;
 
             case "attune":
-                audioSrc.clip = attuneSound;
-                audioSrc.Play();
+                //audioSrc.clip = attuneSound;
+                audioSrc.PlayOneShot(attuneSound);
                 break;
         }
     }
