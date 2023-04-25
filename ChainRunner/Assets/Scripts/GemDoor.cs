@@ -62,7 +62,7 @@ public class GemDoor : MonoBehaviour
     }
     public void GoNext()
     {
-        GameManager.g.LoadNextScene("TaneimTesting");
+        GameManager.g.LoadNextScene("LUSTBoss");
     }
 
 
