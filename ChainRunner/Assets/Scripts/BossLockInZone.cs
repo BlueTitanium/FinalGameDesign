@@ -76,8 +76,8 @@ public class BossLockInZone : MonoBehaviour
 
         cam.SetActive(true);
 
-        GameObject g = Instantiate(bossObject, spawnPoint.position, bossObject.transform.rotation);
-        enemiesLeft.Add(g);
+        GameObject o = Instantiate(bossObject, spawnPoint.position, bossObject.transform.rotation);
+        enemiesLeft.Add(o);
 
 
         ready = true;
