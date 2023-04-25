@@ -201,6 +201,7 @@ public class PlayerController : MonoBehaviour
 
     public void Punch()
     {
+        AudioManager.PlaySound("playerAttack");
         anim.SetTrigger("Punch");
         StartCoroutine(HandleAnimDirection("Player_Punch"));
     }
@@ -350,6 +351,9 @@ public class PlayerController : MonoBehaviour
         
         //kbDir = horizontal==0? kbDir:horizontal;
         //kbDir = horizontal;
+        if (horizontal > 0 || horizontal < 0) {
+            //AudioManager.PlaySound("playerWalk");
+        }
 
         if(isWallSliding)
             extraJumpsLeft = extraJumps;
@@ -365,6 +369,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             jumpBufferLeft = jumpBufferTime;
+            AudioManager.PlaySound("playerJump");
         }
         else
         {
