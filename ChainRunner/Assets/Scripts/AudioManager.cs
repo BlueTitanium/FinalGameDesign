@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour
                             playerAttackSound,
                             playerHurtSound,
 
+                            enemyHurtSound,
+
                             playerChainSound,
                             chainMissSound,
                             chainIllegalSound,
@@ -18,6 +20,7 @@ public class AudioManager : MonoBehaviour
                             playerGrabItemSound,
 
                             molotovSound,
+                            fireSound,
                             itemFallSound,
                             itemHitSound,
 
@@ -35,6 +38,8 @@ public class AudioManager : MonoBehaviour
         playerAttackSound = Resources.Load<AudioClip>("playerAttack");
         playerHurtSound = Resources.Load<AudioClip>("playerHurt");
 
+        enemyHurtSound = Resources.Load<AudioClip>("enemyHurt");
+
         playerChainSound = Resources.Load<AudioClip>("playerChain");
         chainMissSound = Resources.Load<AudioClip>("chainMiss");
         chainIllegalSound = Resources.Load<AudioClip>("chainIllegal");
@@ -44,6 +49,7 @@ public class AudioManager : MonoBehaviour
         playerGrabItemSound = Resources.Load<AudioClip>("playerGrabItem");
 
         molotovSound = Resources.Load<AudioClip>("molotov");
+        fireSound = Resources.Load<AudioClip>("fire");
         itemFallSound = Resources.Load<AudioClip>("itemFall"); // straight projectile
         itemHitSound = Resources.Load<AudioClip>("itemHit"); // grav 
 
@@ -87,6 +93,12 @@ public class AudioManager : MonoBehaviour
 
             ///////////
 
+            case "enemyHurt":;
+                audioSrc.PlayOneShot(enemyHurtSound);
+                break;
+
+            ///////////
+
             case "playerChain": //throw chain
                 audioSrc.PlayOneShot(playerChainSound);
                 break;
@@ -118,7 +130,10 @@ public class AudioManager : MonoBehaviour
             ///////////
 
             case "molotov":
-                audioSrc.PlayOneShot(molotovSound);
+                audioSrc.PlayOneShot(molotovSound, 0.5f);
+                break;
+            case "fire":
+                audioSrc.PlayOneShot(fireSound);
                 break;
             case "itemFall":
                 //audioSrc.clip = itemFallSound;
