@@ -8,6 +8,9 @@ public class AudioManager : MonoBehaviour
                             playerJumpSound,
                             playerAttackSound,
                             playerChainSound,
+                            chainMissSound,
+                            chainIllegalSound,
+
                             wooshSound,
                             playerPowerUpSound,
                             playerGrabItemSound,
@@ -26,6 +29,9 @@ public class AudioManager : MonoBehaviour
         playerJumpSound = Resources.Load<AudioClip>("playerJump");
         playerAttackSound = Resources.Load<AudioClip>("playerAttack");
         playerChainSound = Resources.Load<AudioClip>("playerChain");
+        chainMissSound = Resources.Load<AudioClip>("chainMiss");
+        chainIllegalSound = Resources.Load<AudioClip>("chainIllegal");
+
         wooshSound = Resources.Load<AudioClip>("woosh");
         playerPowerUpSound = Resources.Load<AudioClip>("playerPowerUp");
         playerGrabItemSound = Resources.Load<AudioClip>("playerGrabItem");
@@ -71,6 +77,13 @@ public class AudioManager : MonoBehaviour
                 //audioSrc.Play();
                 audioSrc.PlayOneShot(playerChainSound);
                 break;
+            case "chainMiss": 
+                audioSrc.PlayOneShot(chainMissSound);
+                break;
+            case "chainIllegal": 
+                audioSrc.PlayOneShot(chainIllegalSound);
+                break;
+
             case "woosh":
                 //audioSrc.clip = wooshSound;
                 //audioSrc.Play();

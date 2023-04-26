@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
     }
     public void StartHook()
     {
-        AudioManager.PlaySound("playerChain");
+        //AudioManager.PlaySound("playerChain");
         anim.SetTrigger("ChainToss");
         StartCoroutine(HandleAnimDirection("Player_ChainToss"));
     }
