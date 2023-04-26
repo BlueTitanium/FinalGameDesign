@@ -17,6 +17,7 @@ public class Gem : MonoBehaviour
 
         if (nearObject && Input.GetKeyDown(KeyCode.E))
         {
+            AudioManager.PlaySound("playerPowerUp");
             GemManager.g.gemStates[gem] = 1;
             GemManager.g.SaveOptions();
             GameManager.g.ShowTitleEffect("GEM OBTAINED");

@@ -293,6 +293,9 @@ public class Cleopatra : MonoBehaviour
                 case 1:
                     StartCoroutine(ShootLots2());
                     break;
+                case 2:
+                    StartCoroutine(SpawnLotsOfCats());
+                    break;
                 default:
                     SpawnCatClose();
                     break;
