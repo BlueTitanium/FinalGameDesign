@@ -64,7 +64,7 @@ public class AudioManager : MonoBehaviour
             case "playerJump":
                 //audioSrc.clip = playerJumpSound;
                 //audioSrc.Play();
-                audioSrc.PlayOneShot(playerJumpSound);
+                audioSrc.PlayOneShot(playerJumpSound, 0.15f);
                 break;
             case "playerAttack":
                 //audioSrc.clip = playerAttackSound;
