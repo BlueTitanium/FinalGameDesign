@@ -8,6 +8,7 @@ TagManager:
   - Rift
   - Enemy
   - HookPoint
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - InvalidChainSpot
   - BringBack
   - Pickup
-  - 
+  - Projectile
   - 
   - 
   - 

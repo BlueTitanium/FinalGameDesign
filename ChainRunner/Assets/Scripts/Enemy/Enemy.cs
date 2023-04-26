@@ -59,6 +59,7 @@ public class Enemy : MonoBehaviour
     }
 
     public virtual void TakeDamage(float dmg, bool showsDamageAnimation = true) {
+        AudioManager.PlaySound("enemyHurt");
         dmg *= PlayerController.p.damageMultiplier;
         if (!unkillable) currHP -= dmg;
         playerDetected = true;

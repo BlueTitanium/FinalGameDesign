@@ -57,7 +57,6 @@ public class ChainHook : MonoBehaviour
     {
         if ((!p.LockFlipDirection) && Input.GetMouseButtonDown(1))
         {
-           
             if (!hookSent && !retractingHook)
             {
                 StartHook();
@@ -152,6 +151,7 @@ public class ChainHook : MonoBehaviour
     }
     void StartHook()
     {
+        //AudioManager.PlaySound("playerChain");
         p.StartHook();
         hookSent = true;
         transform.position = p.transform.position;
@@ -170,6 +170,7 @@ public class ChainHook : MonoBehaviour
 
         if (hit)
         {
+            //AudioManager.PlaySound("playerChain");
             distances[0] = Vector2.Distance(p.transform.position, hit.point);
         }
         if (checkBringBack)
@@ -178,12 +179,19 @@ public class ChainHook : MonoBehaviour
         }
         if (checkIllegal)
         {
+            //AudioManager.PlaySound("chainIllegal");
             distances[2] = Vector2.Distance(p.transform.position, checkIllegal.point);
         }
+
+        if (!hit) {
+            //AudioManager.PlaySound("chainMiss");
+        }
+
         int lowest = GetIndexOfLowestValue(distances);
         switch (lowest)
         {
             case 0:
+                AudioManager.PlaySound("playerChain");
                 endPoint = hit.point;
                 hitObject = true;
                 objectHit = hit.collider.gameObject;
@@ -195,17 +203,19 @@ public class ChainHook : MonoBehaviour
                 }
                 break;
             case 1:
-                
+                AudioManager.PlaySound("playerChain");
                 endPoint = checkBringBack.point;
                 objectHit = checkBringBack.collider.gameObject;
                 bringBack = true;
                 hitObject = false;
                 break;
             case 2:
+                AudioManager.PlaySound("chainIllegal");
                 endPoint = checkIllegal.point;
                 hitObject = false;
                 break;
             default:
+                AudioManager.PlaySound("chainMiss");
                 endPoint = startPoint.position + transform.up * (distance - 1);
                 hitObject = false;
                 break;

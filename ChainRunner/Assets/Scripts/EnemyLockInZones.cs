@@ -16,7 +16,9 @@ public class EnemyLockInZones : MonoBehaviour
     private int enemiesCount = 0;
 
     public GameObject[] Rewards;
-
+    [Header("Soundtrack")]
+    public AudioSource BGM;
+    public AudioClip regular, battle;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +82,11 @@ public class EnemyLockInZones : MonoBehaviour
             }
             enemiesLeft.Add(g);
         }
+
+        BGM.Stop();
+        BGM.clip = battle;
+        BGM.Play();
+
         ready = true;
     }
 
@@ -91,6 +98,11 @@ public class EnemyLockInZones : MonoBehaviour
             g.SetActive(false);
         }
         GameManager.g.ShowTitleEffect("Room Cleared!");
+
+        BGM.Stop();
+        BGM.clip = regular;
+        BGM.Play();
+
         StartCoroutine(SpawnRewards());
     }
 

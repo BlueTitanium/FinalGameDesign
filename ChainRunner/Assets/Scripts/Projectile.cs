@@ -36,19 +36,28 @@ public class Projectile : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = s;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        if (isPlayerOwned && collision.gameObject.CompareTag("Enemy")) {
+
+        if (isPlayerOwned && collision.gameObject.CompareTag("Enemy"))
+        {
             AudioManager.PlaySound("itemHit");
-            Enemy enemyController = collision.GetComponent<Enemy>();
+            Enemy enemyController = collision.gameObject.GetComponent<Enemy>();
             enemyController.Knockback(transform, 2);
             enemyController.TakeDamage(damage);
             enemyController.Stun(1.5f);
             Destroy(gameObject);
         }
 
-        if (!isPlayerOwned && collision.gameObject.CompareTag("Player")) {
+        if (isPlayerOwned && collision.gameObject.CompareTag("Boss"))
+        {
+            AudioManager.PlaySound("itemHit");
+            //Cleopatra.c.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+
+        if (!isPlayerOwned && collision.gameObject.CompareTag("Player"))
+        {
             PlayerController.p.TakeDamage(damage);
             Destroy(gameObject);
         }
@@ -62,6 +71,66 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("HookPoint"))
         {
             AudioManager.PlaySound("itemFall");
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
+        if (isPlayerOwned && collision.gameObject.CompareTag("Enemy")) {
+            if (type == ThrowableObject.ObjectType.Molotov) {
+                AudioManager.PlaySound("molotov");
+            }
+            else if (type == ThrowableObject.ObjectType.StraightProjectile) {
+                AudioManager.PlaySound("itemHit");
+            } else {
+                AudioManager.PlaySound("itemFall");
+            }
+            //AudioManager.PlaySound("itemHit");
+            Enemy enemyController = collision.GetComponent<Enemy>();
+            enemyController.Knockback(transform, 2);
+            enemyController.TakeDamage(damage);
+            enemyController.Stun(1.5f);
+            Destroy(gameObject);
+        }
+
+        if (isPlayerOwned && collision.gameObject.CompareTag("Boss"))
+        {
+            AudioManager.PlaySound("itemHit");
+            //Cleopatra.c.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+
+        if (!isPlayerOwned && collision.gameObject.CompareTag("Player")) {
+            PlayerController.p.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            if (type == ThrowableObject.ObjectType.Molotov) {
+                AudioManager.PlaySound("molotov");
+            }
+            else if (type == ThrowableObject.ObjectType.StraightProjectile) {
+                AudioManager.PlaySound("itemHit");
+            } else {
+                AudioManager.PlaySound("itemFall");
+            }    
+            Destroy(gameObject); 
+        }
+        
+
+        if (collision.gameObject.CompareTag("HookPoint"))
+        {
+            if (type == ThrowableObject.ObjectType.Molotov) {
+                AudioManager.PlaySound("molotov");
+            }
+            else if (type == ThrowableObject.ObjectType.StraightProjectile) {
+                AudioManager.PlaySound("itemHit");
+            } else {
+                AudioManager.PlaySound("itemFall");
+            }
             Destroy(gameObject);
         }
     }

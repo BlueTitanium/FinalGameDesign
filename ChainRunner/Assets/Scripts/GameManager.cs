@@ -152,15 +152,11 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            LoadNextScene("anna_dev3");
+            LoadNextScene("LUST");
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            LoadNextScene("JessLust");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            LoadNextScene("CatacombsTaneim");
+            LoadNextScene("LUSTBoss");
         }
     }
 

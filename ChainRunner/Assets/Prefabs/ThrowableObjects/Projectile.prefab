@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 652125732109076960}
   - component: {fileID: 652125732109076966}
   - component: {fileID: 652125732109076967}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +105,7 @@ MonoBehaviour:
   damage: 10
   rb: {fileID: 652125732109076966}
   explosion: {fileID: 7248098748177825819, guid: a1c8acda6614b5f4b881bbd629e8f5f2, type: 3}
+  type: 0
 --- !u!50 &652125732109076966
 Rigidbody2D:
   serializedVersion: 4
@@ -162,7 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8446351508555964059}
   - component: {fileID: 5743827578122840692}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

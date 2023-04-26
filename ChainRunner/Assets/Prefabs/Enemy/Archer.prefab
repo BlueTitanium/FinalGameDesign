@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888e645f190d2e34c9731c19659e9528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 75
+  maxHP: 50
   moveSpeed: 1
   isFacingRight: 1
   attackDamage: 10
