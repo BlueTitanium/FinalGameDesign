@@ -36,6 +36,45 @@ public class Projectile : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = s;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+        if (isPlayerOwned && collision.gameObject.CompareTag("Enemy"))
+        {
+            AudioManager.PlaySound("itemHit");
+            Enemy enemyController = collision.gameObject.GetComponent<Enemy>();
+            enemyController.Knockback(transform, 2);
+            enemyController.TakeDamage(damage);
+            enemyController.Stun(1.5f);
+            Destroy(gameObject);
+        }
+
+        if (isPlayerOwned && collision.gameObject.CompareTag("Boss"))
+        {
+            AudioManager.PlaySound("itemHit");
+            //Cleopatra.c.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+
+        if (!isPlayerOwned && collision.gameObject.CompareTag("Player"))
+        {
+            PlayerController.p.TakeDamage(damage);
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            AudioManager.PlaySound("itemFall");
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("HookPoint"))
+        {
+            AudioManager.PlaySound("itemFall");
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
@@ -45,6 +84,13 @@ public class Projectile : MonoBehaviour
             enemyController.Knockback(transform, 2);
             enemyController.TakeDamage(damage);
             enemyController.Stun(1.5f);
+            Destroy(gameObject);
+        }
+
+        if (isPlayerOwned && collision.gameObject.CompareTag("Boss"))
+        {
+            AudioManager.PlaySound("itemHit");
+            //Cleopatra.c.TakeDamage(damage);
             Destroy(gameObject);
         }
 

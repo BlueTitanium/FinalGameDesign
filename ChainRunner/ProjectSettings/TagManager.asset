@@ -8,6 +8,7 @@ TagManager:
   - Rift
   - Enemy
   - HookPoint
+  - Boss
   layers:
   - Default
   - TransparentFX

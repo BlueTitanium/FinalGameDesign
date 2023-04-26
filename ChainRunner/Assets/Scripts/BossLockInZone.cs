@@ -9,6 +9,7 @@ public class BossLockInZone : MonoBehaviour
     private bool ready = false;
 
     public GameObject cam;
+    
 
     public GameObject bossObject;
     public Transform spawnPoint;
