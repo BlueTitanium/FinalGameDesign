@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 543588879}
   - component: {fileID: 543588878}
   - component: {fileID: 543588880}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Inner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e2c4a122c70e5c46af14eabab37fee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  damage: 10
+  speed: 20
 --- !u!61 &543588878
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -136,7 +139,7 @@ GameObject:
   - component: {fileID: 3127245853892997453}
   - component: {fileID: 816678812}
   - component: {fileID: 816678813}
-  m_Layer: 12
+  m_Layer: 11
   m_Name: ThrowableObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

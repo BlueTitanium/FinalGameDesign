@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 652125732109076960}
   - component: {fileID: 652125732109076966}
   - component: {fileID: 4444048060808330055}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: LustBallProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4465723151048561567}
   - component: {fileID: 3533731635423997264}
-  m_Layer: 7
+  m_Layer: 13
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

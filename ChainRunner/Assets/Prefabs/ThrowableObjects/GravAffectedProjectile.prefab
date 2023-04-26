@@ -59,9 +59,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: GravAffectedProjectile
       objectReference: {fileID: 0}
+    - target: {fileID: 652125732109076963, guid: 2721c6236e57a5f4d94f4ee733fdbbe5, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 652125732109076966, guid: 2721c6236e57a5f4d94f4ee733fdbbe5, type: 3}
       propertyPath: m_GravityScale
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534137374125550003, guid: 2721c6236e57a5f4d94f4ee733fdbbe5, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2721c6236e57a5f4d94f4ee733fdbbe5, type: 3}
