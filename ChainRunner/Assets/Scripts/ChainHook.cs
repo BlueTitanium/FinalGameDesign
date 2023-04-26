@@ -57,7 +57,6 @@ public class ChainHook : MonoBehaviour
     {
         if ((!p.LockFlipDirection) && Input.GetMouseButtonDown(1))
         {
-           
             if (!hookSent && !retractingHook)
             {
                 StartHook();
@@ -152,6 +151,7 @@ public class ChainHook : MonoBehaviour
     }
     void StartHook()
     {
+        //AudioManager.PlaySound("playerChain");
         p.StartHook();
         hookSent = true;
         transform.position = p.transform.position;
@@ -170,6 +170,7 @@ public class ChainHook : MonoBehaviour
 
         if (hit)
         {
+            AudioManager.PlaySound("playerChain");
             distances[0] = Vector2.Distance(p.transform.position, hit.point);
         }
         if (checkBringBack)
@@ -178,8 +179,14 @@ public class ChainHook : MonoBehaviour
         }
         if (checkIllegal)
         {
+            AudioManager.PlaySound("chainIllegal");
             distances[2] = Vector2.Distance(p.transform.position, checkIllegal.point);
         }
+
+        if (!hit) {
+            AudioManager.PlaySound("chainMiss");
+        }
+
         int lowest = GetIndexOfLowestValue(distances);
         switch (lowest)
         {
@@ -194,8 +201,7 @@ public class ChainHook : MonoBehaviour
                     p.rb.velocity = Vector2.zero;
                 }
                 break;
-            case 1:
-                
+            case 1:             
                 endPoint = checkBringBack.point;
                 objectHit = checkBringBack.collider.gameObject;
                 bringBack = true;

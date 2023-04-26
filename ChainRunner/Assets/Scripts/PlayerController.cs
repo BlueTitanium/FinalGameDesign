@@ -153,6 +153,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        AudioManager.PlaySound("playerHurt");
         DmgTextController.d.SpawnDmgText(amount, transform.position);
         CameraShake.cs.cameraShake(.3f, 1.6f);
         curHP -= amount;
@@ -251,7 +252,7 @@ public class PlayerController : MonoBehaviour
     }
     public void StartHook()
     {
-        AudioManager.PlaySound("playerChain");
+        //AudioManager.PlaySound("playerChain");
         anim.SetTrigger("ChainToss");
         StartCoroutine(HandleAnimDirection("Player_ChainToss"));
     }
