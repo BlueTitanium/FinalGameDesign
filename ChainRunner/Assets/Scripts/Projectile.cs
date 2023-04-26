@@ -116,10 +116,10 @@ public class Projectile : MonoBehaviour
                 AudioManager.PlaySound("itemHit");
             } else {
                 AudioManager.PlaySound("itemFall");
-            }
-            
-            Destroy(gameObject);
+            }    
+            Destroy(gameObject); 
         }
+        
 
         if (collision.gameObject.CompareTag("HookPoint"))
         {
