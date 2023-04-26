@@ -376,7 +376,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 jumpBufferLeft = jumpBufferTime;
-                
+
             }
             else
             {
@@ -479,6 +479,10 @@ public class PlayerController : MonoBehaviour
 
 
 
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
         }
     }
 

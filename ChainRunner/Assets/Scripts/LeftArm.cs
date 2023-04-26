@@ -37,18 +37,22 @@ public class LeftArm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = p.transform.position;
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
-        if ((!p.LockFlipDirection || (p.anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "nPlayer_ChainToss")) && !throwing && Input.GetMouseButtonDown(0))
+        if (PlayerController.p.allowControls)
         {
-            if (hasItem)
+
+            transform.position = p.transform.position;
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
+            if ((!p.LockFlipDirection || (p.anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "nPlayer_ChainToss")) && !throwing && Input.GetMouseButtonDown(0))
             {
-                ThrowItem();
-            }
-            else
-            {
-                Punch();
+                if (hasItem)
+                {
+                    ThrowItem();
+                }
+                else
+                {
+                    Punch();
+                }
             }
         }
     }

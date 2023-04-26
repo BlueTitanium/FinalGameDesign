@@ -55,16 +55,21 @@ public class ChainHook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((!p.LockFlipDirection) && Input.GetMouseButtonDown(1))
+        if (PlayerController.p.allowControls)
         {
-            if (!hookSent && !retractingHook)
+
+            if ((!p.LockFlipDirection) && Input.GetMouseButtonDown(1))
             {
-                StartHook();
-            } else if (hookSent && !retractingHook)
-            {
-                StartCoroutine(RetractHook(0));
+                if (!hookSent && !retractingHook)
+                {
+                    StartHook();
+                }
+                else if (hookSent && !retractingHook)
+                {
+                    StartCoroutine(RetractHook(0));
+                }
+
             }
-            
         }
         
         l.SetPosition(0, startPoint.position);

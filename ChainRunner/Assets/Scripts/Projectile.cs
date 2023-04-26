@@ -52,7 +52,7 @@ public class Projectile : MonoBehaviour
         if (isPlayerOwned && collision.gameObject.CompareTag("Boss"))
         {
             AudioManager.PlaySound("itemHit");
-            //Cleopatra.c.TakeDamage(damage);
+            Cleopatra.c.TakeDamage(damage);
             Destroy(gameObject);
         }
 
@@ -98,7 +98,7 @@ public class Projectile : MonoBehaviour
         if (isPlayerOwned && collision.gameObject.CompareTag("Boss"))
         {
             AudioManager.PlaySound("itemHit");
-            //Cleopatra.c.TakeDamage(damage);
+            Cleopatra.c.TakeDamage(damage);
             Destroy(gameObject);
         }
 

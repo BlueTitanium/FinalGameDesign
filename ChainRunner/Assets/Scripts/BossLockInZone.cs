@@ -12,7 +12,7 @@ public class BossLockInZone : MonoBehaviour
     
 
     public GameObject bossObject;
-    public Transform spawnPoint;
+    //public Transform spawnPoint;
 
     public GameObject[] entrances;
     public List<GameObject> enemiesLeft;
