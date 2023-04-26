@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveBackground : MonoBehaviour
-{
+{ 
     private float startPos;
     private float length;
     private GameObject cam;
