@@ -40,7 +40,15 @@ public class Projectile : MonoBehaviour
     {
         
         if (isPlayerOwned && collision.gameObject.CompareTag("Enemy")) {
-            AudioManager.PlaySound("itemHit");
+            if (type == ThrowableObject.ObjectType.Molotov) {
+                AudioManager.PlaySound("molotov");
+            }
+            else if (type == ThrowableObject.ObjectType.StraightProjectile) {
+                AudioManager.PlaySound("itemHit");
+            } else {
+                AudioManager.PlaySound("itemFall");
+            }
+            //AudioManager.PlaySound("itemHit");
             Enemy enemyController = collision.GetComponent<Enemy>();
             enemyController.Knockback(transform, 2);
             enemyController.TakeDamage(damage);
@@ -55,13 +63,28 @@ public class Projectile : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Ground"))
         {
-            AudioManager.PlaySound("itemFall");
+            if (type == ThrowableObject.ObjectType.Molotov) {
+                AudioManager.PlaySound("molotov");
+            }
+            else if (type == ThrowableObject.ObjectType.StraightProjectile) {
+                AudioManager.PlaySound("itemHit");
+            } else {
+                AudioManager.PlaySound("itemFall");
+            }
+            
             Destroy(gameObject);
         }
 
         if (collision.gameObject.CompareTag("HookPoint"))
         {
-            AudioManager.PlaySound("itemFall");
+            if (type == ThrowableObject.ObjectType.Molotov) {
+                AudioManager.PlaySound("molotov");
+            }
+            else if (type == ThrowableObject.ObjectType.StraightProjectile) {
+                AudioManager.PlaySound("itemHit");
+            } else {
+                AudioManager.PlaySound("itemFall");
+            }
             Destroy(gameObject);
         }
     }
