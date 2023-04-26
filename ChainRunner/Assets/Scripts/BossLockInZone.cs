@@ -20,6 +20,9 @@ public class BossLockInZone : MonoBehaviour
 
     public GameObject[] Rewards;
 
+    [Header("Soundtrack")]
+    public AudioSource BGM;
+    public AudioClip regular, battle;
     // Start is called before the first frame update
     void Start()
     {
@@ -77,9 +80,12 @@ public class BossLockInZone : MonoBehaviour
 
         cam.SetActive(true);
 
-        GameObject o = Instantiate(bossObject, spawnPoint.position, bossObject.transform.rotation);
+        GameObject o = Instantiate(bossObject, bossObject.transform.position, bossObject.transform.rotation);
         enemiesLeft.Add(o);
 
+        BGM.Stop();
+        BGM.clip = battle;
+        BGM.Play();
 
         ready = true;
     }
@@ -93,6 +99,11 @@ public class BossLockInZone : MonoBehaviour
             g.SetActive(false);
         }
         GameManager.g.ShowTitleEffect("Boss Slain!");
+
+        BGM.Stop();
+        BGM.clip = regular;
+        BGM.Play();
+
         StartCoroutine(SpawnRewards());
     }
 

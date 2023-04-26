@@ -530,15 +530,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c341344bdb10343830f6180ad8c23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 200
+  maxHP: 150
   moveSpeed: 1
   isFacingRight: 1
-  attackDamage: 30
+  attackDamage: 60
   playerDetected: 0
   canBeStunned: 1
   canBeKnockbacked: 0
   spriteRenderer: {fileID: 1074505891128184435}
   dizzyEffect: {fileID: 3614418823759546521}
+  unkillable: 0
   chaseSpeed: 1
   attackDistance: 2.25
   attackCooldown: 1.5

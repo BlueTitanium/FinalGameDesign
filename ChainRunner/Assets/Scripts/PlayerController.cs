@@ -534,6 +534,7 @@ public class PlayerController : MonoBehaviour
             extraJumpsLeft = extraJumps;
             isWallJumping = true;
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            AudioManager.PlaySound("playerJump");
             wallJumpingCounter = 0f;
 
             if (transform.localScale.x != wallJumpingDirection)
