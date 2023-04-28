@@ -30,7 +30,7 @@ public class RiftTempTP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (nearObject && (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0)))
+        if (nearObject && (Input.GetKeyDown(KeyCode.E) /*|| Input.GetMouseButtonDown(0)*/))
         {
             if (!doneOnce)
             {

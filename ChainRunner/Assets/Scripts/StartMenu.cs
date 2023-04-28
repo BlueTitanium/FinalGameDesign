@@ -7,6 +7,9 @@ public class StartMenu : MonoBehaviour
 {
 
     public GameObject continueButton;
+    private Animator a;
+    private string nextLevel;
+    public AudioClip clip;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +22,7 @@ public class StartMenu : MonoBehaviour
         {
             continueButton.SetActive(true);
         }
+        a = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -27,14 +31,33 @@ public class StartMenu : MonoBehaviour
         
     }
 
+
+    public void PlaySound()
+    {
+        GetComponent<AudioSource>().PlayOneShot(clip);
+    }
+
+    public void ActuallyLoadScene()
+    {
+        SceneManager.LoadScene(nextLevel);
+    }
+
     public void NewGame()
     {
-        SceneManager.LoadScene("JessDemo");
+        nextLevel = "JessDemo";
         PlayerPrefs.DeleteAll();
+        a.SetTrigger("NextScene");
     }
 
     public void Continue()
     {
-        SceneManager.LoadScene(PlayerPrefs.GetString("curLevel"));
+        nextLevel = PlayerPrefs.GetString("curLevel");
+        a.SetTrigger("NextScene");
+    }
+
+    public void Credits()
+    {
+        nextLevel = "END";
+        a.SetTrigger("NextScene");
     }
 }

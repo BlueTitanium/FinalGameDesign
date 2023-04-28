@@ -454,7 +454,7 @@ public class Cleopatra : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
+                    if (Input.GetKeyDown(KeyCode.E) /*|| Input.GetMouseButtonDown(0)*/)
                     {
                         DialogueUI.d.DialogueActivate(cName, dialogue, isPlayer, npcIcon, faceLeft);
                     }

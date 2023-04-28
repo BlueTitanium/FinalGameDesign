@@ -40,6 +40,19 @@ public class DialogueUI : MonoBehaviour
     }
 
 
+    public void Continue()
+    {
+        if (dialogueText.text == dialogue[index])
+        {
+            NextLine();
+        }
+        else
+        {
+            dialogueText.text = dialogue[index];
+            cIndex = characters.Length;
+        }
+    }
+
     public void DialogueActivate(string name, string[] dialogues, bool[] playerD, Sprite icon, bool faceLeft)
     {
 
@@ -123,7 +136,7 @@ public class DialogueUI : MonoBehaviour
     public void NextLine()
     {
 
-        contArrow.SetActive(false);
+        //contArrow.SetActive(false);
 
         if (index < dialogue.Length - 1)
         {
