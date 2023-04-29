@@ -42,19 +42,32 @@ public class Cleopatra : MonoBehaviour
         idle,
         floating,
         attacking,
+        postbattle
     }
     public CleopatraStates state = CleopatraStates.prebattle;
 
+    public Canvas canvas;
 
     private Rigidbody2D rb;
 
     public Transform target;
 
     public bool isDead = false;
-    
+
     public Transform rightwall;
     public Transform leftwall;
     public Transform center;
+
+    public Transform shootpoint;
+    public GameObject shootObject;
+    public GameObject catTower;
+    public Transform catPoint;
+    public GameObject AttackIndicator;
+    public Transform[] catSpawns;
+    public Transform[] shootPoints;
+    public Transform[] shootPoints1;
+
+    public GameObject explosion;
 
     public float distToPlayer;
     public float range = 4f;
@@ -64,8 +77,11 @@ public class Cleopatra : MonoBehaviour
     public float cdTimeLeft = 0f;
     public float cdTime = .6f;
 
+    public float switchTime = 10f;
+    public float switchTimeLeft = 0;
 
     private Animator a;
+    public Animation indicator;
 
     [Header("HP Bar")]
     public float maxHP;
@@ -82,7 +98,7 @@ public class Cleopatra : MonoBehaviour
 
 
     private bool doneOnce;
-    [Header ("Dialogue")]
+    [Header("Dialogue")]
     public Sprite npcIcon;
 
     public string cName;
@@ -94,10 +110,11 @@ public class Cleopatra : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
+        c = this;
         yield return null;
         //BOSSUI.SetActive(false);
         rb = GetComponent<Rigidbody2D>();
-      
+
         target = PlayerController.p.transform;
         curHP = maxHP;
 
@@ -108,7 +125,28 @@ public class Cleopatra : MonoBehaviour
         //ogSpeed = speed;
         a = GetComponent<Animator>();
         //aud = GetComponent<AudioSource>();
+        canvas.worldCamera = Camera.main;
 
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        AudioManager.PlaySound("enemyHurt");
+        dmg *= PlayerController.p.damageMultiplier;
+        curHP -= dmg;
+        DmgTextController.d.SpawnDmgText(dmg, transform.position);
+        a.SetTrigger("Damage");
+        if (curHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        state = CleopatraStates.postbattle;
+        Instantiate(explosion, transform.position, explosion.transform.rotation);
+        Destroy(transform.parent.gameObject);
     }
 
     private void UpdateHealthUI()
@@ -172,96 +210,198 @@ public class Cleopatra : MonoBehaviour
 
     public void TryAttack()
     {
-        //if (cdTimeLeft <= 0)
-        //{
-        //    int curAttack = Random.Range(0, maxNum);
-        //    switch (curAttack)
-        //    {
-        //        case 0:
-        //            a.SetTrigger("Slash");
-        //            break;
-        //        case 1:
-        //            a.SetTrigger("Thrust");
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    cdTimeLeft = cdTime;
-        //}
+        if (cdTimeLeft <= 0)
+        {
+            int maxNum = (curHP <= maxHP / 2) ? 3 : 9;
+            int curAttack = Random.Range(0, 9);
+            switch (curAttack)
+            {
+                case 0:
+                    if(curHP <= maxHP / 2)
+                    {
+                        a.SetTrigger("Attack1");
+                    } else
+                    {
+                        a.SetTrigger("Attack");
+                    }
+                    
+                    break;
+                case 1:
+                    StartCoroutine(SpawnLotsOfCats());
+                    break;
+                default:
+                    if (curHP <= maxHP / 2)
+                    {
+                        a.SetTrigger("Attack1");
+                    }
+                    else
+                    {
+                        a.SetTrigger("Attack");
+                    }
+                    break;
+            }
+            cdTimeLeft = cdTime;
+        }
+    }
+    public void TryFloatAttack()
+    {
+        if (cdTimeLeft <= 0)
+        {
+            int curAttack = Random.Range(0, 2);
+            print("flightattack");
+            switch (curAttack)
+            {
+                case 0:
+                    StartCoroutine(ShootLots1());
+                    break;
+                case 1:
+                    StartCoroutine(ShootLots2());
+                    break;
+                default:
+                    break;
+            }
+            cdTimeLeft = cdTime;
+        }
+    }
+    public void TryCloseAttack()
+    {
+        if (cdTimeLeft <= 0)
+        {
+            int curAttack = Random.Range(0, 3);
+            switch (curAttack)
+            {
+                case 0:
+                    StartCoroutine(SpawnCatClose());
+                    break;
+                case 1:
+                    StartCoroutine(SpawnLotsOfCats());
+                    break;
+                default:
+                    StartCoroutine(SpawnCatClose());
+                    break;
+            }
+            cdTimeLeft = cdTime*2;
+        }
+    }
+    public void TryFlightCloseAttack()
+    {
+        if (cdTimeLeft <= 0)
+        {
+            int curAttack = Random.Range(0, 3);
+            print("flightattack");
+            switch (curAttack)
+            {
+                case 0:
+                    StartCoroutine(SpawnCatClose());
+                    break;
+                case 1:
+                    StartCoroutine(ShootLots2());
+                    break;
+                case 2:
+                    StartCoroutine(SpawnLotsOfCats());
+                    break;
+                default:
+                    StartCoroutine(SpawnCatClose());
+                    break;
+            }
+            cdTimeLeft = cdTime * 2;
+        }
     }
 
-    //public void TryShield()
-    //{
-    //    if (cdTimeLeft <= 0)
-    //    {
-    //        a.SetTrigger("ShieldOn");
-    //        aud.PlayOneShot(whoosh);
-    //        cdTimeLeft = .4f;
-    //    }
-    //}
+    IEnumerator SpawnCatClose()
+    {
+        indicator.Play();
+        yield return new WaitForSeconds(.3f);
+        GameObject g = Instantiate(catTower, catPoint.position, catPoint.rotation);
+        g.transform.localScale = transform.localScale;
+    }
 
-    //public void TryShoot()
-    //{
-    //    //if (!isDead)
-    //    //{
-    //    //    if (cdTimeLeft <= 0)
-    //    //    {
+    IEnumerator SpawnLotsOfCats()
+    {
+        indicator.Play();
+        yield return new WaitForSeconds(.3f);
+        for (int i =0; i < catSpawns.Length;i++)
+        {
+            Transform v = catSpawns[i];
+            //StartCoroutine(SpawnIndicator(v));
+            //yield return new WaitForSeconds(.1f);
+            GameObject g = Instantiate(catTower, v.position, v.rotation);
+            g.transform.localScale = transform.localScale;
+            yield return new WaitForSeconds(.05f);
+        }
+    }
 
-    //    //        int curAttack = Random.Range(0, 4);
-    //    //        print(curAttack);
-    //    //        if (e.hp / e.maxHP < 0.5)
-    //    //        {
-    //    //            print("second half");
-    //    //            switch (curAttack)
-    //    //            {
-    //    //                case 0:
-    //    //                    a.SetTrigger("Shoot1");
-    //    //                    aud.PlayOneShot(shoot1);
-    //    //                    break;
-    //    //                case 1:
-    //    //                    a.SetTrigger("SummonUp");
-    //    //                    aud.PlayOneShot(shoot2);
-    //    //                    break;
-    //    //                case 2:
-    //    //                    a.SetTrigger("Shoot1");
-    //    //                    aud.PlayOneShot(shoot1);
-    //    //                    break;
-    //    //                case 3:
-    //    //                    a.SetTrigger("Shoot1");
-    //    //                    aud.PlayOneShot(shoot1);
-    //    //                    break;
-    //    //                default:
-    //    //                    break;
-    //    //            }
-    //    //        }
-    //    //        else
-    //    //        {
+    IEnumerator SpawnIndicator(Transform v)
+    {
+        GameObject ind = Instantiate(AttackIndicator, v.position, AttackIndicator.transform.rotation);
+        Destroy(ind, 1f);
+        yield return null;
+    }
 
-    //    //            print("first half");
-    //    //            if (summonObject.activeInHierarchy == false)
-    //    //            {
-    //    //                a.SetTrigger("SummonUp");
-    //    //                aud.PlayOneShot(shoot2);
-    //    //            }
-    //    //        }
-    //    //        cdTimeLeft = cdTime;
-    //    //    }
-    //    //}
-    //}
 
-    //public IEnumerator SummonUp()
-    //{
-    //    if (!isDead)
-    //    {
-    //        summonObject.SetActive(true);
-    //        yield return new WaitForSeconds(1);
-    //        summonObject.SetActive(false);
-    //    }
-    //}
+    IEnumerator ShootLots1()
+    {
+        //indicator.Play();
+        //yield return new WaitForSeconds(.5f);
+        foreach (var v in shootPoints)
+        {
+
+            Vector2 shootDir = (PlayerController.p.transform.position - v.position).normalized;
+            float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            
+            GrabbableProjectile g = Instantiate(shootObject, v.position, rotation).GetComponentInChildren<GrabbableProjectile>();
+            // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
+            StartCoroutine((SpawnIndicator(v)));
+            StartCoroutine(DelayedSend(g, shootDir, .5f));
+            yield return new WaitForSeconds(.1f);
+        }
+        
+    }
+
+    IEnumerator DelayedSend(GrabbableProjectile g, Vector2 shootDir, float t)
+    {
+        yield return new WaitForSeconds(t);
+        if(g!=null)
+            g.rb.velocity = shootDir * g.speed;
+    }
+
+    IEnumerator ShootLots2()
+    {
+        indicator.Play();
+        yield return new WaitForSeconds(.5f);
+        foreach (var v in shootPoints1)
+        {
+
+            Vector2 shootDir = (PlayerController.p.transform.position - v.position).normalized;
+            float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            GrabbableProjectile g = Instantiate(shootObject, v.position, rotation).GetComponentInChildren<GrabbableProjectile>();
+            // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
+            StartCoroutine(DelayedSend(g, shootDir, .5f));
+            yield return new WaitForSeconds(.2f);
+        }
+    }
+
+    
+
+
+    public void Shoot()
+    {
+        Vector2 shootDir = (PlayerController.p.transform.position - transform.position).normalized;
+        float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        GrabbableProjectile g = Instantiate(shootObject, shootpoint.position, rotation).GetComponentInChildren<GrabbableProjectile>();
+        // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
+        g.rb.velocity = shootDir * g.speed;
+    }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateHealthUI();
         switch (state)
         {
             case CleopatraStates.prebattle:
@@ -272,7 +412,7 @@ public class Cleopatra : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
+                    if (Input.GetKeyDown(KeyCode.E) /*|| Input.GetMouseButtonDown(0)*/)
                     {
                         DialogueUI.d.DialogueActivate(cName, dialogue, isPlayer, npcIcon, faceLeft);
                     }
@@ -281,11 +421,21 @@ public class Cleopatra : MonoBehaviour
                         state = CleopatraStates.idle;
                         PlayerController.p.allowControls = true;
                         HPbar.Play();
+                        cdTimeLeft = 2;
+                        switchTimeLeft = switchTime;
                     }
                 }
                 
                 break;
             case CleopatraStates.idle:
+                distToPlayer = Vector2.Distance(transform.position, target.position);
+                Vector2 dir2 = (transform.position - center.position);
+                rb.velocity = new Vector2(-dir2.normalized.x * speed, 0f);
+                if (cdTimeLeft > 0)
+                {
+                    cdTimeLeft -= Time.deltaTime;
+                }
+                a.SetBool("Float", false);
                 if(target.position.x <= transform.position.x)
                 {
                     transform.localScale = new Vector3(1, 1, 1);
@@ -293,11 +443,64 @@ public class Cleopatra : MonoBehaviour
                 {
                     transform.localScale = new Vector3(-1, 1, 1);
                 }
+                if(distToPlayer > range)
+                {
+                    TryAttack();
+                } else
+                {
+                    TryCloseAttack();
+                }
+                
 
+                if(switchTimeLeft > 0)
+                {
+                    switchTimeLeft -= Time.deltaTime;
+                } else
+                {
+                    state = CleopatraStates.floating;
+                    switchTimeLeft = switchTime;
+                }
                 break;
             case CleopatraStates.floating:
+                distToPlayer = Vector2.Distance(transform.position, target.position);
+                Vector2 dir = (transform.position - target.position);
+                rb.velocity = new Vector2(-dir.normalized.x * speed, -dir.normalized.y * speed);
+                if (cdTimeLeft > 0)
+                {
+                    cdTimeLeft -= Time.deltaTime;
+                }
+                a.SetBool("Float", true);
+                if (target.position.x <= transform.position.x)
+                {
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+                if (distToPlayer > range)
+                {
+                    TryFloatAttack();
+                }
+                else
+                {
+                    TryFlightCloseAttack();
+                }
+
+                if (switchTimeLeft > 0)
+                {
+                    switchTimeLeft -= Time.deltaTime;
+                }
+                else
+                {
+                    state = CleopatraStates.idle;
+                    switchTimeLeft = switchTime;
+                }
                 break;
             case CleopatraStates.attacking:
+                break;
+            case CleopatraStates.postbattle:
+
                 break;
             default:
                 break;

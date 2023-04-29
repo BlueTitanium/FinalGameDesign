@@ -38,5 +38,17 @@ public class DamageCollider : MonoBehaviour
                 }
             }
         }
+        if (isPlayerOwned && collision.CompareTag("Boss"))
+        {
+            Cleopatra.c.TakeDamage(damage);
+            if (HitEffect != null)
+            {
+                var g = Instantiate(HitEffect, hitPoint.position, HitEffect.transform.rotation);
+                if (PlayerController.p.transform.localScale.x < 0)
+                {
+                    g.transform.localScale = new Vector3(-g.transform.localScale.x, g.transform.localScale.y, g.transform.localScale.z);
+                }
+            }
+        }
     }
 }

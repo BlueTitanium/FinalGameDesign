@@ -17,7 +17,7 @@ public class Dialogue : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0)) && playerIsNear) {
+        if ((Input.GetKeyDown(KeyCode.E)/* || Input.GetMouseButtonDown(0)*/) && playerIsNear) {
             DialogueUI.d.DialogueActivate(cName, dialogue, isPlayer, npcIcon, faceLeft);
         }
     }

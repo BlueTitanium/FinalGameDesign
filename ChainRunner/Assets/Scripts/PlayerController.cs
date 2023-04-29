@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
         curHP = Mathf.Clamp(curHP, 0, maxHP);
         curHPText.text = ""+ (int) curHP;
         anim.SetTrigger("Damaged");
-        if(curHP <= 0)
+        if((int)curHP <= 0)
         {
             Die();
         }
@@ -376,7 +376,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 jumpBufferLeft = jumpBufferTime;
-                
+
             }
             else
             {
@@ -479,6 +479,10 @@ public class PlayerController : MonoBehaviour
 
 
 
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
         }
     }
 
