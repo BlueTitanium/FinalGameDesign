@@ -55,7 +55,7 @@ public class ChainHook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerController.p.allowControls && !DialogueUI.d.dialogueActive)
+        if (PlayerController.p.allowControls && !DialogueUI.d.dialogueActive && Time.timeScale != 0)
         {
 
             if ((!p.LockFlipDirection) && Input.GetMouseButtonDown(1))

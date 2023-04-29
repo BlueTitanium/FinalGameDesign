@@ -62,6 +62,7 @@ public class Cleopatra : MonoBehaviour
     public GameObject shootObject;
     public GameObject catTower;
     public Transform catPoint;
+    public GameObject AttackIndicator;
     public Transform[] catSpawns;
     public Transform[] shootPoints;
     public Transform[] shootPoints1;
@@ -80,6 +81,7 @@ public class Cleopatra : MonoBehaviour
     public float switchTimeLeft = 0;
 
     private Animator a;
+    public Animation indicator;
 
     [Header("HP Bar")]
     public float maxHP;
@@ -246,6 +248,7 @@ public class Cleopatra : MonoBehaviour
         if (cdTimeLeft <= 0)
         {
             int curAttack = Random.Range(0, 2);
+            print("flightattack");
             switch (curAttack)
             {
                 case 0:
@@ -268,13 +271,13 @@ public class Cleopatra : MonoBehaviour
             switch (curAttack)
             {
                 case 0:
-                    SpawnCatClose();
+                    StartCoroutine(SpawnCatClose());
                     break;
                 case 1:
                     StartCoroutine(SpawnLotsOfCats());
                     break;
                 default:
-                    SpawnCatClose();
+                    StartCoroutine(SpawnCatClose());
                     break;
             }
             cdTimeLeft = cdTime*2;
@@ -285,10 +288,11 @@ public class Cleopatra : MonoBehaviour
         if (cdTimeLeft <= 0)
         {
             int curAttack = Random.Range(0, 3);
+            print("flightattack");
             switch (curAttack)
             {
                 case 0:
-                    SpawnCatClose();
+                    StartCoroutine(SpawnCatClose());
                     break;
                 case 1:
                     StartCoroutine(ShootLots2());
@@ -297,33 +301,76 @@ public class Cleopatra : MonoBehaviour
                     StartCoroutine(SpawnLotsOfCats());
                     break;
                 default:
-                    SpawnCatClose();
+                    StartCoroutine(SpawnCatClose());
                     break;
             }
             cdTimeLeft = cdTime * 2;
         }
     }
 
-    void SpawnCatClose()
+    IEnumerator SpawnCatClose()
     {
+        indicator.Play();
+        yield return new WaitForSeconds(.3f);
         GameObject g = Instantiate(catTower, catPoint.position, catPoint.rotation);
         g.transform.localScale = transform.localScale;
     }
 
     IEnumerator SpawnLotsOfCats()
     {
-        foreach (var v in catSpawns)
+        indicator.Play();
+        yield return new WaitForSeconds(.3f);
+        for (int i =0; i < catSpawns.Length;i++)
         {
+            Transform v = catSpawns[i];
+            //StartCoroutine(SpawnIndicator(v));
+            //yield return new WaitForSeconds(.1f);
             GameObject g = Instantiate(catTower, v.position, v.rotation);
             g.transform.localScale = transform.localScale;
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.05f);
         }
+    }
+
+    IEnumerator SpawnIndicator(Transform v)
+    {
+        GameObject ind = Instantiate(AttackIndicator, v.position, AttackIndicator.transform.rotation);
+        Destroy(ind, 1f);
+        yield return null;
     }
 
 
     IEnumerator ShootLots1()
     {
-        foreach(var v in shootPoints)
+        //indicator.Play();
+        //yield return new WaitForSeconds(.5f);
+        foreach (var v in shootPoints)
+        {
+
+            Vector2 shootDir = (PlayerController.p.transform.position - v.position).normalized;
+            float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            
+            GrabbableProjectile g = Instantiate(shootObject, v.position, rotation).GetComponentInChildren<GrabbableProjectile>();
+            // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
+            StartCoroutine((SpawnIndicator(v)));
+            StartCoroutine(DelayedSend(g, shootDir, .5f));
+            yield return new WaitForSeconds(.1f);
+        }
+        
+    }
+
+    IEnumerator DelayedSend(GrabbableProjectile g, Vector2 shootDir, float t)
+    {
+        yield return new WaitForSeconds(t);
+        if(g!=null)
+            g.rb.velocity = shootDir * g.speed;
+    }
+
+    IEnumerator ShootLots2()
+    {
+        indicator.Play();
+        yield return new WaitForSeconds(.5f);
+        foreach (var v in shootPoints1)
         {
 
             Vector2 shootDir = (PlayerController.p.transform.position - v.position).normalized;
@@ -335,99 +382,10 @@ public class Cleopatra : MonoBehaviour
             StartCoroutine(DelayedSend(g, shootDir, .5f));
             yield return new WaitForSeconds(.2f);
         }
-        
     }
 
-    IEnumerator DelayedSend(GrabbableProjectile g, Vector2 shootDir, float t)
-    {
-        yield return new WaitForSeconds(t);
-        g.rb.velocity = shootDir * g.speed;
-    }
+    
 
-    IEnumerator ShootLots2()
-    {
-        foreach (var v in shootPoints1)
-        {
-
-            Vector2 shootDir = (PlayerController.p.transform.position - v.position).normalized;
-            float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-            GrabbableProjectile g = Instantiate(shootObject, v.position, rotation).GetComponentInChildren<GrabbableProjectile>();
-            // g.rb.velocity = shootDir * (rb.velocity.magnitude + g.speed);
-            StartCoroutine(DelayedSend(g, shootDir, .1f));
-            yield return new WaitForSeconds(.2f);
-        }
-    }
-
-    //public void TryShield()
-    //{
-    //    if (cdTimeLeft <= 0)
-    //    {
-    //        a.SetTrigger("ShieldOn");
-    //        aud.PlayOneShot(whoosh);
-    //        cdTimeLeft = .4f;
-    //    }
-    //}
-
-    //public void TryShoot()
-    //{
-    //    //if (!isDead)
-    //    //{
-    //    //    if (cdTimeLeft <= 0)
-    //    //    {
-
-    //    //        int curAttack = Random.Range(0, 4);
-    //    //        print(curAttack);
-    //    //        if (e.hp / e.maxHP < 0.5)
-    //    //        {
-    //    //            print("second half");
-    //    //            switch (curAttack)
-    //    //            {
-    //    //                case 0:
-    //    //                    a.SetTrigger("Shoot1");
-    //    //                    aud.PlayOneShot(shoot1);
-    //    //                    break;
-    //    //                case 1:
-    //    //                    a.SetTrigger("SummonUp");
-    //    //                    aud.PlayOneShot(shoot2);
-    //    //                    break;
-    //    //                case 2:
-    //    //                    a.SetTrigger("Shoot1");
-    //    //                    aud.PlayOneShot(shoot1);
-    //    //                    break;
-    //    //                case 3:
-    //    //                    a.SetTrigger("Shoot1");
-    //    //                    aud.PlayOneShot(shoot1);
-    //    //                    break;
-    //    //                default:
-    //    //                    break;
-    //    //            }
-    //    //        }
-    //    //        else
-    //    //        {
-
-    //    //            print("first half");
-    //    //            if (summonObject.activeInHierarchy == false)
-    //    //            {
-    //    //                a.SetTrigger("SummonUp");
-    //    //                aud.PlayOneShot(shoot2);
-    //    //            }
-    //    //        }
-    //    //        cdTimeLeft = cdTime;
-    //    //    }
-    //    //}
-    //}
-
-    //public IEnumerator SummonUp()
-    //{
-    //    if (!isDead)
-    //    {
-    //        summonObject.SetActive(true);
-    //        yield return new WaitForSeconds(1);
-    //        summonObject.SetActive(false);
-    //    }
-    //}
 
     public void Shoot()
     {

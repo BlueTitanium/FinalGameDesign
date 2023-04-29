@@ -37,7 +37,7 @@ public class LeftArm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerController.p.allowControls && !DialogueUI.d.dialogueActive)
+        if (PlayerController.p.allowControls && !DialogueUI.d.dialogueActive && Time.timeScale != 0)
         {
 
             transform.position = p.transform.position;

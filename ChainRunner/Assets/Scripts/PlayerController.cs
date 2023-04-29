@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
         curHP = Mathf.Clamp(curHP, 0, maxHP);
         curHPText.text = ""+ (int) curHP;
         anim.SetTrigger("Damaged");
-        if(curHP <= 0)
+        if((int)curHP <= 0)
         {
             Die();
         }

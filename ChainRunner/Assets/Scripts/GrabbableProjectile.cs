@@ -39,8 +39,6 @@ public class GrabbableProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print(collision.gameObject.name);
-        
         if (!isPlayerOwned && collision.gameObject.CompareTag("Player"))
         {
             PlayerController.p.TakeDamage(damage);
