@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 7395000138318215003}
   - component: {fileID: 7395000138318215002}
   - component: {fileID: 7395000138318215005}
+  - component: {fileID: 1899019448353504344}
   m_Layer: 0
   m_Name: ZipLine
   m_TagString: Untagged
@@ -240,6 +241,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1899019448353504344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7395000138318215004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326317a3cd366694b8c965526a649b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerOn: 0
+  title: Chain Hook
+  description: <u>Right click</u> to shoot a hook out in the direction your mouse
+    is aiming<br>If the hook hits a valid spot, you will zip to it<br>Certain <u>green</u>
+    spots interfere with the hook's magic and are invalid points
 --- !u!1 &7395000139827302554
 GameObject:
   m_ObjectHideFlags: 0

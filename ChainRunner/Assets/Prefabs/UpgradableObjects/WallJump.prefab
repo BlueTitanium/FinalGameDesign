@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3340294570049536529}
   - component: {fileID: 3340294570049536528}
   - component: {fileID: 3340294570049536531}
+  - component: {fileID: 8675317357228336752}
   m_Layer: 0
   m_Name: WallJump
   m_TagString: Untagged
@@ -129,6 +130,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8675317357228336752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340294570049536541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326317a3cd366694b8c965526a649b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerOn: 0
+  title: Wall Jump
+  description: You can now slide down on walls.<br> While you are on a wall, you
+    can walljump away from that wall.<br>You can chain multiple walljumps together
+    to ascend quickly.
 --- !u!1 &3340294570385008287
 GameObject:
   m_ObjectHideFlags: 0
