@@ -7027,10 +7027,15 @@ MonoBehaviour:
   npcIcon: {fileID: -1177872456, guid: a202290608e698346b26931e10aa2d60, type: 3}
   cName: ???
   dialogue:
-  - HOLY MOLY YOU ACTUALLY DID IT!
-  - YOU BEAT CLEOPATRA!!11!!!
+  - Wow, you actually beat her?
+  - Er, I mean, never doubted you in the slightest!
+  - How many tries was that, again?
   - ...
-  isPlayer: 000001
+  - Shut up.
+  - Well, the next circle, Gluttony, is right ahead, but you should rest for a bit.
+  - "It seems like this is as far into Hell as you\u2019ll get\u2026"
+  - "\u2026 at least for now."
+  isPlayer: 0000000101000000
   faceLeft: 0
   playerIsNear: 0
 --- !u!95 &979764409
@@ -83285,6 +83290,54 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5526944897922743458, guid: f87b514c352b50f4191c19186166bd53, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: isPlayer.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: You again.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: dialogue.Array.data[1]
+      value: I've been watching you.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: dialogue.Array.data[2]
+      value: Out of my way.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: dialogue.Array.data[3]
+      value: Ugh...
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: dialogue.Array.data[4]
+      value: Very well, if you refuse to stop, as the reigning queen of Lust...
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: dialogue.Array.data[5]
+      value: I will have no choice but to throw everything I have at you.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: isPlayer.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: isPlayer.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: isPlayer.Array.data[4]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
+      propertyPath: isPlayer.Array.data[5]
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5526944899634093064, guid: f87b514c352b50f4191c19186166bd53, type: 3}
