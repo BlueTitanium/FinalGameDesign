@@ -75,7 +75,9 @@ public class DialogueUI : MonoBehaviour
             npcIcon = icon;
             rightCharRend.enabled = true;
             rightCharRend.sprite = npcIcon;
+            rightCharRend.SetNativeSize();
             rightOverlay.sprite = npcIcon;
+            rightOverlay.SetNativeSize();
             if (faceLeft)
             {
                 rightCharScale.localScale = new Vector3(-2, 2);

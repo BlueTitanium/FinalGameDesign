@@ -269,13 +269,17 @@ public class PlayerController : MonoBehaviour
         PlayerPrefs.SetInt("grappleEnabled", grappleEnabled ? 1 : 0);
         PlayerPrefs.SetInt("wallJumpEnabled", wallJumpEnabled ? 1 : 0);
         PlayerPrefs.SetFloat("DamageMultiplier", damageMultiplier);
-        print(damageMultiplier);
         PlayerPrefs.SetFloat("HealthMultiplier", healthMultiplier);
         TakeHeal(maxHP);
         PlayerPrefs.Save();
     }
     public void LoadOptions()
     {
+        if (PlayerPrefs.HasKey("DamageMultiplier"))
+        {
+            healthMultiplier = PlayerPrefs.GetFloat("HealthMultiplier");
+            damageMultiplier = PlayerPrefs.GetFloat("DamageMultiplier");
+        }
         if (!PlayerPrefs.HasKey("grappleEnabled"))
         {
             SaveOptions(true);

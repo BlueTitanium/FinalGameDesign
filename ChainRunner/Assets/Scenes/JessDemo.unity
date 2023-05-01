@@ -397,29 +397,31 @@ MonoBehaviour:
   npcIcon: {fileID: -1177872456, guid: a202290608e698346b26931e10aa2d60, type: 3}
   cName: ???
   dialogue:
-  - "You, prisoner\u2026"
-  - What is your name?
   - ...
-  - 'What is your purpose? '
-  - ...
-  - 'Not a talkative fellow, I see. '
-  - 'Fine, then. If you have no purpose, I shall give you one. '
-  - ...?
-  - Even if you wish to, I cannot leave this chamber.
-  - You can enter this rift I've created.
-  - "You\u2019re probably wondering how you can possibly thank me for this."
-  - Come free me.
-  - Why should I go through the trouble?
-  - What can you possibly offer me?
-  - "I\u2019m a prisoner like you. Meet me in the center of hell."
-  - "If you find me, I will tell you who you were\u2026 and I will give you a purpose.  "
-  - "But if you don\u2019t want to, you\u2019re free to live a miserable existence
-    up here in Limbo."
-  - 'You can remain unimportant and unmemorable if you wish to. '
+  - My chains...
+  - But how?
+  - Prisoner...
+  - What is your name? Your purpose?
   - "\u2026"
-  - "Alright, I\u2019ll take you up on your offer."
-  - Excellent.
-  isPlayer: 000001000100000101000000010100000000010100
+  - Not very talkative, are you?
+  - "Very well, if you have no purpose, I\u2019ll give you one."
+  - "What good is a purpose if I can\u2019t leave this godforsaken cell?"
+  - "Well, I\u2019ve already broken those chains of yours."
+  - Think of what else I can do.
+  - Wink.
+  - ...
+  - "Anyways, if you\u2019d like to thank me for freeing you, come meet me at the
+    center of hell."
+  - "I\u2019m also a prisoner of this place, unjustly held like you. "
+  - "Return the favor and free me and I\u2019ll tell you a little something-something
+    about who you were."
+  - You know, before you, ahem, died.
+  - I died?
+  - "See, there\u2019s so much you don\u2019t know."
+  - ...
+  - "I\u2019ll take you up on your offer."
+  - Excellent! See you around.
+  isPlayer: 01010100000100000100000001000000000100010100
   faceLeft: 0
   playerIsNear: 0
 --- !u!4 &718960663 stripped
