@@ -49,6 +49,7 @@ public class GroundRangedEnemyController : MeleeEnemyController
     }
 
     public void StartAimingPlayer() {
+        //AudioManager.PlaySound("enemyArrow");
         aimingPlayer = true;
     }
 

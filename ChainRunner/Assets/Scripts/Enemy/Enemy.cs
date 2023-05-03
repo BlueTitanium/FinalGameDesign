@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
     protected Coroutine damageFlashCoroutine;
     protected Coroutine stunCoroutine;
     [SerializeField] protected GameObject dizzyEffect;
+    Color spriteColor;
 
     protected Rigidbody2D rb;
     protected Animator animator;
@@ -38,6 +39,8 @@ public class Enemy : MonoBehaviour
     protected virtual void Start()
     {
         currHP = maxHP;
+
+        spriteColor = spriteRenderer.color;
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -116,9 +119,9 @@ public class Enemy : MonoBehaviour
     IEnumerator DamageFlashIE() {
         spriteRenderer.color = Color.red;
         CameraShake.cs.cameraShake(.3f, 1.6f);
-        while (spriteRenderer.color != Color.white) {
+        while (spriteRenderer.color != spriteColor) {
             yield return null;
-            spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.white, Time.deltaTime);
+            spriteRenderer.color = Color.Lerp(spriteRenderer.color, spriteColor, Time.deltaTime);
         }
 
         // yield return new WaitForSeconds(0.2f);

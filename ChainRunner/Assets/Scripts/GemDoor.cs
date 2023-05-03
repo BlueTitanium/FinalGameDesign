@@ -58,6 +58,7 @@ public class GemDoor : MonoBehaviour
 
     public void OpenDoor()
     {
+        AudioManager.PlaySound("gemDoor");
         anim.Play();
     }
     public void GoNext()

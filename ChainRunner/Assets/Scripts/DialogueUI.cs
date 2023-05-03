@@ -178,6 +178,7 @@ public class DialogueUI : MonoBehaviour
         }
         while (cIndex < characters.Length && dialogueText.text.Length < characters.Length)
         {
+            AudioManager.PlaySound("typing");
             dialogueText.text += characters[cIndex];
             cIndex += 1;
             yield return new WaitForSeconds(wordSpeed);
