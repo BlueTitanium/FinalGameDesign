@@ -83292,54 +83292,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: dialogue.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: isPlayer.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: dialogue.Array.data[0]
-      value: You again.
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: dialogue.Array.data[1]
-      value: I've been watching you.
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: dialogue.Array.data[2]
-      value: Out of my way.
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: dialogue.Array.data[3]
-      value: Ugh...
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: dialogue.Array.data[4]
-      value: Very well, if you refuse to stop, as the reigning queen of Lust...
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: dialogue.Array.data[5]
-      value: I will have no choice but to throw everything I have at you.
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: isPlayer.Array.data[2]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: isPlayer.Array.data[3]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: isPlayer.Array.data[4]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5526944898179215578, guid: f87b514c352b50f4191c19186166bd53, type: 3}
-      propertyPath: isPlayer.Array.data[5]
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5526944899634093064, guid: f87b514c352b50f4191c19186166bd53, type: 3}
       propertyPath: m_Camera
       value: 

@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
 
                             enemyHurtSound,
                             enemySwordSound,
+                            ghostWhooshSound,
                             //enemyArrowSound,
                             bossAttackSound, // cat spawns from ground
                             warningSound, // red exclamation
@@ -34,6 +35,7 @@ public class AudioManager : MonoBehaviour
                             typingSound,
                             selectionSound, // if want for button hover
                             clickSound; // if want button click
+                    
     static AudioSource audioSrc;
 
     public static float walkTime = .35f;
@@ -52,6 +54,7 @@ public class AudioManager : MonoBehaviour
 
         enemyHurtSound = Resources.Load<AudioClip>("enemyHurt");
         enemySwordSound = Resources.Load<AudioClip>("enemySwordNoDelay");
+        ghostWhooshSound = Resources.Load<AudioClip>("ghostWhoosh");
         //enemyArrowSound = Resources.Load<AudioClip>("enemyArrow");
         bossAttackSound = Resources.Load<AudioClip>("bossAttack");
         warningSound = Resources.Load<AudioClip>("warning");
@@ -72,7 +75,7 @@ public class AudioManager : MonoBehaviour
         attuneSound = Resources.Load<AudioClip>("attune");
         doorOpenSound = Resources.Load<AudioClip>("doorOpen");
         gemDoorSound = Resources.Load<AudioClip>("gemDoor");
-        typingSound = Resources.Load<AudioClip>("typing");
+        typingSound = Resources.Load<AudioClip>("typing1");
         selectionSound = Resources.Load<AudioClip>("selection"); // button hover
         clickSound = Resources.Load<AudioClip>("click"); // button click
 
@@ -129,6 +132,9 @@ public class AudioManager : MonoBehaviour
                 //     attackWaitTimeLeft = attackWaitTime;
                 // }
                 audioSrc.PlayOneShot(enemySwordSound, 0.5f);
+                break;
+            case "ghostWhoosh":
+                audioSrc.PlayOneShot(ghostWhooshSound, 0.5f);
                 break;
             // case "enemyArrow":;
             //     audioSrc.PlayOneShot(enemyArrowSound);

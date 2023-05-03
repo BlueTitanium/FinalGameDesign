@@ -507,11 +507,13 @@ MonoBehaviour:
   npcIcon: {fileID: 510480243, guid: 548b604efb52b3b4cb68a7027b881167, type: 3}
   cName: Cleopatra
   dialogue:
-  - you dare enter my domain!??!?!?!?!?!
-  - AAAAAAAAAAAAAAAAA
-  - IMMA KILL YTOU!!!!11!!!
-  - ... chill
-  isPlayer: 00000001
+  - You again.
+  - I've been watching you.
+  - Out of my way.
+  - Ugh...
+  - Very well, if you refuse to stop, as the reigning queen of Lust...
+  - I will have no choice but to throw everything I have at you.
+  isPlayer: 000001000000
   faceLeft: 1
   playerIsNear: 0
 --- !u!1 &5526944898278582239

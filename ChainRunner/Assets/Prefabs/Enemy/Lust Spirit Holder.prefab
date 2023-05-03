@@ -530,6 +530,7 @@ MonoBehaviour:
   spawnpoint: {fileID: 8324293309429383246}
   playerYOffset: 1
   fallOnStun: 1
+  attackSound: ghostWhoosh
 --- !u!70 &8324293309797316487
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
