@@ -155,6 +155,7 @@ MonoBehaviour:
   canBeKnockbacked: 1
   spriteRenderer: {fileID: 8232655324197064824}
   dizzyEffect: {fileID: 8970170332535721563}
+  unkillable: 0
   chaseSpeed: 500
   attackDistance: 1.75
   attackCooldown: 1.5
@@ -182,6 +183,7 @@ MonoBehaviour:
   spawnpoint: {fileID: 8232655325785920949}
   playerYOffset: 1
   fallOnStun: 1
+  attackSound: woosh
 --- !u!1 &8232655324197064825
 GameObject:
   m_ObjectHideFlags: 0

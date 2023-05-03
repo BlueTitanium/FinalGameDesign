@@ -11,7 +11,9 @@ public class AudioManager : MonoBehaviour
 
                             enemyHurtSound,
                             enemySwordSound,
-                            enemyArrowSound,
+                            //enemyArrowSound,
+                            bossAttackSound, // cat spawns from ground
+                            warningSound, // red exclamation
 
                             playerChainSound,
                             chainMissSound,
@@ -27,7 +29,11 @@ public class AudioManager : MonoBehaviour
                             itemHitSound,
 
                             attuneSound,
-                            doorOpenSound;
+                            doorOpenSound,
+                            gemDoorSound,
+                            typingSound,
+                            selectionSound, // if want for button hover
+                            clickSound; // if want button click
     static AudioSource audioSrc;
 
     public static float walkTime = .35f;
@@ -46,7 +52,9 @@ public class AudioManager : MonoBehaviour
 
         enemyHurtSound = Resources.Load<AudioClip>("enemyHurt");
         enemySwordSound = Resources.Load<AudioClip>("enemySwordNoDelay");
-        enemyArrowSound = Resources.Load<AudioClip>("enemyArrow");
+        //enemyArrowSound = Resources.Load<AudioClip>("enemyArrow");
+        bossAttackSound = Resources.Load<AudioClip>("bossAttack");
+        warningSound = Resources.Load<AudioClip>("warning");
 
         playerChainSound = Resources.Load<AudioClip>("playerChain");
         chainMissSound = Resources.Load<AudioClip>("chainMiss");
@@ -63,6 +71,10 @@ public class AudioManager : MonoBehaviour
 
         attuneSound = Resources.Load<AudioClip>("attune");
         doorOpenSound = Resources.Load<AudioClip>("doorOpen");
+        gemDoorSound = Resources.Load<AudioClip>("gemDoor");
+        typingSound = Resources.Load<AudioClip>("typing");
+        selectionSound = Resources.Load<AudioClip>("selection"); // button hover
+        clickSound = Resources.Load<AudioClip>("click"); // button click
 
         audioSrc = GetComponent<AudioSource>();
     }
@@ -100,26 +112,32 @@ public class AudioManager : MonoBehaviour
                 //audioSrc.Play();
                 audioSrc.PlayOneShot(playerAttackSound, 0.8f);
                 break;
-            case "playerHurt":;
+            case "playerHurt":
                 audioSrc.PlayOneShot(playerHurtSound);
                 break;
 
             ///////////
 
-            case "enemyHurt":;
+            case "enemyHurt":
                 audioSrc.PlayOneShot(enemyHurtSound, 0.3f);
                 break;
-            case "enemySword":;
+            case "enemySword":
                 // audioSrc.clip = enemySwordSound;
                 // if (attackWaitTimeLeft <= 0)
                 // {
                 //     audioSrc.Play();
                 //     attackWaitTimeLeft = attackWaitTime;
                 // }
-                audioSrc.PlayOneShot(enemySwordSound);
+                audioSrc.PlayOneShot(enemySwordSound, 0.5f);
                 break;
-            case "enemyArrow":;
-                audioSrc.PlayOneShot(enemyArrowSound);
+            // case "enemyArrow":;
+            //     audioSrc.PlayOneShot(enemyArrowSound);
+            //     break;
+            case "bossAttack":
+                audioSrc.PlayOneShot(bossAttackSound);
+                break;
+            case "warning":
+                audioSrc.PlayOneShot(warningSound, 0.5f);
                 break;
 
             ///////////
@@ -174,8 +192,23 @@ public class AudioManager : MonoBehaviour
                 audioSrc.PlayOneShot(attuneSound, 0.2f);
                 break;
             case "doorOpen":
-                //audioSrc.clip = attuneSound;
                 audioSrc.PlayOneShot(doorOpenSound);
+                break;
+            case "gemDoor":
+                audioSrc.PlayOneShot(gemDoorSound);
+                break;
+            case "typing":
+                if (!audioSrc.isPlaying) {
+                    //audioSrc.pitch = Random.Range(.2f,5f);
+                    audioSrc.PlayOneShot(typingSound, 0.5f);
+                }
+                audioSrc.pitch = 1f;
+                break;
+            case "selection":
+                audioSrc.PlayOneShot(selectionSound);
+                break;
+            case "click":
+                audioSrc.PlayOneShot(clickSound);
                 break;
         }
     }

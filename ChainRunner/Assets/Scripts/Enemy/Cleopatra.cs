@@ -220,9 +220,11 @@ public class Cleopatra : MonoBehaviour
                     if(curHP <= maxHP / 2)
                     {
                         a.SetTrigger("Attack1");
+                        AudioManager.PlaySound("warning");
                     } else
                     {
                         a.SetTrigger("Attack");
+                        AudioManager.PlaySound("warning");
                     }
                     
                     break;
@@ -233,10 +235,12 @@ public class Cleopatra : MonoBehaviour
                     if (curHP <= maxHP / 2)
                     {
                         a.SetTrigger("Attack1");
+                        AudioManager.PlaySound("warning");
                     }
                     else
                     {
                         a.SetTrigger("Attack");
+                        AudioManager.PlaySound("warning");
                     }
                     break;
             }
@@ -311,14 +315,17 @@ public class Cleopatra : MonoBehaviour
     IEnumerator SpawnCatClose()
     {
         indicator.Play();
+        AudioManager.PlaySound("warning");
         yield return new WaitForSeconds(.3f);
         GameObject g = Instantiate(catTower, catPoint.position, catPoint.rotation);
         g.transform.localScale = transform.localScale;
+        AudioManager.PlaySound("bossAttack");
     }
 
     IEnumerator SpawnLotsOfCats()
     {
         indicator.Play();
+        AudioManager.PlaySound("warning");
         yield return new WaitForSeconds(.3f);
         for (int i =0; i < catSpawns.Length;i++)
         {
@@ -327,12 +334,14 @@ public class Cleopatra : MonoBehaviour
             //yield return new WaitForSeconds(.1f);
             GameObject g = Instantiate(catTower, v.position, v.rotation);
             g.transform.localScale = transform.localScale;
+            AudioManager.PlaySound("bossAttack");
             yield return new WaitForSeconds(.05f);
         }
     }
 
     IEnumerator SpawnIndicator(Transform v)
     {
+        AudioManager.PlaySound("warning");
         GameObject ind = Instantiate(AttackIndicator, v.position, AttackIndicator.transform.rotation);
         Destroy(ind, 1f);
         yield return null;
@@ -341,6 +350,7 @@ public class Cleopatra : MonoBehaviour
 
     IEnumerator ShootLots1()
     {
+        AudioManager.PlaySound("warning");
         //indicator.Play();
         //yield return new WaitForSeconds(.5f);
         foreach (var v in shootPoints)
@@ -369,6 +379,7 @@ public class Cleopatra : MonoBehaviour
     IEnumerator ShootLots2()
     {
         indicator.Play();
+        AudioManager.PlaySound("warning");
         yield return new WaitForSeconds(.5f);
         foreach (var v in shootPoints1)
         {
