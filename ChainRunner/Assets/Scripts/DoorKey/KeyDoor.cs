@@ -25,6 +25,7 @@ public class KeyDoor : MonoBehaviour {
 
 
     public void OpenDoor() {
+        AudioManager.PlaySound("doorOpen");
         opened = true;
         a.SetTrigger("Open");
         GameManager.g.InteractionDisplayToggle(false);
