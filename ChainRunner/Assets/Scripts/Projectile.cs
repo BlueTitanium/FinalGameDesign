@@ -87,7 +87,6 @@ public class Projectile : MonoBehaviour
             } else {
                 AudioManager.PlaySound("itemFall");
             }
-            //AudioManager.PlaySound("itemHit");
             Enemy enemyController = collision.GetComponent<Enemy>();
             enemyController.Knockback(transform, 2);
             enemyController.TakeDamage(damage);
@@ -113,10 +112,10 @@ public class Projectile : MonoBehaviour
                 AudioManager.PlaySound("molotov");
             }
             else if (type == ThrowableObject.ObjectType.StraightProjectile) {
-                AudioManager.PlaySound("itemHit");
-            } else {
                 AudioManager.PlaySound("itemFall");
-            }    
+            } //else {
+            //     AudioManager.PlaySound("itemFall");
+            // }    
             Destroy(gameObject); 
         }
         
@@ -127,10 +126,10 @@ public class Projectile : MonoBehaviour
                 AudioManager.PlaySound("molotov");
             }
             else if (type == ThrowableObject.ObjectType.StraightProjectile) {
-                AudioManager.PlaySound("itemHit");
-            } else {
                 AudioManager.PlaySound("itemFall");
-            }
+            } //else {
+            //     AudioManager.PlaySound("itemFall");
+            // }
             Destroy(gameObject);
         }
     }

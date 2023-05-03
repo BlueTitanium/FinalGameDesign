@@ -18,6 +18,7 @@ public class Key : MonoBehaviour {
         if (nearObject && Input.GetKeyDown(KeyCode.E))
         {
             KeyHolder.k.AddKey(key);
+            AudioManager.PlaySound("playerGrabItem");
             GameManager.g.ShowTitleEffect("KEY OBTAINED");
             GameManager.g.InteractionDisplayToggle(false);
             Destroy(gameObject);
