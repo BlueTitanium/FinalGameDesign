@@ -45,7 +45,7 @@ public class AudioManager : MonoBehaviour
         playerHurtSound = Resources.Load<AudioClip>("playerHurt");
 
         enemyHurtSound = Resources.Load<AudioClip>("enemyHurt");
-        enemySwordSound = Resources.Load<AudioClip>("enemySword");
+        enemySwordSound = Resources.Load<AudioClip>("enemySwordNoDelay");
         enemyArrowSound = Resources.Load<AudioClip>("enemyArrow");
 
         playerChainSound = Resources.Load<AudioClip>("playerChain");

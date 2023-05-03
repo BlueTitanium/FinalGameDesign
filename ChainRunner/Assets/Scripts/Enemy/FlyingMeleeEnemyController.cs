@@ -60,6 +60,9 @@ public class FlyingMeleeEnemyController : Enemy
     [SerializeField] bool fallOnStun;
     float originalLinearDrag;
 
+    [Header("Sound")]
+    [SerializeField] protected string attackSound;
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -383,5 +386,10 @@ public class FlyingMeleeEnemyController : Enemy
 
     protected virtual void AttackBehavior() {
         rb.velocity = new Vector2(0, rb.velocity.y);
+    }
+
+    public void PlayAttackSFX() {
+        if (attackSound != "")
+            AudioManager.PlaySound(attackSound);
     }
 }

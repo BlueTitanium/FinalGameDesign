@@ -59,6 +59,9 @@ public class MeleeEnemyController : Enemy
     [SerializeField] private float surroundSpeed = 2f;
     private float surroundDistance_;
 
+    [Header("Sound")]
+    [SerializeField] protected string attackSound;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -413,5 +416,10 @@ public class MeleeEnemyController : Enemy
 
     protected virtual void AttackBehavior() {
         rb.velocity = new Vector2(0, rb.velocity.y);
+    }
+
+    public void PlayAttackSFX() {
+        if (attackSound != "")
+            AudioManager.PlaySound(attackSound);
     }
 }

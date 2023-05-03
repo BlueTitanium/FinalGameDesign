@@ -308,6 +308,7 @@ MonoBehaviour:
   rangeOfSight: {fileID: 8124202604428833286}
   surroundDistance: 3
   surroundSpeed: 2
+  attackSound: enemySword
 --- !u!114 &2359725907102853857
 MonoBehaviour:
   m_ObjectHideFlags: 0
