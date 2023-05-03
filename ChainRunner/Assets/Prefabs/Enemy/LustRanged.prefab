@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 70
-  moveSpeed: 1
+  moveSpeed: 1.5
   isFacingRight: 1
   attackDamage: 20
   playerDetected: 0
@@ -505,7 +505,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 4225339838895463696}
   dizzyEffect: {fileID: 3377182028202685745}
   unkillable: 0
-  chaseSpeed: 2
+  chaseSpeed: 3.5
   attackDistance: 8
   attackCooldown: 2
   initialState: 1
@@ -534,6 +534,7 @@ MonoBehaviour:
   rangeOfSight: {fileID: 3887552137178652103}
   surroundDistance: 8
   surroundSpeed: 2
+  attackSound: 
   projectilePrefab: {fileID: 652125732109076963, guid: a364be7634e569f45a035e3842f2dad4, type: 3}
   shootpoint: {fileID: 4074078020916664707}
   retreatDuringAttackCooldown: 1
