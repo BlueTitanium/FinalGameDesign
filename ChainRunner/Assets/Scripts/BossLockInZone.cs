@@ -100,9 +100,9 @@ public class BossLockInZone : MonoBehaviour
         }
         GameManager.g.ShowTitleEffect("Boss Slain!");
 
-        BGM.Stop();
-        BGM.clip = regular;
-        BGM.Play();
+        //BGM.Stop();
+        //BGM.clip = regular;
+        //BGM.Play();
 
         StartCoroutine(SpawnRewards());
     }

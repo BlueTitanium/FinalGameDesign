@@ -84532,7 +84532,7 @@ MonoBehaviour:
   Rewards: []
   BGM: {fileID: 1348884750}
   regular: {fileID: 8300000, guid: 3244d7cef537f7345af541e25e4b1b76, type: 3}
-  battle: {fileID: 8300000, guid: 7e250c174d50a6343b966cb14b040469, type: 3}
+  battle: {fileID: 8300000, guid: 3ec8f25c87f8ca74db8b3f22c3edbb8b, type: 3}
 --- !u!4 &8707244263330375832
 Transform:
   m_ObjectHideFlags: 0
